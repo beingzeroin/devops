@@ -3,7 +3,7 @@
         {
             "location": "/", 
             "text": "Welcome to MkDocs\n\n\nFor full documentation visit \nmkdocs.org\n.\n\n\nCommands\n\n\n\n\nmkdocs new [dir-name]\n - Create a new project.\n\n\nmkdocs serve\n - Start the live-reloading docs server.\n\n\nmkdocs build\n - Build the documentation site.\n\n\nmkdocs help\n - Print this help message.\n\n\n\n\nProject layout\n\n\nmkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    ...       # Other markdown pages, images and other files.", 
-            "title": "Welcome to MkDocs"
+            "title": "Home"
         }, 
         {
             "location": "/#welcome-to-mkdocs", 
@@ -19,6 +19,86 @@
             "location": "/#project-layout", 
             "text": "mkdocs.yml    # The configuration file.\ndocs/\n    index.md  # The documentation homepage.\n    ...       # Other markdown pages, images and other files.", 
             "title": "Project layout"
+        }, 
+        {
+            "location": "/ansible/", 
+            "text": "Ansible\n\n\nTODO", 
+            "title": "Ansible"
+        }, 
+        {
+            "location": "/ansible/#ansible", 
+            "text": "TODO", 
+            "title": "Ansible"
+        }, 
+        {
+            "location": "/cassandra/", 
+            "text": "Cassandra\n\n\nTODO", 
+            "title": "Cassandra"
+        }, 
+        {
+            "location": "/cassandra/#cassandra", 
+            "text": "TODO", 
+            "title": "Cassandra"
+        }, 
+        {
+            "location": "/hadoop-spark/", 
+            "text": "Hadoop and Spark\n\n\nTODO", 
+            "title": "Hadoop and Spark"
+        }, 
+        {
+            "location": "/hadoop-spark/#hadoop-and-spark", 
+            "text": "TODO", 
+            "title": "Hadoop and Spark"
+        }, 
+        {
+            "location": "/kafka/", 
+            "text": "Kafka\n\n\nTODO", 
+            "title": "Kafka"
+        }, 
+        {
+            "location": "/kafka/#kafka", 
+            "text": "TODO", 
+            "title": "Kafka"
+        }, 
+        {
+            "location": "/zookeeper/", 
+            "text": "Zookeeper\n\n\nTODO", 
+            "title": "Zookeeper"
+        }, 
+        {
+            "location": "/zookeeper/#zookeeper", 
+            "text": "TODO", 
+            "title": "Zookeeper"
+        }, 
+        {
+            "location": "/other/", 
+            "text": "Other\n\n\nDocker\n\n\nTODO\n\n\nVagrant\n\n\nTODO\n\n\nMkDocs\n\n\nTODO\n\n\nBooks\n\n\nTODO", 
+            "title": "Other"
+        }, 
+        {
+            "location": "/other/#other", 
+            "text": "", 
+            "title": "Other"
+        }, 
+        {
+            "location": "/other/#docker", 
+            "text": "TODO", 
+            "title": "Docker"
+        }, 
+        {
+            "location": "/other/#vagrant", 
+            "text": "TODO", 
+            "title": "Vagrant"
+        }, 
+        {
+            "location": "/other/#mkdocs", 
+            "text": "TODO", 
+            "title": "MkDocs"
+        }, 
+        {
+            "location": "/other/#books", 
+            "text": "TODO", 
+            "title": "Books"
         }
     ]
 }
