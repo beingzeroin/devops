@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2018-01-19</lastmod>
+     <lastmod>2018-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,15 +12,7 @@
     
     <url>
      <loc>/ansible/</loc>
-     <lastmod>2018-01-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>/cassandra/</loc>
-     <lastmod>2018-01-19</lastmod>
+     <lastmod>2018-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,15 +20,15 @@
     
     <url>
      <loc>/hadoop-spark/</loc>
-     <lastmod>2018-01-19</lastmod>
+     <lastmod>2018-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>/kafka/</loc>
-     <lastmod>2018-01-19</lastmod>
+     <loc>/cassandra/</loc>
+     <lastmod>2018-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -44,7 +36,15 @@
     
     <url>
      <loc>/zookeeper/</loc>
-     <lastmod>2018-01-19</lastmod>
+     <lastmod>2018-01-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/kafka/</loc>
+     <lastmod>2018-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -52,7 +52,7 @@
     
     <url>
      <loc>/other/</loc>
-     <lastmod>2018-01-19</lastmod>
+     <lastmod>2018-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

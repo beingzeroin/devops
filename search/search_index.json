@@ -2,33 +2,43 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Provision Tools\n\n\nA collection of Docker and Vagrant images mainly to provision distributed systems for local development and quick prototyping.", 
+            "text": "Provision Tools\n\n\nA collection of Docker and Vagrant images mainly to provision distributed systems for local development and quick prototyping.\n\n\nDocumentations\n\n\n\n\nAnsible\n\n\nHadoop and Spark\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nOther", 
             "title": "Home"
         }, 
         {
             "location": "/#provision-tools", 
-            "text": "A collection of Docker and Vagrant images mainly to provision distributed systems for local development and quick prototyping.", 
+            "text": "A collection of Docker and Vagrant images mainly to provision distributed systems for local development and quick prototyping.  Documentations   Ansible  Hadoop and Spark  Cassandra  Zookeeper  Kafka  Other", 
             "title": "Provision Tools"
         }, 
         {
             "location": "/ansible/", 
-            "text": "Ansible\n\n\nTODO", 
+            "text": "Ansible\n\n\nAnsible is an open source automation platform that can help with config management, deployment and task automation.\n\n\nDocumentation\n\n\n\n\nAnsible\n\n\nTutorial\n\n\nPlaybook example\n\n\n\n\nThe following guide explain how to provision Ansible locally and play with it. The current \nVagrantfile\n is configured to setup 4 Ubuntu boxes, 1 with Ansible and 3 nodes to run playbooks against it. Feel free to modify it at your own will.\n\n\nRequirement\n\n\n\n\nVagrant\n\n\nVirtualBox\n\n\n\n\nFor more details about Vagrant please check \nhere\n\n\nDirectory structure\n\n\nAll the commands are executed in this directory \ncd ansible\n\n\nansible/\n\u251c\u2500\u2500 .share\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 node-1\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 node-2\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 node-3\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 ssh\n\u2502\u00a0\u00a0     \u251c\u2500\u2500 ansible_rsa\n\u2502\u00a0\u00a0     \u2514\u2500\u2500 ansible_rsa.pub\n\u251c\u2500\u2500 Vagrantfile\n\u251c\u2500\u2500 data\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 group_vars\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 host_vars\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 hosts\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 roles\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 common\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 defaults\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 files\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 handlers\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 meta\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 tasks\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 motd.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 package.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 templates\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 motd\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 vars\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u2514\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 docker\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 meta\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u2502\u00a0\u00a0 \u2514\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u2514\u2500\u2500 tasks\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0         \u2514\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 site.yml\n\u251c\u2500\u2500 setup_ansible.sh\n\u2514\u2500\u2500 setup_share.sh\n\n\n\n\nSetup\n\n\nThe first time \nonly\n, you have to setup the shared folders and generate the ssh key needed by ansible to access all nodes executing\n\n\n./setup_share.sh\n\n\n\n\nFrom now on start the boxes with\n\n\nvagrant up\n\n\n\n\nNote that the first time it could take a while\n\n\nVerify status of the boxes with\n\n\nvagrant status\n\n\n\n\nVerify access to the boxes with\n\n\nvagrant ssh ansible\nvagrant ssh node-1\n\n\n\n\nFrom inside the boxes you should be able to communicate with the others\n\n\nping ansible.local\nping ip-192-168-100-11.local\nping 192.168.100.12\n\n\n\n\nThe following paths are shared with the boxes\n\n\n\n\n/vagrant\n provision-tool\n\n\n/local\n host $HOME\n\n\n/ansible\n data \n(ansible only)\n\n\n/data\n .share \n(node only)\n\n\n\n\nAd-Hoc Commands\n\n\nAccess the ansible box with\n\n\nvagrant ssh ansible\n\n\n\n\nBelow a list of examples\n\n\n\n# ping all nodes (default inventory /etc/ansible/hosts)\nansible all -m ping\nansible ansible -m ping\nansible cluster -m ping\n\n# ping all nodes (specify inventory)\nansible all -i \n/vagrant/data/hosts\n -m ping\n\n# gathering facts\nansible all -m setup\nansible ansible -m setup\n\n# specify host and user\nansible ip-192-168-100-11.local -m ping -u vagrant\n\n# execute command\nansible all -a \n/bin/echo hello\n\nansible all -a \nuptime\n\nansible all -a \n/bin/date\n\n# do NOT reboot vagrant through ansible (use vagrant reload)\nansible cluster -a \n/sbin/reboot\n --become\n\n# shell module\nansible all -m shell -a \npwd\n\n# be carefull to quotes\nansible all -m shell -a 'echo $HOME'\n\n# update \n upgrade\nansible all -m apt -a \nupdate_cache=yes upgrade=dist\n --become\n# restart after upgrade\nvagrant reload\n# install package\nansible all -m apt -a \nname=tree state=present\n --become\n\n\n\n\nPlaybooks\n\n\nAccess the ansible box with\n\n\nvagrant ssh ansible\n\n\n\n\nBelow a list of examples\n\n\n# test uptime on all node\nansible-playbook /ansible/site.yml --tags=test --verbose\n\n# update \n upgrade only cluster nodes\nansible-playbook /ansible/site.yml -t package --skip-tags=java --verbose\n\n# install packages on cluster nodes\nansible-playbook /ansible/site.yml -t package --verbose\n\n# run common task on cluster node\nansible-playbook /ansible/site.yml -t common\n\n# setup docker\nansible-playbook /ansible/site.yml -t docker\n# test docker\nvagrant ssh node-1\nsudo -i -u docker\ndocker ps -a\n\n# custom banner\nansible-playbook /ansible/site.yml -t motd\n\n# setup all infrastructure at once\nansible-playbook /ansible/site.yml\n\n# dry run\nansible-playbook -i /ansible/hosts /ansible/site.yml --check --diff", 
             "title": "Ansible"
         }, 
         {
             "location": "/ansible/#ansible", 
-            "text": "TODO", 
+            "text": "Ansible is an open source automation platform that can help with config management, deployment and task automation.  Documentation   Ansible  Tutorial  Playbook example   The following guide explain how to provision Ansible locally and play with it. The current  Vagrantfile  is configured to setup 4 Ubuntu boxes, 1 with Ansible and 3 nodes to run playbooks against it. Feel free to modify it at your own will.  Requirement   Vagrant  VirtualBox   For more details about Vagrant please check  here", 
             "title": "Ansible"
         }, 
         {
-            "location": "/cassandra/", 
-            "text": "Cassandra\n\n\nTODO", 
-            "title": "Cassandra"
+            "location": "/ansible/#directory-structure", 
+            "text": "All the commands are executed in this directory  cd ansible  ansible/\n\u251c\u2500\u2500 .share\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 node-1\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 node-2\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 node-3\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 ssh\n\u2502\u00a0\u00a0     \u251c\u2500\u2500 ansible_rsa\n\u2502\u00a0\u00a0     \u2514\u2500\u2500 ansible_rsa.pub\n\u251c\u2500\u2500 Vagrantfile\n\u251c\u2500\u2500 data\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 group_vars\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 host_vars\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 hosts\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 roles\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 common\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 defaults\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 files\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 handlers\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 meta\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 tasks\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 motd.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 package.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 templates\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 motd\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 vars\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u2514\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 docker\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 meta\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u2502\u00a0\u00a0 \u2514\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u2514\u2500\u2500 tasks\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0         \u2514\u2500\u2500 main.yml\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 site.yml\n\u251c\u2500\u2500 setup_ansible.sh\n\u2514\u2500\u2500 setup_share.sh", 
+            "title": "Directory structure"
         }, 
         {
-            "location": "/cassandra/#cassandra", 
-            "text": "TODO", 
-            "title": "Cassandra"
+            "location": "/ansible/#setup", 
+            "text": "The first time  only , you have to setup the shared folders and generate the ssh key needed by ansible to access all nodes executing  ./setup_share.sh  From now on start the boxes with  vagrant up  Note that the first time it could take a while  Verify status of the boxes with  vagrant status  Verify access to the boxes with  vagrant ssh ansible\nvagrant ssh node-1  From inside the boxes you should be able to communicate with the others  ping ansible.local\nping ip-192-168-100-11.local\nping 192.168.100.12  The following paths are shared with the boxes   /vagrant  provision-tool  /local  host $HOME  /ansible  data  (ansible only)  /data  .share  (node only)", 
+            "title": "Setup"
+        }, 
+        {
+            "location": "/ansible/#ad-hoc-commands", 
+            "text": "Access the ansible box with  vagrant ssh ansible  Below a list of examples  \n# ping all nodes (default inventory /etc/ansible/hosts)\nansible all -m ping\nansible ansible -m ping\nansible cluster -m ping\n\n# ping all nodes (specify inventory)\nansible all -i  /vagrant/data/hosts  -m ping\n\n# gathering facts\nansible all -m setup\nansible ansible -m setup\n\n# specify host and user\nansible ip-192-168-100-11.local -m ping -u vagrant\n\n# execute command\nansible all -a  /bin/echo hello \nansible all -a  uptime \nansible all -a  /bin/date \n# do NOT reboot vagrant through ansible (use vagrant reload)\nansible cluster -a  /sbin/reboot  --become\n\n# shell module\nansible all -m shell -a  pwd \n# be carefull to quotes\nansible all -m shell -a 'echo $HOME'\n\n# update   upgrade\nansible all -m apt -a  update_cache=yes upgrade=dist  --become\n# restart after upgrade\nvagrant reload\n# install package\nansible all -m apt -a  name=tree state=present  --become", 
+            "title": "Ad-Hoc Commands"
+        }, 
+        {
+            "location": "/ansible/#playbooks", 
+            "text": "Access the ansible box with  vagrant ssh ansible  Below a list of examples  # test uptime on all node\nansible-playbook /ansible/site.yml --tags=test --verbose\n\n# update   upgrade only cluster nodes\nansible-playbook /ansible/site.yml -t package --skip-tags=java --verbose\n\n# install packages on cluster nodes\nansible-playbook /ansible/site.yml -t package --verbose\n\n# run common task on cluster node\nansible-playbook /ansible/site.yml -t common\n\n# setup docker\nansible-playbook /ansible/site.yml -t docker\n# test docker\nvagrant ssh node-1\nsudo -i -u docker\ndocker ps -a\n\n# custom banner\nansible-playbook /ansible/site.yml -t motd\n\n# setup all infrastructure at once\nansible-playbook /ansible/site.yml\n\n# dry run\nansible-playbook -i /ansible/hosts /ansible/site.yml --check --diff", 
+            "title": "Playbooks"
         }, 
         {
             "location": "/hadoop-spark/", 
@@ -41,14 +51,14 @@
             "title": "Hadoop and Spark"
         }, 
         {
-            "location": "/kafka/", 
-            "text": "Kafka\n\n\nTODO", 
-            "title": "Kafka"
+            "location": "/cassandra/", 
+            "text": "Cassandra\n\n\nTODO\n\n\nRequirements\n\n\n\n\nDocker", 
+            "title": "Cassandra"
         }, 
         {
-            "location": "/kafka/#kafka", 
-            "text": "TODO", 
-            "title": "Kafka"
+            "location": "/cassandra/#cassandra", 
+            "text": "TODO  Requirements   Docker", 
+            "title": "Cassandra"
         }, 
         {
             "location": "/zookeeper/", 
@@ -61,8 +71,18 @@
             "title": "Zookeeper"
         }, 
         {
+            "location": "/kafka/", 
+            "text": "Kafka\n\n\nTODO", 
+            "title": "Kafka"
+        }, 
+        {
+            "location": "/kafka/#kafka", 
+            "text": "TODO", 
+            "title": "Kafka"
+        }, 
+        {
             "location": "/other/", 
-            "text": "Other\n\n\nDocker\n\n\nTODO\n\n\nVagrant\n\n\nTODO\n\n\nMkDocs\n\n\nTODO\n\n\nBooks\n\n\nTODO", 
+            "text": "Other\n\n\nDocker\n\n\nDocker is an open platform for developers and sysadmins to build, ship, and run distributed applications.\n\n\nOffical documentation\n\n\n\n\nDocker\n\n\n\n\nBasic Docker commands\n\n\nTODO\n\n\nTODO\n\n\n\n\nDocker Machine\n\n\nTODO\n\n\nTODO\n\n\n\n\nVagrant\n\n\nVagrant is a tool for building and managing virtual machine environments in a single workflow.\n\n\nOffical documentation\n\n\n\n\nVagrant\n\n\nVirtualBox\n\n\n\n\nBasic Vagrant commands\n\n\nSetup project creating a Vagrantfile\n\n\nvagrant init\n\n\n\n\nBoot and connect to the default virtual machine\n\n\nvagrant up\nvagrant status\nvagrant ssh\n\n\n\n\nDelete virtual machine without prompt\n\n\nvagrant destory -f\n\n\n\n\nMkDocs\n\n\nMkDocs is a static site generator.\n\n\nOffical documentation\n\n\n\n\nMkDocs\n\n\n\n\nBasic MkDocs commands\n\n\nInstall\n\n\npip install mkdocs\n\n\n\n\nSetup in current directory\n\n\nmkdocs new .\n\n\n\n\nStart dev server with hot reload on \nhttp://127.0.0.1:8000\n\n\nmkdocs serve\n\n\n\n\nBuild static site\n\n\nmkdocs build --clean\n\n\n\n\nDeploy to github\n\n\nmkdocs gh-deploy\n\n\n\n\nBooks\n\n\nTODO", 
             "title": "Other"
         }, 
         {
@@ -72,18 +92,38 @@
         }, 
         {
             "location": "/other/#docker", 
-            "text": "TODO", 
+            "text": "Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications.  Offical documentation   Docker", 
             "title": "Docker"
         }, 
         {
+            "location": "/other/#basic-docker-commands", 
+            "text": "TODO  TODO", 
+            "title": "Basic Docker commands"
+        }, 
+        {
+            "location": "/other/#docker-machine", 
+            "text": "TODO  TODO", 
+            "title": "Docker Machine"
+        }, 
+        {
             "location": "/other/#vagrant", 
-            "text": "TODO", 
+            "text": "Vagrant is a tool for building and managing virtual machine environments in a single workflow.  Offical documentation   Vagrant  VirtualBox", 
             "title": "Vagrant"
         }, 
         {
+            "location": "/other/#basic-vagrant-commands", 
+            "text": "Setup project creating a Vagrantfile  vagrant init  Boot and connect to the default virtual machine  vagrant up\nvagrant status\nvagrant ssh  Delete virtual machine without prompt  vagrant destory -f", 
+            "title": "Basic Vagrant commands"
+        }, 
+        {
             "location": "/other/#mkdocs", 
-            "text": "TODO", 
+            "text": "MkDocs is a static site generator.  Offical documentation   MkDocs", 
             "title": "MkDocs"
+        }, 
+        {
+            "location": "/other/#basic-mkdocs-commands", 
+            "text": "Install  pip install mkdocs  Setup in current directory  mkdocs new .  Start dev server with hot reload on  http://127.0.0.1:8000  mkdocs serve  Build static site  mkdocs build --clean  Deploy to github  mkdocs gh-deploy", 
+            "title": "Basic MkDocs commands"
         }, 
         {
             "location": "/other/#books", 

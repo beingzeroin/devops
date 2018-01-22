@@ -59,22 +59,22 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../cassandra/">Cassandra</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
     <a class="" href="../hadoop-spark/">Hadoop and Spark</a>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <a class="" href="../kafka/">Kafka</a>
+    <a class="" href="../cassandra/">Cassandra</a>
 	    </li>
           
             <li class="toctree-l1">
 		
     <a class="" href="../zookeeper/">Zookeeper</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../kafka/">Kafka</a>
 	    </li>
           
             <li class="toctree-l1 current">
@@ -137,11 +137,70 @@
               
                 <h1 id="other">Other</h1>
 <h2 id="docker">Docker</h2>
+<p>Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications.</p>
+<p>Offical documentation</p>
+<ul>
+<li><a href="https://docs.docker.com">Docker</a></li>
+</ul>
+<h3 id="basic-docker-commands">Basic Docker commands</h3>
 <p>TODO</p>
+<pre><code class="bash">TODO
+</code></pre>
+
+<h3 id="docker-machine">Docker Machine</h3>
+<p>TODO</p>
+<pre><code class="bash">TODO
+</code></pre>
+
 <h2 id="vagrant">Vagrant</h2>
-<p>TODO</p>
+<p>Vagrant is a tool for building and managing virtual machine environments in a single workflow.</p>
+<p>Offical documentation</p>
+<ul>
+<li><a href="https://www.vagrantup.com/docs">Vagrant</a></li>
+<li><a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a></li>
+</ul>
+<h3 id="basic-vagrant-commands">Basic Vagrant commands</h3>
+<p>Setup project creating a Vagrantfile</p>
+<pre><code class="bash">vagrant init
+</code></pre>
+
+<p>Boot and connect to the default virtual machine</p>
+<pre><code class="bash">vagrant up
+vagrant status
+vagrant ssh
+</code></pre>
+
+<p>Delete virtual machine without prompt</p>
+<pre><code class="bash">vagrant destory -f
+</code></pre>
+
 <h2 id="mkdocs">MkDocs</h2>
-<p>TODO</p>
+<p>MkDocs is a static site generator.</p>
+<p>Offical documentation</p>
+<ul>
+<li><a href="http://www.mkdocs.org">MkDocs</a></li>
+</ul>
+<h3 id="basic-mkdocs-commands">Basic MkDocs commands</h3>
+<p>Install</p>
+<pre><code class="bash">pip install mkdocs
+</code></pre>
+
+<p>Setup in current directory</p>
+<pre><code class="bash">mkdocs new .
+</code></pre>
+
+<p>Start dev server with hot reload on <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
+<pre><code class="bash">mkdocs serve
+</code></pre>
+
+<p>Build static site</p>
+<pre><code class="bash">mkdocs build --clean
+</code></pre>
+
+<p>Deploy to github</p>
+<pre><code class="bash">mkdocs gh-deploy
+</code></pre>
+
 <h2 id="books">Books</h2>
 <p>TODO</p>
               
@@ -152,7 +211,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../zookeeper/" class="btn btn-neutral" title="Zookeeper"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../kafka/" class="btn btn-neutral" title="Kafka"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -180,7 +239,7 @@
           <a href="https://github.com/niqdev/provision-tools/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../zookeeper/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../kafka/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>
