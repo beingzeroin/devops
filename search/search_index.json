@@ -42,12 +42,12 @@
         }, 
         {
             "location": "/hadoop-spark/", 
-            "text": "Hadoop and Spark\n\n\nTODO", 
+            "text": "Hadoop and Spark\n\n\n\n\nHDFS\n A distributed file system that provides high-throughput access to application data\n\n\nYARN\n A framework for job scheduling and cluster resource management\n\n\nMapReduce\n A YARN-based system for parallel processing of large data sets\n\n\nSpark\n An open-source cluster-computing framework\n\n\nAvro\n A data serialization system\n\n\nOozie\n A workflow scheduler system to manage Hadoop jobs\n\n\nGanglia\n A monitoring system for Hadoop", 
             "title": "Hadoop and Spark"
         }, 
         {
             "location": "/hadoop-spark/#hadoop-and-spark", 
-            "text": "TODO", 
+            "text": "HDFS  A distributed file system that provides high-throughput access to application data  YARN  A framework for job scheduling and cluster resource management  MapReduce  A YARN-based system for parallel processing of large data sets  Spark  An open-source cluster-computing framework  Avro  A data serialization system  Oozie  A workflow scheduler system to manage Hadoop jobs  Ganglia  A monitoring system for Hadoop", 
             "title": "Hadoop and Spark"
         }, 
         {
@@ -82,7 +82,7 @@
         }, 
         {
             "location": "/other/", 
-            "text": "Other\n\n\nDocker\n\n\nDocker is an open platform for developers and sysadmins to build, ship, and run distributed applications.\n\n\nOffical documentation\n\n\n\n\nDocker\n\n\n\n\nBasic Docker commands\n\n\nTODO\n\n\nTODO\n\n\n\n\nDocker Machine\n\n\nTODO\n\n\nTODO\n\n\n\n\nVagrant\n\n\nVagrant is a tool for building and managing virtual machine environments in a single workflow.\n\n\nOffical documentation\n\n\n\n\nVagrant\n\n\nVirtualBox\n\n\n\n\nBasic Vagrant commands\n\n\nSetup project creating a Vagrantfile\n\n\nvagrant init\n\n\n\n\nBoot and connect to the default virtual machine\n\n\nvagrant up\nvagrant status\nvagrant ssh\n\n\n\n\nDelete virtual machine without prompt\n\n\nvagrant destory -f\n\n\n\n\nMkDocs\n\n\nMkDocs is a static site generator.\n\n\nOffical documentation\n\n\n\n\nMkDocs\n\n\n\n\nBasic MkDocs commands\n\n\nInstall\n\n\npip install mkdocs\n\n\n\n\nSetup in current directory\n\n\nmkdocs new .\n\n\n\n\nStart dev server with hot reload on \nhttp://127.0.0.1:8000\n\n\nmkdocs serve\n\n\n\n\nBuild static site\n\n\nmkdocs build --clean\n\n\n\n\nDeploy to github\n\n\nmkdocs gh-deploy\n\n\n\n\nBooks\n\n\nTODO", 
+            "text": "Other\n\n\nDocker\n\n\nDocker is an open platform for developers and sysadmins to build, ship, and run distributed applications.\n\n\nOffical documentation\n\n\n\n\nDocker\n\n\n\n\nBasic Docker commands\n\n\nTODO\n\n\nTODO\n\n\n\n\nDocker Machine\n\n\nTODO\n\n\nTODO\n\n\n\n\nVagrant\n\n\nVagrant is a tool for building and managing virtual machine environments in a single workflow.\n\n\nOffical documentation\n\n\n\n\nVagrant\n\n\nVirtualBox\n\n\n\n\nBasic Vagrant commands\n\n\nSetup project creating a Vagrantfile\n\n\nvagrant init\n\n\n\n\nBoot and connect to the default virtual machine\n\n\nvagrant up\nvagrant status\nvagrant ssh\n\n\n\n\nDelete virtual machine without prompt\n\n\nvagrant destory -f\n\n\n\n\nMkDocs\n\n\nMkDocs is a static site generator.\n\n\nOffical documentation\n\n\n\n\nMkDocs\n\n\n\n\nBasic MkDocs commands\n\n\nInstall\n\n\npip install mkdocs\n\n\n\n\nSetup in current directory\n\n\nmkdocs new .\n\n\n\n\nStart dev server with hot reload on \nhttp://127.0.0.1:8000\n\n\nmkdocs serve\n\n\n\n\nBuild static site\n\n\nmkdocs build --clean\n\n\n\n\nDeploy to github\n\n\nmkdocs gh-deploy\n\n\n\n\nSDKMAN!\n\n\nSDKMAN! is a tool for managing parallel versions of multiple Software Development Kits on most Unix based systems.\n\n\nOffical documentation\n\n\n\n\nSDKMAN!\n\n\n\n\nSetup\n\n\ncurl -s \nhttps://get.sdkman.io\n | bash\nsource \n$HOME/.sdkman/bin/sdkman-init.sh\n\nsdk version\n\n\n\n\nGradle\n\n\nSetup\n\n\nsdk list gradle\nsdk install gradle 4.4.1\ngradle -version\n\n\n\n\nCreate Gradle project\n\n\nmkdir -p PROJECT_NAME \n cd $_\ngradle init --type java-library\n\n./gradlew clean build\n\n\n\n\nBooks\n\n\n\n\nDesigning Data-Intensive Applications\n (2017) by Martin Kleppmann\n\n\nHadoop: The Definitive Guide\n (4th)(2015) by Tom White\n\n\nSpark in Action\n (2016) by Petar Ze\u010devi\u0107 and Marko Bona\u0107i", 
             "title": "Other"
         }, 
         {
@@ -126,8 +126,18 @@
             "title": "Basic MkDocs commands"
         }, 
         {
+            "location": "/other/#sdkman", 
+            "text": "SDKMAN! is a tool for managing parallel versions of multiple Software Development Kits on most Unix based systems.  Offical documentation   SDKMAN!   Setup  curl -s  https://get.sdkman.io  | bash\nsource  $HOME/.sdkman/bin/sdkman-init.sh \nsdk version", 
+            "title": "SDKMAN!"
+        }, 
+        {
+            "location": "/other/#gradle", 
+            "text": "Setup  sdk list gradle\nsdk install gradle 4.4.1\ngradle -version  Create Gradle project  mkdir -p PROJECT_NAME   cd $_\ngradle init --type java-library\n\n./gradlew clean build", 
+            "title": "Gradle"
+        }, 
+        {
             "location": "/other/#books", 
-            "text": "TODO", 
+            "text": "Designing Data-Intensive Applications  (2017) by Martin Kleppmann  Hadoop: The Definitive Guide  (4th)(2015) by Tom White  Spark in Action  (2016) by Petar Ze\u010devi\u0107 and Marko Bona\u0107i", 
             "title": "Books"
         }
     ]
