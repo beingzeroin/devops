@@ -153,16 +153,15 @@
 <li><a href="https://serversforhackers.com/c/an-ansible2-tutorial">Tutorial</a></li>
 <li><a href="https://github.com/phred/ansible-examples/blob/master/pedantically_commented_playbook.yml">Playbook example</a></li>
 </ul>
-<p>The following guide explain how to provision Ansible locally and play with it. The current <a href="https://github.com/niqdev/provision-tools/blob/master/ansible/Vagrantfile">Vagrantfile</a> is configured to setup 4 Ubuntu boxes, 1 with Ansible and 3 nodes to run playbooks against it. Feel free to modify it at your own will.</p>
 <p>Requirement</p>
 <ul>
 <li>Vagrant</li>
 <li>VirtualBox</li>
 </ul>
-<p>For more details about Vagrant please check <a href="../other/#vagrant">here</a></p>
+<p>The following guide explains how to provision Ansible locally and play with it. Checkout the <a href="https://github.com/niqdev/provision-tools/blob/master/ansible/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
 <h2 id="directory-structure">Directory structure</h2>
 <p>All the commands are executed in this directory <code>cd ansible</code></p>
-<pre><code>ansible/
+<pre><code class="bash">ansible/
 ├── .share
 │   ├── node-1
 │   ├── node-2
