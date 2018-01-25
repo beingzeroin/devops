@@ -32,7 +32,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-68888222-4', 'niqdev.github.io/provision-tools');
+      ga('create', 'UA-68888222-4', 'niqdev.github.io');
       ga('send', 'pageview');
   </script>
   
@@ -182,8 +182,18 @@ vagrant status
 vagrant ssh
 </code></pre>
 
-<p>Delete virtual machine without prompt</p>
-<pre><code class="bash">vagrant destory -f
+<p>Useful commands</p>
+<pre><code class="bash"># shut down gracefully
+vagrant halt
+
+# reload (halt + up) + re-provision
+vagrant reload --provision
+
+# update box
+vagrant box update
+
+# delete virtual machine without prompt
+vagrant destory -f
 </code></pre>
 
 <h2 id="mkdocs">MkDocs</h2>
