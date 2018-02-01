@@ -8,7 +8,7 @@
   
   <meta name="author" content="niqdev">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Hadoop and Spark - Provision Tools</title>
+  <title>Hadoop - Provision Tools</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Hadoop and Spark";
-    var mkdocs_page_input_path = "hadoop-spark.md";
-    var mkdocs_page_url = "/hadoop-spark/";
+    var mkdocs_page_name = "Hadoop";
+    var mkdocs_page_input_path = "hadoop.md";
+    var mkdocs_page_url = "/hadoop/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -69,18 +69,52 @@
           
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">Hadoop and Spark</a>
+    <a class="current" href="./">Hadoop</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#hadoop-and-spark">Hadoop and Spark</a></li>
+    <li class="toctree-l2"><a href="#hadoop">Hadoop</a></li>
     
         <ul>
         
             <li><a class="toctree-l3" href="#directory-structure">Directory structure</a></li>
         
+            <li><a class="toctree-l3" href="#setup">Setup</a></li>
+        
+            <li><a class="toctree-l3" href="#hdfs-and-mapreduce">HDFS and MapReduce</a></li>
+        
+            <li><a class="toctree-l3" href="#spark">Spark</a></li>
+        
+            <li><a class="toctree-l3" href="#flink">Flink</a></li>
+        
+            <li><a class="toctree-l3" href="#avro">Avro</a></li>
+        
+            <li><a class="toctree-l3" href="#parquet">Parquet</a></li>
+        
+            <li><a class="toctree-l3" href="#flume">Flume</a></li>
+        
+            <li><a class="toctree-l3" href="#sqoop">Sqoop</a></li>
+        
+            <li><a class="toctree-l3" href="#pig">Pig</a></li>
+        
+            <li><a class="toctree-l3" href="#hive">Hive</a></li>
+        
+            <li><a class="toctree-l3" href="#crunch">Crunch</a></li>
+        
+            <li><a class="toctree-l3" href="#hbase">HBase</a></li>
+        
+            <li><a class="toctree-l3" href="#oozie">Oozie</a></li>
+        
+            <li><a class="toctree-l3" href="#ganglia">Ganglia</a></li>
+        
+            <li><a class="toctree-l3" href="#zeppelin">Zeppelin</a></li>
+        
+            <li><a class="toctree-l3" href="#knox">Knox</a></li>
+        
+            <li><a class="toctree-l3" href="#directory-structure_1">Directory structure</a></li>
+        
             <li><a class="toctree-l3" href="#web-ui">Web UI</a></li>
         
-            <li><a class="toctree-l3" href="#setup">Setup</a></li>
+            <li><a class="toctree-l3" href="#setup_1">Setup</a></li>
         
             <li><a class="toctree-l3" href="#hdfs">HDFS</a></li>
         
@@ -134,10 +168,10 @@
     
       
     
-    <li>Hadoop and Spark</li>
+    <li>Hadoop</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/niqdev/provision-tools/edit/master/docs/hadoop-spark.md"
+        <a href="https://github.com/niqdev/provision-tools/edit/master/docs/hadoop.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -147,9 +181,69 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="hadoop-and-spark">Hadoop and Spark</h1>
-<blockquote>
+                <h1 id="hadoop">Hadoop</h1>
+<p>TODO</p>
+<h2 id="directory-structure">Directory structure</h2>
+<p>All the commands are executed in this directory <code>cd hadoop</code></p>
+<pre><code class="bash">TODO
+</code></pre>
+
+<h2 id="setup">Setup</h2>
+<p>Create and start a Multi Node Hadoop Cluster</p>
+<pre><code class="bash">./run.sh
+</code></pre>
+
+<p><em>Note that the first time it could take a while</em></p>
+<p>Access the cluster</p>
+<pre><code class="bash">vagrant ssh master
+ssh hadoop@172.16.0.10 -i data/hadoop_rsa
+
+# 3 nodes
+vagrant ssh node-1
+ssh hadoop@172.16.0.101 -i data/hadoop_rsa
+</code></pre>
+
+<p>Destroy cluster</p>
+<pre><code class="bash">./clear.sh
+</code></pre>
+
+<h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
+<p>TODO</p>
+<p>TODO</p>
+<h2 id="spark">Spark</h2>
+<p>TODO</p>
+<h2 id="flink">Flink</h2>
+<p>TODO</p>
+<h2 id="avro">Avro</h2>
+<p>TODO</p>
+<h2 id="parquet">Parquet</h2>
+<p>TODO</p>
+<h2 id="flume">Flume</h2>
+<p>TODO</p>
+<h2 id="sqoop">Sqoop</h2>
+<p>TODO</p>
+<h2 id="pig">Pig</h2>
+<p>TODO</p>
+<h2 id="hive">Hive</h2>
+<p>TODO</p>
+<h2 id="crunch">Crunch</h2>
+<p>TODO</p>
+<h2 id="hbase">HBase</h2>
+<p>TODO</p>
+<h2 id="oozie">Oozie</h2>
+<p>TODO</p>
+<h2 id="ganglia">Ganglia</h2>
+<p>TODO</p>
+<h2 id="zeppelin">Zeppelin</h2>
+<p>TODO</p>
+<h2 id="knox">Knox</h2>
+<p>TODO</p>
+<!--
+
+>
+
 <p><strong>HDFS</strong> A distributed file system that provides high-throughput access to application data</p>
+<blockquote>
 <p><strong>YARN</strong> A framework for job scheduling and cluster resource management</p>
 <p><strong>MapReduce</strong> A YARN-based system for parallel processing of large data sets</p>
 <p><strong>Spark</strong> An open-source cluster-computing framework</p>
@@ -171,7 +265,7 @@
 <li>VirtualBox</li>
 </ul>
 <p>The following guide explains how to provision a Single Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/provision-tools/blob/master/hadoop-spark/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
-<h2 id="directory-structure">Directory structure</h2>
+<h2 id="directory-structure_1">Directory structure</h2>
 <p>All the commands are executed in this directory <code>cd hadoop-spark</code></p>
 <pre><code class="bash">hadoop-spark/
 ├── example
@@ -220,7 +314,7 @@
 <li>JVM stack traces <a href="http://localhost:8088/stacks">http://localhost:8088/stacks</a></li>
 <li>namenode metrics <a href="http://localhost:50070/jmx">http://localhost:50070/jmx</a></li>
 </ul>
-<h2 id="setup">Setup</h2>
+<h2 id="setup_1">Setup</h2>
 <p>Start the box and verify the status</p>
 <pre><code class="bash">vagrant up
 vagrant status
@@ -316,6 +410,7 @@ hadoop fs -cat sorted-data/part-r-00000
 
 <h3 id="spark-job">Spark Job</h3>
 <p>TODO</p>
+<p>--&gt;</p>
               
             </div>
           </div>
