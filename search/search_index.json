@@ -2,13 +2,13 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Provision Tools\n\n\nA collection of Docker and Vagrant images mainly to provision distributed systems for local development and quick prototyping.\n\n\nDocumentations\n\n\n\n\nAnsible\n\n\nHadoop\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nOther", 
+            "text": "DevOps Lab\n\n\nA collection of Docker and Vagrant images mainly to provision distributed systems for local development, learning purpose and quick prototyping.\n\n\nDocumentations\n\n\n\n\nAnsible\n\n\nHadoop\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nOther", 
             "title": "Home"
         }, 
         {
-            "location": "/#provision-tools", 
-            "text": "A collection of Docker and Vagrant images mainly to provision distributed systems for local development and quick prototyping.  Documentations   Ansible  Hadoop  Cassandra  Zookeeper  Kafka  Other", 
-            "title": "Provision Tools"
+            "location": "/#devops-lab", 
+            "text": "A collection of Docker and Vagrant images mainly to provision distributed systems for local development, learning purpose and quick prototyping.  Documentations   Ansible  Hadoop  Cassandra  Zookeeper  Kafka  Other", 
+            "title": "DevOps Lab"
         }, 
         {
             "location": "/ansible/", 
