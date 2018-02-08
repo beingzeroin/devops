@@ -80,6 +80,8 @@
         
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
+            <li><a class="toctree-l3" href="#web-ui-links">Web UI links</a></li>
+        
             <li><a class="toctree-l3" href="#hdfs-and-mapreduce">HDFS and MapReduce</a></li>
         
             <li><a class="toctree-l3" href="#spark">Spark</a></li>
@@ -109,16 +111,6 @@
             <li><a class="toctree-l3" href="#zeppelin">Zeppelin</a></li>
         
             <li><a class="toctree-l3" href="#knox">Knox</a></li>
-        
-            <li><a class="toctree-l3" href="#directory-structure_1">Directory structure</a></li>
-        
-            <li><a class="toctree-l3" href="#web-ui">Web UI</a></li>
-        
-            <li><a class="toctree-l3" href="#setup_1">Setup</a></li>
-        
-            <li><a class="toctree-l3" href="#hdfs">HDFS</a></li>
-        
-            <li><a class="toctree-l3" href="#example">Example</a></li>
         
         </ul>
     
@@ -182,160 +174,78 @@
             <div class="section">
               
                 <h1 id="hadoop">Hadoop</h1>
-<p>TODO</p>
-<h2 id="directory-structure">Directory structure</h2>
+<p>The following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
+<h3 id="directory-structure">Directory structure</h3>
 <p>All the commands are executed in this directory <code>cd hadoop</code></p>
 <pre><code class="bash">TODO
 </code></pre>
 
-<h2 id="setup">Setup</h2>
-<p>Create and start a Multi Node Hadoop Cluster</p>
-<pre><code class="bash">./run.sh
-</code></pre>
-
-<p><em>Note that the first time it could take a while</em></p>
-<p>Access the cluster</p>
-<pre><code class="bash">vagrant ssh master
-ssh hadoop@172.16.0.10 -i data/hadoop_rsa
-
-# 3 nodes
-vagrant ssh node-1
-ssh hadoop@172.16.0.101 -i data/hadoop_rsa
-</code></pre>
-
-<p>Destroy cluster</p>
-<pre><code class="bash">./clear.sh
-</code></pre>
-
-<h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
-<p>TODO</p>
-<p>TODO</p>
-<h2 id="spark">Spark</h2>
-<p>TODO</p>
-<h2 id="flink">Flink</h2>
-<p>TODO</p>
-<h2 id="avro">Avro</h2>
-<p>TODO</p>
-<h2 id="parquet">Parquet</h2>
-<p>TODO</p>
-<h2 id="flume">Flume</h2>
-<p>TODO</p>
-<h2 id="sqoop">Sqoop</h2>
-<p>TODO</p>
-<h2 id="pig">Pig</h2>
-<p>TODO</p>
-<h2 id="hive">Hive</h2>
-<p>TODO</p>
-<h2 id="crunch">Crunch</h2>
-<p>TODO</p>
-<h2 id="hbase">HBase</h2>
-<p>TODO</p>
-<h2 id="oozie">Oozie</h2>
-<p>TODO</p>
-<h2 id="ganglia">Ganglia</h2>
-<p>TODO</p>
-<h2 id="zeppelin">Zeppelin</h2>
-<p>TODO</p>
-<h2 id="knox">Knox</h2>
-<p>TODO</p>
-<!--
-
->
-
-<p><strong>HDFS</strong> A distributed file system that provides high-throughput access to application data</p>
-<blockquote>
-<p><strong>YARN</strong> A framework for job scheduling and cluster resource management</p>
-<p><strong>MapReduce</strong> A YARN-based system for parallel processing of large data sets</p>
-<p><strong>Spark</strong> An open-source cluster-computing framework</p>
-<p><strong>Avro</strong> A data serialization system</p>
-<p><strong>Parquet</strong> A columnar storage format that can efficiently store nested data</p>
-<p><strong>Oozie</strong> A workflow scheduler system to manage Hadoop jobs</p>
-<p><strong>Ganglia</strong> A monitoring system for Hadoop</p>
-</blockquote>
-<p>Offical documentation</p>
-<ul>
-<li><a href="https://hadoop.apache.org">Hadoop</a></li>
-<li><a href="https://parquet.apache.org">Parquet</a></li>
-<li><a href="https://oozie.apache.org">Oozie</a></li>
-<li><a href="http://ganglia.info">Ganglia</a></li>
-</ul>
-<p>Requirement</p>
+<h3 id="setup">Setup</h3>
+<p>Requirements</p>
 <ul>
 <li>Vagrant</li>
 <li>VirtualBox</li>
 </ul>
-<p>The following guide explains how to provision a Single Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/provision-tools/blob/master/hadoop-spark/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
-<h2 id="directory-structure_1">Directory structure</h2>
-<p>All the commands are executed in this directory <code>cd hadoop-spark</code></p>
-<pre><code class="bash">hadoop-spark/
-├── example
-│   └── map-reduce
-│       ├── build
-│       │   ...
-│       │   └── libs
-│       │      └── map-reduce.jar
-│       ├── build.gradle
-│       ├── gradlew
-│       └── src
-│           ├── main
-│           │   └── java
-│           │       └── com
-│           │           └── github
-│           │               └── niqdev
-│           │                   ├── IntSumReducer.java
-│           │                   ├── TokenizerMapper.java
-│           │                   └── WordCount.java
-│           └── test
-│               └── ...
-├── file
-│   ├── hadoop-core-site.xml
-│   ├── hadoop-hdfs-site.xml
-│   ├── mapred-site.xml
-│   ├── ssh-config
-│   └── yarn-site.xml
-├── README.md
-├── script
-│   ├── bootstrap.sh
-│   ├── setup_all.sh
-│   ├── setup_hadoop.sh
-│   ├── setup_java.sh
-│   ├── setup_spark.sh
-│   ├── setup_user.sh
-│   └── start_hadoop.sh
-└── Vagrantfile
+<p>Import the script</p>
+<pre><code class="bash">source vagrant_hadoop.sh
 </code></pre>
 
-<h2 id="web-ui">Web UI</h2>
-<ul>
-<li>namenode <a href="http://localhost:50070">http://localhost:50070</a></li>
-<li>resource manager <a href="http://localhost:8088">http://localhost:8088</a></li>
-<li>history server <a href="http://localhost:19888">http://localhost:19888</a></li>
-<li>set log level temporarily <a href="http://localhost:8088/logLevel">http://localhost:8088/logLevel</a></li>
-<li>JVM stack traces <a href="http://localhost:8088/stacks">http://localhost:8088/stacks</a></li>
-<li>namenode metrics <a href="http://localhost:50070/jmx">http://localhost:50070/jmx</a></li>
-</ul>
-<h2 id="setup_1">Setup</h2>
-<p>Start the box and verify the status</p>
-<pre><code class="bash">vagrant up
-vagrant status
+<p>Create and start a Multi Node Hadoop Cluster</p>
+<pre><code class="bash">hadoop-start
 </code></pre>
 
 <p><em>Note that the first time it could take a while</em></p>
-<p>Access the box</p>
-<pre><code class="bash">vagrant ssh
+<p>Access the cluster via ssh, check also the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/file/hadoop/hosts">/etc/hosts</a> file</p>
+<pre><code class="bash">vagrant ssh master
+ssh hadoop@172.16.0.10 -i .data/hadoop_rsa
+
+# 3 nodes
+vagrant ssh node-1
+ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
+</code></pre>
+
+<p>Destroy the cluster</p>
+<pre><code class="bash">hadoop-destroy
 </code></pre>
 
 <p>Useful paths</p>
-<pre><code class="bash"># logs
-/usr/local/hadoop/logs
-# data
+<pre><code class="bash"># data
 /var/hadoop
-# config
+# logs
+/var/hadoop/log
+# (local) config
 /usr/local/hadoop/etc/hadoop
+# (hdfs) map-reduce history
+/mr-history/history/done_intermediate/hadoop
+# (hdfs) aggregated app logs
+/yarn/app/hadoop/logs/application_XXX
 </code></pre>
 
-<h2 id="hdfs">HDFS</h2>
-<h3 id="admin">Admin</h3>
+<h2 id="web-ui-links">Web UI links</h2>
+<ul>
+<li>NameNode: <a href="http://172.16.0.10:50070">http://namenode:50070</a></li>
+<li>NameNode metrics: <a href="http://172.16.0.10:50070/jmx">http://namenode:50070/jmx</a></li>
+<li>ResourceManager: <a href="http://172.16.0.10:8088">http://resource-manager:8088</a></li>
+<li>Log Level: <a href="http://172.16.0.10:8088/logLevel">http://resource-manager:8088/logLevel</a></li>
+<li>JVM stack traces: <a href="http://172.16.0.10:8088/stacks">http://resource-manager:8088/stacks</a></li>
+<li>Web Application Proxy Server: <a href="http://172.16.0.10:8100/proxy/application_XXX_0000">http://web-proxy:8100/proxy/application_XXX_0000</a></li>
+<li>MapReduce Job History Server: <a href="http://172.16.0.10:19888">http://history:19888</a></li>
+<li>DataNode/NodeManager (1): <a href="http://172.16.0.101:8042/node">http://node-1:8042/node</a></li>
+<li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2:8042/node</a></li>
+<li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3:8042/node</a></li>
+</ul>
+<h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
+<blockquote>
+<p><strong>HDFS</strong> is a distributed file system that provides high-throughput access to application data</p>
+<p><strong>YARN</strong> is a framework for job scheduling and cluster resource management</p>
+<p><strong>MapReduce</strong> is a YARN-based system for parallel processing of large data sets</p>
+</blockquote>
+<p>Documentation</p>
+<ul>
+<li><a href="http://hadoop.apache.org/docs/r2.7.5">Hadoop v2.7.5</a></li>
+<li><a href="http://blog.cloudera.com/blog/2015/09/untangling-apache-hadoop-yarn-part-1/">Untangling Apache Hadoop YARN</a> series</li>
+</ul>
+<h3 id="hdfs-admin">HDFS Admin</h3>
 <pre><code class="bash"># filesystem statistics
 hdfs dfsadmin -report
 
@@ -343,7 +253,6 @@ hdfs dfsadmin -report
 hdfs fsck /
 </code></pre>
 
-<h2 id="example">Example</h2>
 <h3 id="mapreduce-wordcount-job">MapReduce WordCount Job</h3>
 <pre><code class="bash"># create base directory using hdfs
 hdfs dfs -mkdir -p /user/ubuntu
@@ -370,7 +279,7 @@ hadoop fs -cat /user/ubuntu/word-count/input/file02
 hadoop fs -cat /user/ubuntu/word-count/input/*
 
 # build the jar (outside the machine to avoid permission issues)
-cd provision-tools/hadoop-spark/example/map-reduce
+cd devops-lab/hadoop/example/map-reduce
 ./gradlew clean build
 
 # run application
@@ -383,6 +292,17 @@ hadoop fs -cat /user/ubuntu/word-count/output/part-r-00000
 
 # delete directory to run it again
 hadoop fs -rm -R /user/ubuntu/word-count/output
+
+# run sample job in a different queue
+hadoop jar \
+  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \
+  wordcount \
+  -Dmapreduce.job.queuename=root.priority_queue \
+  /user/ubuntu/word-count/input \
+  /user/ubuntu/word-count/output
+
+# well known WARN issue
+# https://issues.apache.org/jira/browse/HDFS-10429
 </code></pre>
 
 <h3 id="benchmarking-mapreduce-with-terasort">Benchmarking MapReduce with TeraSort</h3>
@@ -408,9 +328,49 @@ hadoop fs -cat random-data/part-m-00000
 hadoop fs -cat sorted-data/part-r-00000
 </code></pre>
 
-<h3 id="spark-job">Spark Job</h3>
+<h2 id="spark">Spark</h2>
+<blockquote>
+<p><strong>Spark</strong> is an open-source cluster-computing framework</p>
+</blockquote>
 <p>TODO</p>
-<p>--&gt;</p>
+<h2 id="flink">Flink</h2>
+<p>TODO</p>
+<h2 id="avro">Avro</h2>
+<blockquote>
+<p><strong>Avro</strong> is a data serialization system</p>
+</blockquote>
+<p>TODO</p>
+<h2 id="parquet">Parquet</h2>
+<blockquote>
+<p><strong>Parquet</strong> is a columnar storage format that can efficiently store nested data</p>
+</blockquote>
+<p>TODO</p>
+<h2 id="flume">Flume</h2>
+<p>TODO</p>
+<h2 id="sqoop">Sqoop</h2>
+<p>TODO</p>
+<h2 id="pig">Pig</h2>
+<p>TODO</p>
+<h2 id="hive">Hive</h2>
+<p>TODO</p>
+<h2 id="crunch">Crunch</h2>
+<p>TODO</p>
+<h2 id="hbase">HBase</h2>
+<p>TODO</p>
+<h2 id="oozie">Oozie</h2>
+<blockquote>
+<p><strong>Oozie</strong> is a workflow scheduler system to manage Hadoop jobs</p>
+</blockquote>
+<p>TODO</p>
+<h2 id="ganglia">Ganglia</h2>
+<blockquote>
+<p><strong>Ganglia</strong> is a monitoring system for Hadoop</p>
+</blockquote>
+<p>TODO</p>
+<h2 id="zeppelin">Zeppelin</h2>
+<p>TODO</p>
+<h2 id="knox">Knox</h2>
+<p>TODO</p>
               
             </div>
           </div>

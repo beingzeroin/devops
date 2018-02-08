@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/", 
-            "text": "DevOps Lab\n\n\nA collection of Docker and Vagrant images mainly to provision distributed systems for local development, learning purpose and quick prototyping.\n\n\nDocumentations\n\n\n\n\nAnsible\n\n\nHadoop\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nOther", 
+            "text": "DevOps Lab\n\n\nA collection of Docker and Vagrant images mainly to provision distributed systems for local development, learning purposes and quick prototyping.\n\n\nDocumentations\n\n\n\n\nAnsible\n\n\nHadoop\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nOther", 
             "title": "Home"
         }, 
         {
             "location": "/#devops-lab", 
-            "text": "A collection of Docker and Vagrant images mainly to provision distributed systems for local development, learning purpose and quick prototyping.  Documentations   Ansible  Hadoop  Cassandra  Zookeeper  Kafka  Other", 
+            "text": "A collection of Docker and Vagrant images mainly to provision distributed systems for local development, learning purposes and quick prototyping.  Documentations   Ansible  Hadoop  Cassandra  Zookeeper  Kafka  Other", 
             "title": "DevOps Lab"
         }, 
         {
@@ -42,12 +42,12 @@
         }, 
         {
             "location": "/hadoop/", 
-            "text": "Hadoop\n\n\nTODO\n\n\nDirectory structure\n\n\nAll the commands are executed in this directory \ncd hadoop\n\n\nTODO\n\n\n\n\nSetup\n\n\nCreate and start a Multi Node Hadoop Cluster\n\n\n./run.sh\n\n\n\n\nNote that the first time it could take a while\n\n\nAccess the cluster\n\n\nvagrant ssh master\nssh hadoop@172.16.0.10 -i data/hadoop_rsa\n\n# 3 nodes\nvagrant ssh node-1\nssh hadoop@172.16.0.101 -i data/hadoop_rsa\n\n\n\n\nDestroy cluster\n\n\n./clear.sh\n\n\n\n\nHDFS and MapReduce\n\n\nTODO\n\n\nTODO\n\n\nSpark\n\n\nTODO\n\n\nFlink\n\n\nTODO\n\n\nAvro\n\n\nTODO\n\n\nParquet\n\n\nTODO\n\n\nFlume\n\n\nTODO\n\n\nSqoop\n\n\nTODO\n\n\nPig\n\n\nTODO\n\n\nHive\n\n\nTODO\n\n\nCrunch\n\n\nTODO\n\n\nHBase\n\n\nTODO\n\n\nOozie\n\n\nTODO\n\n\nGanglia\n\n\nTODO\n\n\nZeppelin\n\n\nTODO\n\n\nKnox\n\n\nTODO", 
+            "text": "Hadoop\n\n\nThe following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the \nVagrantfile\n and the Vagrant \nguide\n for more details.\n\n\nDirectory structure\n\n\nAll the commands are executed in this directory \ncd hadoop\n\n\nTODO\n\n\n\n\nSetup\n\n\nRequirements\n\n\n\n\nVagrant\n\n\nVirtualBox\n\n\n\n\nImport the script\n\n\nsource vagrant_hadoop.sh\n\n\n\n\nCreate and start a Multi Node Hadoop Cluster\n\n\nhadoop-start\n\n\n\n\nNote that the first time it could take a while\n\n\nAccess the cluster via ssh, check also the \n/etc/hosts\n file\n\n\nvagrant ssh master\nssh hadoop@172.16.0.10 -i .data/hadoop_rsa\n\n# 3 nodes\nvagrant ssh node-1\nssh hadoop@172.16.0.101 -i .data/hadoop_rsa\n\n\n\n\nDestroy the cluster\n\n\nhadoop-destroy\n\n\n\n\nUseful paths\n\n\n# data\n/var/hadoop\n# logs\n/var/hadoop/log\n# (local) config\n/usr/local/hadoop/etc/hadoop\n# (hdfs) map-reduce history\n/mr-history/history/done_intermediate/hadoop\n# (hdfs) aggregated app logs\n/yarn/app/hadoop/logs/application_XXX\n\n\n\n\nWeb UI links\n\n\n\n\nNameNode: \nhttp://namenode:50070\n\n\nNameNode metrics: \nhttp://namenode:50070/jmx\n\n\nResourceManager: \nhttp://resource-manager:8088\n\n\nLog Level: \nhttp://resource-manager:8088/logLevel\n\n\nJVM stack traces: \nhttp://resource-manager:8088/stacks\n\n\nWeb Application Proxy Server: \nhttp://web-proxy:8100/proxy/application_XXX_0000\n\n\nMapReduce Job History Server: \nhttp://history:19888\n\n\nDataNode/NodeManager (1): \nhttp://node-1:8042/node\n\n\nDataNode/NodeManager (2): \nhttp://node-2:8042/node\n\n\nDataNode/NodeManager (3): \nhttp://node-3:8042/node\n\n\n\n\nHDFS and MapReduce\n\n\n\n\nHDFS\n is a distributed file system that provides high-throughput access to application data\n\n\nYARN\n is a framework for job scheduling and cluster resource management\n\n\nMapReduce\n is a YARN-based system for parallel processing of large data sets\n\n\n\n\nDocumentation\n\n\n\n\nHadoop v2.7.5\n\n\nUntangling Apache Hadoop YARN\n series\n\n\n\n\nHDFS Admin\n\n\n# filesystem statistics\nhdfs dfsadmin -report\n\n# filesystem check\nhdfs fsck /\n\n\n\n\nMapReduce WordCount Job\n\n\n# create base directory using hdfs\nhdfs dfs -mkdir -p /user/ubuntu\n\n# create example directory\nhadoop fs -mkdir -p /user/ubuntu/word-count/input\n\n# list directory\nhadoop fs -ls -h -R /\nhadoop fs -ls -h -R /user/ubuntu\n\n# create sample files\necho \nHello World Bye World\n \n file01\necho \nHello Hadoop Goodbye Hadoop\n \n file02\n\n# copy from local to hdfs\nhadoop fs -copyFromLocal file01 /user/ubuntu/word-count/input\nhadoop fs -put file02 /user/ubuntu/word-count/input\n\n# verify copied files\nhadoop fs -ls -h -R /user/ubuntu\nhadoop fs -cat /user/ubuntu/word-count/input/file01\nhadoop fs -cat /user/ubuntu/word-count/input/file02\nhadoop fs -cat /user/ubuntu/word-count/input/*\n\n# build the jar (outside the machine to avoid permission issues)\ncd devops-lab/hadoop/example/map-reduce\n./gradlew clean build\n\n# run application\nhadoop jar /vagrant/example/map-reduce/build/libs/map-reduce.jar \\\n  /user/ubuntu/word-count/input \\\n  /user/ubuntu/word-count/output\n\n# check output\nhadoop fs -cat /user/ubuntu/word-count/output/part-r-00000\n\n# delete directory to run it again\nhadoop fs -rm -R /user/ubuntu/word-count/output\n\n# run sample job in a different queue\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  wordcount \\\n  -Dmapreduce.job.queuename=root.priority_queue \\\n  /user/ubuntu/word-count/input \\\n  /user/ubuntu/word-count/output\n\n# well known WARN issue\n# https://issues.apache.org/jira/browse/HDFS-10429\n\n\n\n\nBenchmarking MapReduce with TeraSort\n\n\n# generate random data\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  teragen 1000 random-data\n\n# run terasort benchmark\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  terasort random-data sorted-data\n\n# validate data\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  teravalidate sorted-data report\n\n# useful commands\nhadoop fs -ls -h -R .\nhadoop fs -rm -r random-data\nhadoop fs -cat random-data/part-m-00000\nhadoop fs -cat sorted-data/part-r-00000\n\n\n\n\nSpark\n\n\n\n\nSpark\n is an open-source cluster-computing framework\n\n\n\n\nTODO\n\n\nFlink\n\n\nTODO\n\n\nAvro\n\n\n\n\nAvro\n is a data serialization system\n\n\n\n\nTODO\n\n\nParquet\n\n\n\n\nParquet\n is a columnar storage format that can efficiently store nested data\n\n\n\n\nTODO\n\n\nFlume\n\n\nTODO\n\n\nSqoop\n\n\nTODO\n\n\nPig\n\n\nTODO\n\n\nHive\n\n\nTODO\n\n\nCrunch\n\n\nTODO\n\n\nHBase\n\n\nTODO\n\n\nOozie\n\n\n\n\nOozie\n is a workflow scheduler system to manage Hadoop jobs\n\n\n\n\nTODO\n\n\nGanglia\n\n\n\n\nGanglia\n is a monitoring system for Hadoop\n\n\n\n\nTODO\n\n\nZeppelin\n\n\nTODO\n\n\nKnox\n\n\nTODO", 
             "title": "Hadoop"
         }, 
         {
             "location": "/hadoop/#hadoop", 
-            "text": "TODO", 
+            "text": "The following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the  Vagrantfile  and the Vagrant  guide  for more details.", 
             "title": "Hadoop"
         }, 
         {
@@ -57,17 +57,37 @@
         }, 
         {
             "location": "/hadoop/#setup", 
-            "text": "Create and start a Multi Node Hadoop Cluster  ./run.sh  Note that the first time it could take a while  Access the cluster  vagrant ssh master\nssh hadoop@172.16.0.10 -i data/hadoop_rsa\n\n# 3 nodes\nvagrant ssh node-1\nssh hadoop@172.16.0.101 -i data/hadoop_rsa  Destroy cluster  ./clear.sh", 
+            "text": "Requirements   Vagrant  VirtualBox   Import the script  source vagrant_hadoop.sh  Create and start a Multi Node Hadoop Cluster  hadoop-start  Note that the first time it could take a while  Access the cluster via ssh, check also the  /etc/hosts  file  vagrant ssh master\nssh hadoop@172.16.0.10 -i .data/hadoop_rsa\n\n# 3 nodes\nvagrant ssh node-1\nssh hadoop@172.16.0.101 -i .data/hadoop_rsa  Destroy the cluster  hadoop-destroy  Useful paths  # data\n/var/hadoop\n# logs\n/var/hadoop/log\n# (local) config\n/usr/local/hadoop/etc/hadoop\n# (hdfs) map-reduce history\n/mr-history/history/done_intermediate/hadoop\n# (hdfs) aggregated app logs\n/yarn/app/hadoop/logs/application_XXX", 
             "title": "Setup"
         }, 
         {
+            "location": "/hadoop/#web-ui-links", 
+            "text": "NameNode:  http://namenode:50070  NameNode metrics:  http://namenode:50070/jmx  ResourceManager:  http://resource-manager:8088  Log Level:  http://resource-manager:8088/logLevel  JVM stack traces:  http://resource-manager:8088/stacks  Web Application Proxy Server:  http://web-proxy:8100/proxy/application_XXX_0000  MapReduce Job History Server:  http://history:19888  DataNode/NodeManager (1):  http://node-1:8042/node  DataNode/NodeManager (2):  http://node-2:8042/node  DataNode/NodeManager (3):  http://node-3:8042/node", 
+            "title": "Web UI links"
+        }, 
+        {
             "location": "/hadoop/#hdfs-and-mapreduce", 
-            "text": "TODO  TODO", 
+            "text": "HDFS  is a distributed file system that provides high-throughput access to application data  YARN  is a framework for job scheduling and cluster resource management  MapReduce  is a YARN-based system for parallel processing of large data sets   Documentation   Hadoop v2.7.5  Untangling Apache Hadoop YARN  series", 
             "title": "HDFS and MapReduce"
         }, 
         {
+            "location": "/hadoop/#hdfs-admin", 
+            "text": "# filesystem statistics\nhdfs dfsadmin -report\n\n# filesystem check\nhdfs fsck /", 
+            "title": "HDFS Admin"
+        }, 
+        {
+            "location": "/hadoop/#mapreduce-wordcount-job", 
+            "text": "# create base directory using hdfs\nhdfs dfs -mkdir -p /user/ubuntu\n\n# create example directory\nhadoop fs -mkdir -p /user/ubuntu/word-count/input\n\n# list directory\nhadoop fs -ls -h -R /\nhadoop fs -ls -h -R /user/ubuntu\n\n# create sample files\necho  Hello World Bye World    file01\necho  Hello Hadoop Goodbye Hadoop    file02\n\n# copy from local to hdfs\nhadoop fs -copyFromLocal file01 /user/ubuntu/word-count/input\nhadoop fs -put file02 /user/ubuntu/word-count/input\n\n# verify copied files\nhadoop fs -ls -h -R /user/ubuntu\nhadoop fs -cat /user/ubuntu/word-count/input/file01\nhadoop fs -cat /user/ubuntu/word-count/input/file02\nhadoop fs -cat /user/ubuntu/word-count/input/*\n\n# build the jar (outside the machine to avoid permission issues)\ncd devops-lab/hadoop/example/map-reduce\n./gradlew clean build\n\n# run application\nhadoop jar /vagrant/example/map-reduce/build/libs/map-reduce.jar \\\n  /user/ubuntu/word-count/input \\\n  /user/ubuntu/word-count/output\n\n# check output\nhadoop fs -cat /user/ubuntu/word-count/output/part-r-00000\n\n# delete directory to run it again\nhadoop fs -rm -R /user/ubuntu/word-count/output\n\n# run sample job in a different queue\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  wordcount \\\n  -Dmapreduce.job.queuename=root.priority_queue \\\n  /user/ubuntu/word-count/input \\\n  /user/ubuntu/word-count/output\n\n# well known WARN issue\n# https://issues.apache.org/jira/browse/HDFS-10429", 
+            "title": "MapReduce WordCount Job"
+        }, 
+        {
+            "location": "/hadoop/#benchmarking-mapreduce-with-terasort", 
+            "text": "# generate random data\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  teragen 1000 random-data\n\n# run terasort benchmark\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  terasort random-data sorted-data\n\n# validate data\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  teravalidate sorted-data report\n\n# useful commands\nhadoop fs -ls -h -R .\nhadoop fs -rm -r random-data\nhadoop fs -cat random-data/part-m-00000\nhadoop fs -cat sorted-data/part-r-00000", 
+            "title": "Benchmarking MapReduce with TeraSort"
+        }, 
+        {
             "location": "/hadoop/#spark", 
-            "text": "TODO", 
+            "text": "Spark  is an open-source cluster-computing framework   TODO", 
             "title": "Spark"
         }, 
         {
@@ -77,12 +97,12 @@
         }, 
         {
             "location": "/hadoop/#avro", 
-            "text": "TODO", 
+            "text": "Avro  is a data serialization system   TODO", 
             "title": "Avro"
         }, 
         {
             "location": "/hadoop/#parquet", 
-            "text": "TODO", 
+            "text": "Parquet  is a columnar storage format that can efficiently store nested data   TODO", 
             "title": "Parquet"
         }, 
         {
@@ -117,12 +137,12 @@
         }, 
         {
             "location": "/hadoop/#oozie", 
-            "text": "TODO", 
+            "text": "Oozie  is a workflow scheduler system to manage Hadoop jobs   TODO", 
             "title": "Oozie"
         }, 
         {
             "location": "/hadoop/#ganglia", 
-            "text": "TODO", 
+            "text": "Ganglia  is a monitoring system for Hadoop   TODO", 
             "title": "Ganglia"
         }, 
         {
@@ -132,53 +152,8 @@
         }, 
         {
             "location": "/hadoop/#knox", 
-            "text": "TODO  <!--\n\n>  HDFS  A distributed file system that provides high-throughput access to application data   YARN  A framework for job scheduling and cluster resource management  MapReduce  A YARN-based system for parallel processing of large data sets  Spark  An open-source cluster-computing framework  Avro  A data serialization system  Parquet  A columnar storage format that can efficiently store nested data  Oozie  A workflow scheduler system to manage Hadoop jobs  Ganglia  A monitoring system for Hadoop   Offical documentation   Hadoop  Parquet  Oozie  Ganglia   Requirement   Vagrant  VirtualBox   The following guide explains how to provision a Single Node Hadoop Cluster locally and play with it. Checkout the  Vagrantfile  and the Vagrant  guide  for more details.", 
+            "text": "TODO", 
             "title": "Knox"
-        }, 
-        {
-            "location": "/hadoop/#directory-structure_1", 
-            "text": "All the commands are executed in this directory  cd hadoop-spark  hadoop-spark/\n\u251c\u2500\u2500 example\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 map-reduce\n\u2502\u00a0\u00a0     \u251c\u2500\u2500 build\n\u2502\u00a0\u00a0     \u2502\u00a0\u00a0 ...\n\u2502\u00a0\u00a0     \u2502\u00a0\u00a0 \u2514\u2500\u2500 libs\n\u2502\u00a0\u00a0     \u2502\u00a0\u00a0 \u00a0\u00a0 \u2514\u2500\u2500 map-reduce.jar\n\u2502\u00a0\u00a0     \u251c\u2500\u2500 build.gradle\n\u2502\u00a0\u00a0     \u251c\u2500\u2500 gradlew\n\u2502\u00a0\u00a0     \u2514\u2500\u2500 src\n\u2502\u00a0\u00a0         \u251c\u2500\u2500 main\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0 \u2514\u2500\u2500 java\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0     \u2514\u2500\u2500 com\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0         \u2514\u2500\u2500 github\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0             \u2514\u2500\u2500 niqdev\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0                 \u251c\u2500\u2500 IntSumReducer.java\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0                 \u251c\u2500\u2500 TokenizerMapper.java\n\u2502\u00a0\u00a0         \u2502\u00a0\u00a0                 \u2514\u2500\u2500 WordCount.java\n\u2502\u00a0\u00a0         \u2514\u2500\u2500 test\n\u2502\u00a0\u00a0             \u2514\u2500\u2500 ...\n\u251c\u2500\u2500 file\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 hadoop-core-site.xml\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 hadoop-hdfs-site.xml\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 mapred-site.xml\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 ssh-config\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 yarn-site.xml\n\u251c\u2500\u2500 README.md\n\u251c\u2500\u2500 script\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 bootstrap.sh\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 setup_all.sh\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 setup_hadoop.sh\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 setup_java.sh\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 setup_spark.sh\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 setup_user.sh\n\u2502\u00a0\u00a0 \u2514\u2500\u2500 start_hadoop.sh\n\u2514\u2500\u2500 Vagrantfile", 
-            "title": "Directory structure"
-        }, 
-        {
-            "location": "/hadoop/#web-ui", 
-            "text": "namenode  http://localhost:50070  resource manager  http://localhost:8088  history server  http://localhost:19888  set log level temporarily  http://localhost:8088/logLevel  JVM stack traces  http://localhost:8088/stacks  namenode metrics  http://localhost:50070/jmx", 
-            "title": "Web UI"
-        }, 
-        {
-            "location": "/hadoop/#setup_1", 
-            "text": "Start the box and verify the status  vagrant up\nvagrant status  Note that the first time it could take a while  Access the box  vagrant ssh  Useful paths  # logs\n/usr/local/hadoop/logs\n# data\n/var/hadoop\n# config\n/usr/local/hadoop/etc/hadoop", 
-            "title": "Setup"
-        }, 
-        {
-            "location": "/hadoop/#hdfs", 
-            "text": "", 
-            "title": "HDFS"
-        }, 
-        {
-            "location": "/hadoop/#admin", 
-            "text": "# filesystem statistics\nhdfs dfsadmin -report\n\n# filesystem check\nhdfs fsck /", 
-            "title": "Admin"
-        }, 
-        {
-            "location": "/hadoop/#example", 
-            "text": "", 
-            "title": "Example"
-        }, 
-        {
-            "location": "/hadoop/#mapreduce-wordcount-job", 
-            "text": "# create base directory using hdfs\nhdfs dfs -mkdir -p /user/ubuntu\n\n# create example directory\nhadoop fs -mkdir -p /user/ubuntu/word-count/input\n\n# list directory\nhadoop fs -ls -h -R /\nhadoop fs -ls -h -R /user/ubuntu\n\n# create sample files\necho  Hello World Bye World    file01\necho  Hello Hadoop Goodbye Hadoop    file02\n\n# copy from local to hdfs\nhadoop fs -copyFromLocal file01 /user/ubuntu/word-count/input\nhadoop fs -put file02 /user/ubuntu/word-count/input\n\n# verify copied files\nhadoop fs -ls -h -R /user/ubuntu\nhadoop fs -cat /user/ubuntu/word-count/input/file01\nhadoop fs -cat /user/ubuntu/word-count/input/file02\nhadoop fs -cat /user/ubuntu/word-count/input/*\n\n# build the jar (outside the machine to avoid permission issues)\ncd provision-tools/hadoop-spark/example/map-reduce\n./gradlew clean build\n\n# run application\nhadoop jar /vagrant/example/map-reduce/build/libs/map-reduce.jar \\\n  /user/ubuntu/word-count/input \\\n  /user/ubuntu/word-count/output\n\n# check output\nhadoop fs -cat /user/ubuntu/word-count/output/part-r-00000\n\n# delete directory to run it again\nhadoop fs -rm -R /user/ubuntu/word-count/output", 
-            "title": "MapReduce WordCount Job"
-        }, 
-        {
-            "location": "/hadoop/#benchmarking-mapreduce-with-terasort", 
-            "text": "# generate random data\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  teragen 1000 random-data\n\n# run terasort benchmark\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  terasort random-data sorted-data\n\n# validate data\nhadoop jar \\\n  $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.jar \\\n  teravalidate sorted-data report\n\n# useful commands\nhadoop fs -ls -h -R .\nhadoop fs -rm -r random-data\nhadoop fs -cat random-data/part-m-00000\nhadoop fs -cat sorted-data/part-r-00000", 
-            "title": "Benchmarking MapReduce with TeraSort"
-        }, 
-        {
-            "location": "/hadoop/#spark-job", 
-            "text": "TODO  --", 
-            "title": "Spark Job"
         }, 
         {
             "location": "/cassandra/", 
