@@ -194,7 +194,7 @@
 <pre><code class="bash">hadoop-start
 </code></pre>
 
-<p><em>Note that the first time it could take a while</em></p>
+<p><em>The first time it might take a while</em></p>
 <p>Access the cluster via ssh, check also the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/file/hadoop/hosts">/etc/hosts</a> file</p>
 <pre><code class="bash">vagrant ssh master
 ssh hadoop@172.16.0.10 -i .data/hadoop_rsa
@@ -209,10 +209,8 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 </code></pre>
 
 <p>Useful paths</p>
-<pre><code class="bash"># data
-/var/hadoop
-# logs
-/var/hadoop/log
+<pre><code class="bash"># data and logs
+/vol/hadoop
 # (local) config
 /usr/local/hadoop/etc/hadoop
 # (hdfs) map-reduce history
@@ -233,6 +231,7 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 <li>DataNode/NodeManager (1): <a href="http://172.16.0.101:8042/node">http://node-1:8042/node</a></li>
 <li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2:8042/node</a></li>
 <li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3:8042/node</a></li>
+<li>Oozie*: <a href="http://172.16.0.10:11000">http://oozie.local:11000</a></li>
 </ul>
 <h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
 <blockquote>
@@ -361,7 +360,110 @@ hadoop fs -cat sorted-data/part-r-00000
 <blockquote>
 <p><strong>Oozie</strong> is a workflow scheduler system to manage Hadoop jobs</p>
 </blockquote>
+<p>Documentation</p>
+<ul>
+<li><a href="https://oozie.apache.org">Oozie</a></li>
+</ul>
+<h3 id="setup_1">Setup</h3>
+<p>Oozie is not installed by default</p>
+<pre><code class="bash"># access master node
+vagrant ssh master
+
+# login as root
+sudo su -
+
+# build, install and init
+/vagrant/script/setup_oozie.sh
+
+# start oozie
+su --login hadoop /vagrant/script/bootstrap.sh oozie
+</code></pre>
+
+<p><em>It might take a while to build the sources</em></p>
+<p>Useful paths</p>
+<pre><code class="bash"># data and logs
+/vol/oozie
+# (local) config
+/usr/local/oozie/conf
+# (hdfs) examples
+/user/hadoop/examples
+</code></pre>
+
 <p>TODO</p>
+<ul>
+<li>run default examples</li>
+<li>custom example workflow and coordinator</li>
+<li>list command line https://oozie.apache.org/docs/5.0.0-beta1/DG_CommandLineTool.html</li>
+<li>Docker PostgreSQL</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<p>Bundled examples within distribution</p>
+<blockquote>
+<p>TODO always in PREP</p>
+</blockquote>
+<pre><code class="bash"># host path
+.data/master/oozie/examples
+# guest path
+/vol/oozie/examples
+
+# access master node (hadoop user)
+vagrant ssh master
+
+export OOZIE_EXAMPLE_PATH=/vol/oozie/examples
+export OOZIE_HDFS_PATH=/user/$(whoami)/examples
+
+# open map-reduce job.properties
+vim $OOZIE_EXAMPLE_PATH/apps/map-reduce/job.properties
+
+# edit the following properties
+nameNode=hdfs://namenode:9000
+jobTracker=resource-manager:8032 #yarn.resourcemanager.address
+queueName=priority_queue
+
+# upload all the examples
+hadoop fs -put $OOZIE_EXAMPLE_PATH $OOZIE_HDFS_PATH
+# create output directory
+hdfs dfs -mkdir -p $OOZIE_HDFS_PATH/output-data
+
+# verify uploaded files
+hadoop fs -ls -h -R /user/$(whoami)
+
+# run the map-reduce example
+oozie job \
+  -oozie http://localhost:11000/oozie \
+  -config $OOZIE_EXAMPLE_PATH/apps/map-reduce/job.properties \
+  -run
+
+# verify status
+oozie job -oozie http://localhost:11000/oozie -info WORKFLOW_ID
+
+# verify result
+hadoop fs -cat $OOZIE_HDFS_PATH/output-data/map-reduce/part-00000
+
+# remove all the examples
+hadoop fs -rm -R $OOZIE_HDFS_PATH
+</code></pre>
+
+<p>Workflow example</p>
+<pre><code class="bash">TODO
+
+oozie.wf.application.path
+</code></pre>
+
+<p>Coordinator example</p>
+<pre><code class="bash">TODO
+
+oozie.coord.application.path
+</code></pre>
+
+<h3 id="command-line-tool">Command line Tool</h3>
+<pre><code class="bash"># verify status
+oozie admin -oozie http://localhost:11000/oozie -status
+
+# verify workflow status
+oozie job -oozie http://localhost:11000/oozie -info WORKFLOW_ID
+</code></pre>
+
 <h2 id="ganglia">Ganglia</h2>
 <blockquote>
 <p><strong>Ganglia</strong> is a monitoring system for Hadoop</p>
