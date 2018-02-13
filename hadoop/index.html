@@ -76,11 +76,7 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#directory-structure">Directory structure</a></li>
-        
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
-        
-            <li><a class="toctree-l3" href="#web-ui-links">Web UI links</a></li>
         
             <li><a class="toctree-l3" href="#hdfs-and-mapreduce">HDFS and MapReduce</a></li>
         
@@ -175,17 +171,72 @@
               
                 <h1 id="hadoop">Hadoop</h1>
 <p>The following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
-<h3 id="directory-structure">Directory structure</h3>
-<p>All the commands are executed in this directory <code>cd hadoop</code></p>
-<pre><code class="bash">TODO
-</code></pre>
-
 <h3 id="setup">Setup</h3>
 <p>Requirements</p>
 <ul>
 <li>Vagrant</li>
 <li>VirtualBox</li>
 </ul>
+<p>Directory structure</p>
+<pre><code class="bash">cd devops-lab/hadoop
+
+tree -a hadoop/
+hadoop/
+├── .data # mounted volume
+│   ├── hadoop_rsa
+│   ├── hadoop_rsa.pub
+│   ├── master
+│   │   ├── hadoop
+│   │   │   ├── log
+│   │   │   │   ├── hadoop
+│   │   │   │   ├── mapred
+│   │   │   │   └── yarn
+│   │   │   ├── namenode
+│   │   │   └── secondary
+│   │   └── oozie
+│   │       ├── data
+│   │       └── log
+│   ├── node-1
+│   │   └── hadoop
+│   │       ├── datanode
+│   │       └── log
+│   │           ├── hadoop
+│   │           ├── mapred
+│   │           └── yarn
+│   ├── node-2
+│   ├── node-3
+├── example
+│   └── map-reduce
+├── file
+│   ├── hadoop
+│   │   ├── config
+│   │   │   ├── core-site.xml
+│   │   │   ├── fair-scheduler.xml
+│   │   │   ├── hdfs-site.xml
+│   │   │   ├── mapred-site.xml
+│   │   │   ├── masters
+│   │   │   ├── slaves
+│   │   │   └── yarn-site.xml
+│   │   └── profile-hadoop.sh
+│   ├── hosts
+│   ├── motd
+│   ├── oozie
+│   │   ├── config
+│   │   │   ├── oozie-env.sh
+│   │   │   └── oozie-site.xml
+│   │   └── profile-oozie.sh
+│   └── ssh
+│       └── config
+├── script
+│   ├── bootstrap.sh
+│   ├── setup_hadoop.sh
+│   ├── setup_oozie.sh
+│   ├── setup_spark.sh
+│   └── setup_ubuntu.sh
+├── Vagrantfile
+└── vagrant_hadoop.sh
+</code></pre>
+
 <p>Import the script</p>
 <pre><code class="bash">source vagrant_hadoop.sh
 </code></pre>
@@ -195,7 +246,7 @@
 </code></pre>
 
 <p><em>The first time it might take a while</em></p>
-<p>Access the cluster via ssh, check also the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/file/hadoop/hosts">/etc/hosts</a> file</p>
+<p>Access the cluster via ssh, check also the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/file/hosts">/etc/hosts</a> file</p>
 <pre><code class="bash">vagrant ssh master
 ssh hadoop@172.16.0.10 -i .data/hadoop_rsa
 
@@ -208,29 +259,21 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 <pre><code class="bash">hadoop-destroy
 </code></pre>
 
-<p>Useful paths</p>
-<pre><code class="bash"># data and logs
-/vol/hadoop
-# (local) config
-/usr/local/hadoop/etc/hadoop
-# (hdfs) map-reduce history
-/mr-history/history/done_intermediate/hadoop
-# (hdfs) aggregated app logs
-/yarn/app/hadoop/logs/application_XXX
+<p>For convenience add to the host machine</p>
+<pre><code class="bash">cat hadoop/file/hosts | sudo tee --append /etc/hosts
 </code></pre>
 
-<h2 id="web-ui-links">Web UI links</h2>
+<p>Web UI links</p>
 <ul>
-<li>NameNode: <a href="http://172.16.0.10:50070">http://namenode:50070</a></li>
-<li>NameNode metrics: <a href="http://172.16.0.10:50070/jmx">http://namenode:50070/jmx</a></li>
-<li>ResourceManager: <a href="http://172.16.0.10:8088">http://resource-manager:8088</a></li>
-<li>Log Level: <a href="http://172.16.0.10:8088/logLevel">http://resource-manager:8088/logLevel</a></li>
-<li>JVM stack traces: <a href="http://172.16.0.10:8088/stacks">http://resource-manager:8088/stacks</a></li>
-<li>Web Application Proxy Server: <a href="http://172.16.0.10:8100/proxy/application_XXX_0000">http://web-proxy:8100/proxy/application_XXX_0000</a></li>
-<li>MapReduce Job History Server: <a href="http://172.16.0.10:19888">http://history:19888</a></li>
-<li>DataNode/NodeManager (1): <a href="http://172.16.0.101:8042/node">http://node-1:8042/node</a></li>
-<li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2:8042/node</a></li>
-<li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3:8042/node</a></li>
+<li>NameNode: <a href="http://172.16.0.10:50070">http://namenode.local:50070</a></li>
+<li>NameNode metrics: <a href="http://172.16.0.10:50070/jmx">http://namenode.local:50070/jmx</a></li>
+<li>ResourceManager: <a href="http://172.16.0.10:8088">http://resource-manager.local:8088</a></li>
+<li>Log Level: <a href="http://172.16.0.10:8088/logLevel">http://resource-manager.local:8088/logLevel</a></li>
+<li>Web Application Proxy Server: <a href="http://172.16.0.10:8100/proxy/application_XXX_0000">http://web-proxy.local:8100/proxy/application_XXX_0000</a></li>
+<li>MapReduce Job History Server: <a href="http://172.16.0.10:19888">http://history.local:19888</a></li>
+<li>DataNode/NodeManager (1): <a href="http://172.16.0.101:8042/node">http://node-1.local:8042/node</a></li>
+<li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2.local:8042/node</a></li>
+<li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3.local:8042/node</a></li>
 <li>Oozie*: <a href="http://172.16.0.10:11000">http://oozie.local:11000</a></li>
 </ul>
 <h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
@@ -250,6 +293,21 @@ hdfs dfsadmin -report
 
 # filesystem check
 hdfs fsck /
+</code></pre>
+
+<p>Useful paths</p>
+<pre><code class="bash"># data and logs
+devops-lab/hadoop/.data/master/hadoop # host
+/vol/hadoop # guest
+
+# (guest) config
+/usr/local/hadoop/etc/hadoop
+
+# (hdfs) map-reduce history
+/mr-history/history/done_intermediate/hadoop
+
+# (hdfs) aggregated app logs
+/yarn/app/hadoop/logs/application_XXX
 </code></pre>
 
 <h3 id="mapreduce-wordcount-job">MapReduce WordCount Job</h3>
@@ -365,7 +423,58 @@ hadoop fs -cat sorted-data/part-r-00000
 <li><a href="https://oozie.apache.org">Oozie</a></li>
 </ul>
 <h3 id="setup_1">Setup</h3>
-<p>Oozie is not installed by default</p>
+<blockquote>
+<p><em>Oozie is not installed by default</em></p>
+</blockquote>
+<p><strong>Optional PostgreSQL configuration</strong> - By default Oozie is configured to use Embedded Derby</p>
+<pre><code class="bash"># access master node
+vagrant ssh master
+
+# install docker
+curl -fsSL get.docker.com -o get-docker.sh &amp;&amp; \
+  chmod u+x $_ &amp;&amp; \
+  ./$_ &amp;&amp; \
+  sudo usermod -aG docker hadoop
+
+# logout and login again to verify docker installation
+exit
+vagrant ssh master
+whoami # whoami
+docker ps -a
+
+# uncomment PostgreSQL configurations
+vim devops-lab/hadoop/file/oozie/config/oozie-site.xml # from host
+vim /vagrant/file/oozie/config/oozie-site.xml # from guest
+
+# start postgres on guest machine 
+docker run \
+  --detach \
+  --name oozie-postgres \
+  -p 5432:5432 \
+  -e POSTGRES_DB=&quot;oozie-db&quot; \
+  -e POSTGRES_USER=&quot;postgres&quot; \
+  -e POSTGRES_PASSWORD=&quot;password&quot; \
+  postgres
+
+# permission issue
+# https://github.com/docker-library/postgres/issues/116
+# --volume /vol/postgres:/var/lib/postgresql/data
+
+# access container
+docker exec -it oozie-postgres bash
+psql --username=postgres
+# list all databases
+\list
+\connect oozie-db
+# list all tables
+\dt
+# describe table
+\d+ wf_jobs
+# list workflow
+select * from wf_jobs;
+</code></pre>
+
+<p>Install and start Oozie</p>
 <pre><code class="bash"># access master node
 vagrant ssh master
 
@@ -382,25 +491,21 @@ su --login hadoop /vagrant/script/bootstrap.sh oozie
 <p><em>It might take a while to build the sources</em></p>
 <p>Useful paths</p>
 <pre><code class="bash"># data and logs
-/vol/oozie
-# (local) config
+devops-lab/hadoop/.data/master/oozie # host
+/vol/oozie # guest
+
+# (guest) config
 /usr/local/oozie/conf
+
 # (hdfs) examples
 /user/hadoop/examples
 </code></pre>
 
-<p>TODO</p>
-<ul>
-<li>custom example workflow and coordinator</li>
-<li>list command line https://oozie.apache.org/docs/5.0.0-beta1/DG_CommandLineTool.html</li>
-<li>Docker PostgreSQL</li>
-</ul>
 <h3 id="examples">Examples</h3>
-<p>Bundled examples within distribution</p>
-<pre><code class="bash"># host path
-.data/master/oozie/examples
-# guest path
-/vol/oozie/examples
+<p>Run bundled examples within distribution</p>
+<pre><code class="bash"># examples path
+.data/master/oozie/examples # host
+/vol/oozie/examples # guest
 
 # access master node as hadoop user
 vagrant ssh master
@@ -412,26 +517,24 @@ export OOZIE_HDFS_PATH=/user/$(whoami)/examples
 vim $OOZIE_EXAMPLE_PATH/apps/map-reduce/job.properties
 
 # edit the following properties
-nameNode=hdfs://namenode:9000 # fs.defaultFS @ core-site.xml
-jobTracker=resource-manager:8032 # yarn.resourcemanager.address @ yarn-site.xml
+nameNode=hdfs://namenode.local:9000 # fs.defaultFS @ core-site.xml
+jobTracker=resource-manager.local:8032 # yarn.resourcemanager.address @ yarn-site.xml
 queueName=priority_queue # or default @ fair-scheduler.xml
 
 # upload all the examples
 hadoop fs -put $OOZIE_EXAMPLE_PATH $OOZIE_HDFS_PATH
-# create output directory
-hdfs dfs -mkdir -p $OOZIE_HDFS_PATH/output-data
 
 # verify uploaded files
 hadoop fs -ls -h -R /user/$(whoami)
 
-# run the map-reduce example
+# run the map-reduce workflow example
 oozie job \
-  -oozie http://localhost:11000/oozie \
+  -oozie http://oozie.local:11000/oozie \
   -config $OOZIE_EXAMPLE_PATH/apps/map-reduce/job.properties \
   -run
 
 # verify status
-oozie job -oozie http://localhost:11000/oozie -info WORKFLOW_ID
+oozie job -oozie http://oozie.local:11000/oozie -info WORKFLOW_ID
 
 # verify result
 hadoop fs -cat $OOZIE_HDFS_PATH/output-data/map-reduce/part-00000
@@ -440,26 +543,29 @@ hadoop fs -cat $OOZIE_HDFS_PATH/output-data/map-reduce/part-00000
 hadoop fs -rm -R $OOZIE_HDFS_PATH
 </code></pre>
 
-<p>Workflow example</p>
-<pre><code class="bash">TODO
+<h3 id="useful-commands">Useful commands</h3>
+<ul>
+<li>Workflow requires <code>oozie.wf.application.path</code> property</li>
+<li>Coordinator requires <code>oozie.coord.application.path</code> property</li>
+</ul>
+<pre><code class="bash"># verify oozie status
+oozie admin \
+  -oozie http://oozie.local:11000/oozie \
+  -status
 
-oozie.wf.application.path
-</code></pre>
+# verify workflow or coordinator status
+oozie job \
+  -oozie http://oozie.local:11000/oozie \
+  -info JOB_ID \
+  -verbose
 
-<p>Coordinator example</p>
-<pre><code class="bash">TODO
-
-oozie.coord.application.path
-</code></pre>
-
-<h3 id="command-line-tool">Command line Tool</h3>
-<pre><code class="bash">TODO
-
-# verify status
-oozie admin -oozie http://localhost:11000/oozie -status
-
-# verify workflow status
-oozie job -oozie http://localhost:11000/oozie -info WORKFLOW_ID
+# poll workflow or coordinator status
+oozie job \
+  -oozie http://oozie.local:11000/oozie \
+  -poll JOB_ID \
+  -interval 10 \
+  -timeout 60 \
+  -verbose
 </code></pre>
 
 <h2 id="ganglia">Ganglia</h2>
