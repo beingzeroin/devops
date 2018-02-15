@@ -154,14 +154,91 @@
 <ul>
 <li><a href="https://docs.docker.com">Docker</a></li>
 </ul>
-<h3 id="basic-docker-commands">Basic Docker commands</h3>
-<p>TODO</p>
+<p>Setup</p>
+<pre><code class="bash"># install docker
+curl -fsSL get.docker.com -o get-docker.sh &amp;&amp; \
+  chmod u+x $_ &amp;&amp; \
+  ./$_ &amp;&amp; \
+  sudo usermod -aG docker hadoop
+
+docker --version
+
+# install docker-compose
+sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` \
+  -o /usr/local/bin/docker-compose &amp;&amp; \
+  sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+
+# install docker-machine (VirtualBox required)
+curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` &gt;/tmp/docker-machine &amp;&amp; \
+  sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+
+docker-machine --version
+</code></pre>
+
+<p>Useful commands</p>
 <pre><code class="bash">TODO
 </code></pre>
 
-<h3 id="docker-machine">Docker Machine</h3>
-<p>TODO</p>
-<pre><code class="bash">TODO
+<p>Docker Machine</p>
+<pre><code class="bash"># create local machine
+docker-machine create --driver virtualbox default
+
+# list
+docker-machine ls
+docker-machine ls --filter name=default
+docker-machine ls --filter state=Running
+docker-machine ls --format &quot;{{.Name}}: {{.DriverName}} - {{.State}}&quot;
+
+# info
+docker-machine inspect default
+docker-machine inspect --format='{{.Driver.IPAddress}}' default
+docker-machine status default
+docker-machine ip default
+
+# management
+docker-machine start default
+docker-machine stop default
+docker-machine restart default
+docker-machine rm default
+
+# mount volume
+#https://docs.docker.com/machine/reference/mount
+
+# show command to connect to machine
+docker-machine env default
+# check if variables are set
+env | grep DOCKER
+
+# connect to machine
+eval &quot;$(docker-machine env default)&quot;
+docker ps -a
+
+# show command to disconnect from machine
+docker-machine env -u
+# unset all
+eval $(docker-machine env -u)
+
+---------- TODO review example
+
+# access
+docker-machine ssh default
+# execute command and exit
+docker-machine ssh default uptime
+
+docker-machine scp -r /FROM default:/TO
+
+# example nginx
+docker run -d -p 8000:80 nginx
+# tunnel to forward port 8080
+docker-machine ssh default -L 8080:localhost:8080
+
+# from another shell
+curl $(docker-machine ip default):8000
+
+# disable error crash reporting
+mkdir -p ~/.docker/machine &amp;&amp; touch ~/.docker/machine/no-error-report
 </code></pre>
 
 <h2 id="vagrant">Vagrant</h2>
