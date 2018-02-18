@@ -76,8 +76,6 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#directory-structure">Directory structure</a></li>
-        
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
             <li><a class="toctree-l3" href="#ad-hoc-commands">Ad-Hoc Commands</a></li>
@@ -160,15 +158,16 @@
 <li><a href="https://serversforhackers.com/c/an-ansible2-tutorial">Tutorial</a></li>
 <li><a href="https://gist.github.com/marktheunissen/2979474">Playbook example</a></li>
 </ul>
+<p>The following guide explains how to provision Ansible locally and play with it. Checkout the <a href="https://github.com/niqdev/devops/blob/master/ansible/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
+<h3 id="setup">Setup</h3>
 <p>Requirement</p>
 <ul>
 <li>Vagrant</li>
 <li>VirtualBox</li>
 </ul>
-<p>The following guide explains how to provision Ansible locally and play with it. Checkout the <a href="https://github.com/niqdev/devops/blob/master/ansible/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
-<h2 id="directory-structure">Directory structure</h2>
-<p>All the commands are executed in this directory <code>cd ansible</code></p>
-<pre><code class="bash">ansible/
+<p>Directory structure</p>
+<pre><code class="bash">tree -a ansible/
+ansible/
 ├── .share
 │   ├── node-1
 │   ├── node-2
@@ -205,16 +204,15 @@
 └── setup_share.sh
 </code></pre>
 
-<h2 id="setup">Setup</h2>
 <p>The first time <em>only</em>, you have to setup the shared folders and generate the ssh key needed by ansible to access all nodes executing</p>
 <pre><code class="bash">./setup_share.sh
 </code></pre>
 
-<p>From now on start the boxes with</p>
+<p>Start the boxes with</p>
 <pre><code class="bash">vagrant up
 </code></pre>
 
-<p><em>Note that the first time it could take a while</em></p>
+<p><em>The first time it could take a while</em></p>
 <p>Verify status of the boxes with</p>
 <pre><code class="bash">vagrant status
 </code></pre>
@@ -313,6 +311,8 @@ ansible-playbook /ansible/site.yml
 # dry run
 ansible-playbook -i /ansible/hosts /ansible/site.yml --check --diff
 </code></pre>
+
+<p><br></p>
               
             </div>
           </div>
