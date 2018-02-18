@@ -27,14 +27,6 @@
 
     
     <url>
-     <loc>/hadoop/</loc>
-     <lastmod>2018-02-18</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
      <loc>/cassandra/</loc>
      <lastmod>2018-02-18</lastmod>
      <changefreq>daily</changefreq>
@@ -52,6 +44,14 @@
     
     <url>
      <loc>/kafka/</loc>
+     <lastmod>2018-02-18</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/hadoop/</loc>
      <lastmod>2018-02-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
