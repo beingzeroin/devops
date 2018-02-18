@@ -8,7 +8,7 @@
   
   <meta name="author" content="niqdev">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Zookeeper - DevOps Lab</title>
+  <title>Zookeeper - DevOps</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -45,7 +45,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> DevOps Lab</a>
+        <a href=".." class="icon icon-home"> DevOps</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -60,6 +60,11 @@
             <li class="toctree-l1">
 		
     <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../docker/">Docker</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -83,6 +88,12 @@
     <ul class="subnav">
             
     <li class="toctree-l2"><a href="#zookeeper">Zookeeper</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#setup">Setup</a></li>
+        
+        </ul>
     
 
     </ul>
@@ -108,7 +119,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">DevOps Lab</a>
+        <a href="..">DevOps</a>
       </nav>
 
       
@@ -123,7 +134,7 @@
     <li>Zookeeper</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/niqdev/devops-lab/edit/master/docs/zookeeper.md"
+        <a href="https://github.com/niqdev/devops/edit/master/docs/zookeeper.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -134,7 +145,52 @@
             <div class="section">
               
                 <h1 id="zookeeper">Zookeeper</h1>
-<p>TODO</p>
+<p>ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.</p>
+<p>Documentation</p>
+<ul>
+<li><a href="https://zookeeper.apache.org/">ZooKeeper</a></li>
+</ul>
+<h2 id="setup">Setup</h2>
+<p>Build <code>devops/base</code> image</p>
+<pre><code class="bash"># change path
+cd devops/base
+# build image
+docker build -t devops/base .
+</code></pre>
+
+<p>Build <code>devops/zookeeper</code> image</p>
+<pre><code class="bash"># change path
+cd devops/zookeeper
+
+# build image
+docker build -t devops/zookeeper:latest .
+# build image with specific version
+docker build -t devops/zookeeper:3.4.10 --build-arg VERSION=3.4.10 .
+
+# temporary container host:container
+docker run --rm --name zookeeper -p 12181:2181 devops/zookeeper
+# access container
+docker exec -it zookeeper bash
+
+# paths
+/opt/zookeeper
+/var/log/zookeeper
+/var/lib/zookeeper
+/var/log/supervisord.log
+
+# check zookeeper status
+telnet localhost 2181
+# expect answer imok
+&gt; ruok
+
+# logs
+tail -F /var/log/supervisord.log
+# check service status
+supervisorctl status
+supervisorctl restart zookeeper
+</code></pre>
+
+<p><br></p>
               
             </div>
           </div>
@@ -170,7 +226,7 @@
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/niqdev/devops-lab/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/niqdev/devops/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../cassandra/" style="color: #fcfcfc;">&laquo; Previous</a></span>

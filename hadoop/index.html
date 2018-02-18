@@ -8,7 +8,7 @@
   
   <meta name="author" content="niqdev">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Hadoop - DevOps Lab</title>
+  <title>Hadoop - DevOps</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -45,7 +45,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> DevOps Lab</a>
+        <a href=".." class="icon icon-home"> DevOps</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -60,6 +60,11 @@
             <li class="toctree-l1">
 		
     <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../docker/">Docker</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -82,31 +87,7 @@
         
             <li><a class="toctree-l3" href="#spark">Spark</a></li>
         
-            <li><a class="toctree-l3" href="#flink">Flink</a></li>
-        
-            <li><a class="toctree-l3" href="#avro">Avro</a></li>
-        
-            <li><a class="toctree-l3" href="#parquet">Parquet</a></li>
-        
-            <li><a class="toctree-l3" href="#flume">Flume</a></li>
-        
-            <li><a class="toctree-l3" href="#sqoop">Sqoop</a></li>
-        
-            <li><a class="toctree-l3" href="#pig">Pig</a></li>
-        
-            <li><a class="toctree-l3" href="#hive">Hive</a></li>
-        
-            <li><a class="toctree-l3" href="#crunch">Crunch</a></li>
-        
-            <li><a class="toctree-l3" href="#hbase">HBase</a></li>
-        
             <li><a class="toctree-l3" href="#oozie">Oozie</a></li>
-        
-            <li><a class="toctree-l3" href="#ganglia">Ganglia</a></li>
-        
-            <li><a class="toctree-l3" href="#zeppelin">Zeppelin</a></li>
-        
-            <li><a class="toctree-l3" href="#knox">Knox</a></li>
         
         </ul>
     
@@ -144,7 +125,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">DevOps Lab</a>
+        <a href="..">DevOps</a>
       </nav>
 
       
@@ -159,7 +140,7 @@
     <li>Hadoop</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/niqdev/devops-lab/edit/master/docs/hadoop.md"
+        <a href="https://github.com/niqdev/devops/edit/master/docs/hadoop.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -170,7 +151,7 @@
             <div class="section">
               
                 <h1 id="hadoop">Hadoop</h1>
-<p>The following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
+<p>The following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/devops/blob/master/hadoop/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
 <h3 id="setup">Setup</h3>
 <p>Requirements</p>
 <ul>
@@ -178,7 +159,7 @@
 <li>VirtualBox</li>
 </ul>
 <p>Directory structure</p>
-<pre><code class="bash">cd devops-lab/hadoop
+<pre><code class="bash">cd devops/hadoop
 
 tree -a hadoop/
 hadoop/
@@ -246,7 +227,7 @@ hadoop/
 </code></pre>
 
 <p><em>The first time it might take a while</em></p>
-<p>Access the cluster via ssh, check also the <a href="https://github.com/niqdev/devops-lab/blob/master/hadoop/file/hosts">/etc/hosts</a> file</p>
+<p>Access the cluster via ssh, check also the <a href="https://github.com/niqdev/devops/blob/master/hadoop/file/hosts">/etc/hosts</a> file</p>
 <pre><code class="bash">vagrant ssh master
 ssh hadoop@172.16.0.10 -i .data/hadoop_rsa
 
@@ -297,7 +278,7 @@ hdfs fsck /
 
 <p>Useful paths</p>
 <pre><code class="bash"># data and logs
-devops-lab/hadoop/.data/master/hadoop # host
+devops/hadoop/.data/master/hadoop # host
 /vol/hadoop # guest
 
 # (guest) config
@@ -336,7 +317,7 @@ hadoop fs -cat /user/ubuntu/word-count/input/file02
 hadoop fs -cat /user/ubuntu/word-count/input/*
 
 # build the jar (outside the machine to avoid permission issues)
-cd devops-lab/hadoop/example/map-reduce
+cd devops/hadoop/example/map-reduce
 ./gradlew clean build
 
 # run application
@@ -389,31 +370,15 @@ hadoop fs -cat sorted-data/part-r-00000
 <blockquote>
 <p><strong>Spark</strong> is an open-source cluster-computing framework</p>
 </blockquote>
-<p>TODO</p>
-<h2 id="flink">Flink</h2>
-<p>TODO</p>
-<h2 id="avro">Avro</h2>
-<blockquote>
-<p><strong>Avro</strong> is a data serialization system</p>
-</blockquote>
-<p>TODO</p>
-<h2 id="parquet">Parquet</h2>
-<blockquote>
-<p><strong>Parquet</strong> is a columnar storage format that can efficiently store nested data</p>
-</blockquote>
-<p>TODO</p>
-<h2 id="flume">Flume</h2>
-<p>TODO</p>
-<h2 id="sqoop">Sqoop</h2>
-<p>TODO</p>
-<h2 id="pig">Pig</h2>
-<p>TODO</p>
-<h2 id="hive">Hive</h2>
-<p>TODO</p>
-<h2 id="crunch">Crunch</h2>
-<p>TODO</p>
-<h2 id="hbase">HBase</h2>
-<p>TODO</p>
+<p>Documentation</p>
+<ul>
+<li><a href="https://spark.apache.org/docs/latest">Spark</a></li>
+<li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1">How-to: Tune Your Apache Spark Jobs</a> series</li>
+<li><a href="http://site.clairvoyantsoft.com/understanding-resource-allocation-configurations-spark-application">Understanding Resource Allocation configurations for a Spark application</a></li>
+</ul>
+<pre><code class="bash">TODO
+</code></pre>
+
 <h2 id="oozie">Oozie</h2>
 <blockquote>
 <p><strong>Oozie</strong> is a workflow scheduler system to manage Hadoop jobs</p>
@@ -443,7 +408,7 @@ whoami # whoami
 docker ps -a
 
 # uncomment PostgreSQL configurations
-vim devops-lab/hadoop/file/oozie/config/oozie-site.xml # from host
+vim devops/hadoop/file/oozie/config/oozie-site.xml # from host
 vim /vagrant/file/oozie/config/oozie-site.xml # from guest
 
 # start postgres on guest machine 
@@ -491,7 +456,7 @@ su --login hadoop /vagrant/script/bootstrap.sh oozie
 <p><em>It might take a while to build the sources</em></p>
 <p>Useful paths</p>
 <pre><code class="bash"># data and logs
-devops-lab/hadoop/.data/master/oozie # host
+devops/hadoop/.data/master/oozie # host
 /vol/oozie # guest
 
 # (guest) config
@@ -568,15 +533,7 @@ oozie job \
   -verbose
 </code></pre>
 
-<h2 id="ganglia">Ganglia</h2>
-<blockquote>
-<p><strong>Ganglia</strong> is a monitoring system for Hadoop</p>
-</blockquote>
-<p>TODO</p>
-<h2 id="zeppelin">Zeppelin</h2>
-<p>TODO</p>
-<h2 id="knox">Knox</h2>
-<p>TODO</p>
+<p><br></p>
               
             </div>
           </div>
@@ -612,7 +569,7 @@ oozie job \
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/niqdev/devops-lab/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/niqdev/devops/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../ansible/" style="color: #fcfcfc;">&laquo; Previous</a></span>

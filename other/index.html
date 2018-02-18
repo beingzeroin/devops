@@ -8,7 +8,7 @@
   
   <meta name="author" content="niqdev">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Other - DevOps Lab</title>
+  <title>Other - DevOps</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -45,7 +45,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> DevOps Lab</a>
+        <a href=".." class="icon icon-home"> DevOps</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -60,6 +60,11 @@
             <li class="toctree-l1">
 		
     <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../docker/">Docker</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -92,21 +97,16 @@
     <a class="current" href="./">Other</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#other">Other</a></li>
+    <li class="toctree-l2"><a href="#vagrant">Vagrant</a></li>
     
-        <ul>
-        
-            <li><a class="toctree-l3" href="#docker">Docker</a></li>
-        
-            <li><a class="toctree-l3" href="#vagrant">Vagrant</a></li>
-        
-            <li><a class="toctree-l3" href="#mkdocs">MkDocs</a></li>
-        
-            <li><a class="toctree-l3" href="#sdkman">SDKMAN!</a></li>
-        
-            <li><a class="toctree-l3" href="#books">Books</a></li>
-        
-        </ul>
+
+    <li class="toctree-l2"><a href="#mkdocs">MkDocs</a></li>
+    
+
+    <li class="toctree-l2"><a href="#sdkman">SDKMAN!</a></li>
+    
+
+    <li class="toctree-l2"><a href="#further-reading">Further reading</a></li>
     
 
     </ul>
@@ -122,7 +122,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">DevOps Lab</a>
+        <a href="..">DevOps</a>
       </nav>
 
       
@@ -137,7 +137,7 @@
     <li>Other</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/niqdev/devops-lab/edit/master/docs/other.md"
+        <a href="https://github.com/niqdev/devops/edit/master/docs/other.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -147,108 +147,13 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="other">Other</h1>
-<h2 id="docker">Docker</h2>
-<p>Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications.</p>
-<p>Offical documentation</p>
-<ul>
-<li><a href="https://docs.docker.com">Docker</a></li>
-</ul>
-<p>Setup</p>
-<pre><code class="bash"># install docker
-curl -fsSL get.docker.com -o get-docker.sh &amp;&amp; \
-  chmod u+x $_ &amp;&amp; \
-  ./$_ &amp;&amp; \
-  sudo usermod -aG docker hadoop
-
-docker --version
-
-# install docker-compose
-sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` \
-  -o /usr/local/bin/docker-compose &amp;&amp; \
-  sudo chmod +x /usr/local/bin/docker-compose
-
-docker-compose --version
-
-# install docker-machine (VirtualBox required)
-curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` &gt;/tmp/docker-machine &amp;&amp; \
-  sudo install /tmp/docker-machine /usr/local/bin/docker-machine
-
-docker-machine --version
-</code></pre>
-
-<p>Useful commands</p>
-<pre><code class="bash">TODO
-</code></pre>
-
-<p>Docker Machine</p>
-<pre><code class="bash"># create local machine
-docker-machine create --driver virtualbox default
-
-# list
-docker-machine ls
-docker-machine ls --filter name=default
-docker-machine ls --filter state=Running
-docker-machine ls --format &quot;{{.Name}}: {{.DriverName}} - {{.State}}&quot;
-
-# info
-docker-machine inspect default
-docker-machine inspect --format='{{.Driver.IPAddress}}' default
-docker-machine status default
-docker-machine ip default
-
-# management
-docker-machine start default
-docker-machine stop default
-docker-machine restart default
-docker-machine rm default
-
-# mount volume
-#https://docs.docker.com/machine/reference/mount
-
-# show command to connect to machine
-docker-machine env default
-# check if variables are set
-env | grep DOCKER
-
-# connect to machine
-eval &quot;$(docker-machine env default)&quot;
-docker ps -a
-
-# show command to disconnect from machine
-docker-machine env -u
-# unset all
-eval $(docker-machine env -u)
-
----------- TODO review example
-
-# access
-docker-machine ssh default
-# execute command and exit
-docker-machine ssh default uptime
-
-docker-machine scp -r /FROM default:/TO
-
-# example nginx
-docker run -d -p 8000:80 nginx
-# tunnel to forward port 8080
-docker-machine ssh default -L 8080:localhost:8080
-
-# from another shell
-curl $(docker-machine ip default):8000
-
-# disable error crash reporting
-mkdir -p ~/.docker/machine &amp;&amp; touch ~/.docker/machine/no-error-report
-</code></pre>
-
-<h2 id="vagrant">Vagrant</h2>
+                <h2 id="vagrant">Vagrant</h2>
 <p>Vagrant is a tool for building and managing virtual machine environments in a single workflow.</p>
-<p>Offical documentation</p>
+<p>Documentation</p>
 <ul>
 <li><a href="https://www.vagrantup.com/docs">Vagrant</a></li>
 <li><a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a></li>
 </ul>
-<h3 id="basic-vagrant-commands">Basic Vagrant commands</h3>
 <p>Setup project creating a Vagrantfile</p>
 <pre><code class="bash">vagrant init
 </code></pre>
@@ -275,34 +180,31 @@ vagrant destory -f
 
 <h2 id="mkdocs">MkDocs</h2>
 <p>MkDocs is a static site generator.</p>
-<p>Offical documentation</p>
+<p>Documentation</p>
 <ul>
 <li><a href="http://www.mkdocs.org">MkDocs</a></li>
 </ul>
-<h3 id="basic-mkdocs-commands">Basic MkDocs commands</h3>
 <p>Install</p>
 <pre><code class="bash">pip install mkdocs
 </code></pre>
 
-<p>Setup in current directory</p>
-<pre><code class="bash">mkdocs new .
-</code></pre>
+<p>Useful commands</p>
+<pre><code class="bash"># setup in current directory
+mkdocs new .
 
-<p>Start dev server with hot reload on <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
-<pre><code class="bash">mkdocs serve
-</code></pre>
+# start dev server with hot reload @ http://127.0.0.1:8000
+mkdocs serve
 
-<p>Build static site</p>
-<pre><code class="bash">mkdocs build --clean
-</code></pre>
+# build static site
+mkdocs build --clean
 
-<p>Deploy to github</p>
-<pre><code class="bash">mkdocs gh-deploy
+# deploy to github
+mkdocs gh-deploy
 </code></pre>
 
 <h2 id="sdkman">SDKMAN!</h2>
 <p>SDKMAN! is a tool for managing parallel versions of multiple Software Development Kits on most Unix based systems.</p>
-<p>Offical documentation</p>
+<p>Documentation</p>
 <ul>
 <li><a href="http://sdkman.io">SDKMAN!</a></li>
 </ul>
@@ -312,28 +214,29 @@ source &quot;$HOME/.sdkman/bin/sdkman-init.sh&quot;
 sdk version
 </code></pre>
 
-<h3 id="gradle">Gradle</h3>
-<p>Setup</p>
-<pre><code class="bash">sdk list gradle
+<p>Gradle</p>
+<pre><code class="bash"># setup
+sdk list gradle
 sdk install gradle 4.4.1
 gradle -version
-</code></pre>
 
-<p>Create Gradle project</p>
-<pre><code class="bash">mkdir -p PROJECT_NAME &amp;&amp; cd $_
+# create Gradle project
+mkdir -p PROJECT_NAME &amp;&amp; cd $_
 gradle init --type java-library
 
 ./gradlew clean build
 </code></pre>
 
-<h2 id="books">Books</h2>
+<h2 id="further-reading">Further reading</h2>
 <ul>
+<li><a href="https://nostarch.com/howlinuxworks2">How Linux Works</a> (2014) Brian Ward</li>
 <li><a href="http://dataintensive.net">Designing Data-Intensive Applications</a> (2017) by Martin Kleppmann</li>
 <li><a href="http://shop.oreilly.com/product/0636920033448.do">Hadoop: The Definitive Guide</a> (4th)(2015) by Tom White</li>
 <li><a href="https://www.manning.com/books/spark-in-action">Spark in Action</a> (2016) by Petar Zečević and Marko Bonaći</li>
 <li><a href="http://shop.oreilly.com/product/0636920043041.do">Cassandra: The Definitive Guide</a> (4th)(2016) By Eben Hewitt, Jeff Carpenter</li>
 <li><a href="http://shop.oreilly.com/product/0636920044123.do">Kafka: The Definitive Guide</a> (2017) By Gwen Shapira, Neha Narkhede, Todd Palino</li>
 </ul>
+<p><br></p>
               
             </div>
           </div>
@@ -367,7 +270,7 @@ gradle init --type java-library
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/niqdev/devops-lab/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/niqdev/devops/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../kafka/" style="color: #fcfcfc;">&laquo; Previous</a></span>
