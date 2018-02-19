@@ -88,6 +88,8 @@
         
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
+            <li><a class="toctree-l3" href="#the-four-letter-words">The four-letter words</a></li>
+        
         </ul>
     
 
@@ -150,40 +152,40 @@
 </blockquote>
 <p>Documentation</p>
 <ul>
-<li><a href="https://zookeeper.apache.org/">ZooKeeper</a></li>
+<li><a href="https://zookeeper.apache.org">ZooKeeper</a></li>
 </ul>
 <h2 id="setup">Setup</h2>
-<p>Build <code>devops/base</code> image</p>
-<pre><code class="bash"># change path
-cd devops/base
-# build image
-docker build -t devops/base .
-</code></pre>
-
+<p>Requirement</p>
+<ul>
+<li><a href="../docker/#base-image">Base</a> image</li>
+</ul>
 <p>Build <code>devops/zookeeper</code> image</p>
 <pre><code class="bash"># change path
 cd devops/zookeeper
 
 # build image
 docker build -t devops/zookeeper:latest .
-# build image with specific version
+# build image with specific version - see Dockerfile for version 3.5.x
 docker build -t devops/zookeeper:3.4.10 --build-arg VERSION=3.4.10 .
 
-# temporary container host:container
+# temporary container [host:container]
 docker run --rm --name zookeeper -p 12181:2181 devops/zookeeper
 # access container
 docker exec -it zookeeper bash
+
+# (option 1) check zookeeper status
+echo ruok | nc localhost 2181
+
+# (option 2) check zookeeper status
+telnet localhost 2181
+# expect answer imok
+&gt; ruok
 
 # paths
 /opt/zookeeper
 /var/log/zookeeper
 /var/lib/zookeeper
 /var/log/supervisord.log
-
-# check zookeeper status
-telnet localhost 2181
-# expect answer imok
-&gt; ruok
 
 # logs
 tail -F /var/log/supervisord.log
@@ -192,6 +194,88 @@ supervisorctl status
 supervisorctl restart zookeeper
 </code></pre>
 
+<h2 id="the-four-letter-words">The four-letter words</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th align="center">Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Server status</td>
+<td align="center"><strong>ruok</strong></td>
+<td>Prints <em>imok</em> if the server is running and not in an error state</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>conf</strong></td>
+<td>Prints the server configuration (from zoo.cfg)</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>envi</strong></td>
+<td>Prints the server environment, including ZooKeeper version, Java version, and other system properties</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>srvr</strong></td>
+<td>Prints server statistics, including latency statistics, the number of znodes, and the server mode (standalone, leader, or follower)</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>stat</strong></td>
+<td>Prints server statistics and connected clients</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>srst</strong></td>
+<td>Resets server statistics</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>isro</strong></td>
+<td>Shows whether the server is in read-only ( ro ) mode (due to a network partition) or read/write mode (rw)</td>
+</tr>
+<tr>
+<td>Client connections</td>
+<td align="center"><strong>dump</strong></td>
+<td>Lists all the sessions and ephemeral znodes for the ensemble. You must connect to the leader (see srvr) for this command</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>cons</strong></td>
+<td>Lists connection statistics for all the server's clients</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>crst</strong></td>
+<td>Resets connection statistics</td>
+</tr>
+<tr>
+<td>Watches</td>
+<td align="center"><strong>wchs</strong></td>
+<td>Lists summary information for the server's watches</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>wchc</strong></td>
+<td>Lists all the server's watches by connection, may impact server performance for a large number of watches</td>
+</tr>
+<tr>
+<td></td>
+<td align="center"><strong>wchp</strong></td>
+<td>Lists all the server’s watches by znode path, may impact server performance for a large number of watches</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td align="center"><strong>mntr</strong></td>
+<td>Lists server statistics in Java properties format, suitable as a source for monitoring systems such as Ganglia and Nagios</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
               
             </div>

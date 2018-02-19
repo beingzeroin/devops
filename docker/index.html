@@ -73,6 +73,8 @@
         
             <li><a class="toctree-l3" href="#how-to">How-To</a></li>
         
+            <li><a class="toctree-l3" href="#base-image">Base image</a></li>
+        
         </ul>
     
 
@@ -152,7 +154,7 @@
 <ul>
 <li><a href="https://docs.docker.com">Docker</a></li>
 </ul>
-<h3 id="how-to">How-To</h3>
+<h2 id="how-to">How-To</h2>
 <p>Setup</p>
 <pre><code class="bash"># install docker
 curl -fsSL get.docker.com -o get-docker.sh &amp;&amp; \
@@ -254,6 +256,20 @@ curl localhost:8080
 
 # disable error crash reporting
 mkdir -p ~/.docker/machine &amp;&amp; touch ~/.docker/machine/no-error-report
+</code></pre>
+
+<h2 id="base-image">Base image</h2>
+<p>Build <code>devops/base</code> image</p>
+<pre><code class="bash"># change path
+cd devops/base
+
+# build image
+docker build -t devops/base .
+
+# temporary container
+docker run --rm --name devops-base devops/base
+# access container
+docker exec -it devops-base bash
 </code></pre>
 
 <p><br></p>

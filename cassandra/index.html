@@ -139,11 +139,33 @@
             <div class="section">
               
                 <h1 id="cassandra">Cassandra</h1>
-<p>TODO</p>
-<p>Requirements</p>
+<blockquote>
+<p><strong>Cassandra</strong> is a distributed database for managing large amounts of structured data across many commodity servers, while providing highly available service and no single point of failure</p>
+</blockquote>
+<p>Documentation</p>
 <ul>
-<li><a href="https://docs.docker.com">Docker</a></li>
+<li><a href="https://cassandra.apache.org">Cassandra</a></li>
 </ul>
+<pre><code class="bash">TODO
+
+########## cassandra ##########
+
+docker-compose up
+docker exec -it cassandra bash
+docker exec -it cassandra bash -c cqlsh
+
+# paths
+/etc/cassandra
+/var/lib/cassandra
+/var/log/cassandra
+
+# execute cql from host
+(docker exec -i cassandra bash -c &quot;cat &gt; EXAMPLE.cql; cqlsh -f EXAMPLE.cql&quot;) &lt; PATH/TO/EXAMPLE.cql
+
+docker rm -fv cassandra
+</code></pre>
+
+<p><br></p>
               
             </div>
           </div>
