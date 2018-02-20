@@ -196,8 +196,18 @@ docker exec -it kafka bash
 /var/lib/kafka/data
 </code></pre>
 
-<p>Alternatively use compose</p>
-<pre><code class="bash">TODO
+<p>Alternatively use <code>docker-compose</code></p>
+<pre><code class="bash"># change path
+cd devops/kafka
+
+# build base image
+docker build -t devops/base ../base
+# build + start zookeeper and kafka
+docker-compose up
+
+# access container
+docker exec -it devops-zookeeper bash
+docker exec -it devops-kafka bash
 </code></pre>
 
 <p>Example</p>
