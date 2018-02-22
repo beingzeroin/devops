@@ -112,6 +112,11 @@
           
             <li class="toctree-l1">
 		
+    <a class="" href="../papers/">Papers</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
     <a class="" href="../other/">Other</a>
 	    </li>
           
@@ -152,6 +157,11 @@
               
                 <h1 id="hadoop">Hadoop</h1>
 <p>The following guide explains how to provision a Multi Node Hadoop Cluster locally and play with it. Checkout the <a href="https://github.com/niqdev/devops/blob/master/hadoop/Vagrantfile">Vagrantfile</a> and the Vagrant <a href="../other/#vagrant">guide</a> for more details.</p>
+<p>Documentation</p>
+<ul>
+<li><a href="https://hadoop.apache.org">Hadoop</a></li>
+<li><a href="https://hadoopecosystemtable.github.io">The Hadoop Ecosystem Table</a></li>
+</ul>
 <h3 id="setup">Setup</h3>
 <p>Requirements</p>
 <ul>
@@ -253,8 +263,10 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 <li>DataNode/NodeManager (1): <a href="http://172.16.0.101:8042/node">http://node-1.local:8042/node</a></li>
 <li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2.local:8042/node</a></li>
 <li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3.local:8042/node</a></li>
+<li>Spark: <a href="http://172.16.0.10:4040">http://spark.local:4040</a></li>
 <li>Oozie*: <a href="http://172.16.0.10:11000">http://oozie.local:11000</a></li>
 </ul>
+<p><br></p>
 <h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
 <blockquote>
 <p><strong>HDFS</strong> is a distributed file system that provides high-throughput access to application data</p>
@@ -364,6 +376,7 @@ hadoop fs -cat random-data/part-m-00000
 hadoop fs -cat sorted-data/part-r-00000
 </code></pre>
 
+<p><br></p>
 <h2 id="spark">Spark</h2>
 <blockquote>
 <p><strong>Spark</strong> is an open-source cluster-computing framework</p>
@@ -374,9 +387,24 @@ hadoop fs -cat sorted-data/part-r-00000
 <li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1">How-to: Tune Your Apache Spark Jobs</a> series</li>
 <li><a href="http://site.clairvoyantsoft.com/understanding-resource-allocation-configurations-spark-application">Understanding Resource Allocation configurations for a Spark application</a></li>
 </ul>
-<pre><code class="bash">TODO
+<pre><code class="bash"># start REPL
+spark-shell
+pyspark
 </code></pre>
 
+<h3 id="examples">Examples</h3>
+<pre><code class="bash">spark-shell
+
+# hello world
+val licenceLines = sc.textFile(&quot;file:/usr/local/spark/LICENSE&quot;)
+val lineCount = licenceLines.count
+val isBsd = (line: String) =&gt; line.contains(&quot;BSD&quot;)
+val bsdLines = licenceLines.filter(isBsd)
+bsdLines.count
+bsdLines.foreach(println)
+</code></pre>
+
+<p><br></p>
 <h2 id="oozie">Oozie</h2>
 <blockquote>
 <p><strong>Oozie</strong> is a workflow scheduler system to manage Hadoop jobs</p>
@@ -464,7 +492,7 @@ devops/hadoop/.data/master/oozie # host
 /user/hadoop/examples
 </code></pre>
 
-<h3 id="examples">Examples</h3>
+<h3 id="examples_1">Examples</h3>
 <p>Run bundled examples within distribution</p>
 <pre><code class="bash"># examples path
 .data/master/oozie/examples # host
@@ -539,7 +567,7 @@ oozie job \
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../other/" class="btn btn-neutral float-right" title="Other">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../papers/" class="btn btn-neutral float-right" title="Papers">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../kafka/" class="btn btn-neutral" title="Kafka"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -573,7 +601,7 @@ oozie job \
         <span><a href="../kafka/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../other/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../papers/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
