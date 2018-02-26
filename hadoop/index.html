@@ -302,7 +302,14 @@ devops/hadoop/.data/master/hadoop # host
 </code></pre>
 
 <h3 id="mapreduce-wordcount-job">MapReduce WordCount Job</h3>
-<pre><code class="bash"># create base directory using hdfs
+<pre><code class="bash"># build jar on the host machine
+cd devops/hadoop/example/map-reduce
+./gradlew clean build
+
+cd devops/hadoop
+vagrant ssh master
+
+# create base directory using hdfs
 hdfs dfs -mkdir -p /user/ubuntu
 
 # create example directory
@@ -325,10 +332,6 @@ hadoop fs -ls -h -R /user/ubuntu
 hadoop fs -cat /user/ubuntu/word-count/input/file01
 hadoop fs -cat /user/ubuntu/word-count/input/file02
 hadoop fs -cat /user/ubuntu/word-count/input/*
-
-# build the jar (outside the machine to avoid permission issues)
-cd devops/hadoop/example/map-reduce
-./gradlew clean build
 
 # run application
 hadoop jar /vagrant/example/map-reduce/build/libs/map-reduce.jar \
@@ -392,16 +395,41 @@ spark-shell
 pyspark
 </code></pre>
 
-<h3 id="examples">Examples</h3>
+<h3 id="interactive-analysis-example">Interactive Analysis example</h3>
 <pre><code class="bash">spark-shell
 
-# hello world
 val licenceLines = sc.textFile(&quot;file:/usr/local/spark/LICENSE&quot;)
 val lineCount = licenceLines.count
 val isBsd = (line: String) =&gt; line.contains(&quot;BSD&quot;)
 val bsdLines = licenceLines.filter(isBsd)
 bsdLines.count
 bsdLines.foreach(println)
+</code></pre>
+
+<h3 id="spark-job-example">Spark Job example</h3>
+<pre><code class="bash"># GitHub event documentation
+# https://developer.github.com/v3/activity/events/types
+
+# build jar on the host machine
+cd devops/hadoop/example/spark
+sbt clean package
+
+cd devops/hadoop
+vagrant ssh master
+
+# sample dataset
+mkdir -p github-archive &amp;&amp; \
+  cd $_ &amp;&amp; \
+  wget http://data.githubarchive.org/2018-01-01-{0..10}.json.gz &amp;&amp; \
+  gunzip -k *
+# sample line
+head -n 1 2018-01-01-0.json | jq '.'
+
+# run job
+spark-submit \
+  --class &quot;com.github.niqdev.App&quot; \
+  --master local[*] \
+  /vagrant/example/spark/target/scala-2.11/spark-github_2.11-0.1.0-SNAPSHOT.jar
 </code></pre>
 
 <p><br></p>
@@ -492,7 +520,7 @@ devops/hadoop/.data/master/oozie # host
 /user/hadoop/examples
 </code></pre>
 
-<h3 id="examples_1">Examples</h3>
+<h3 id="examples">Examples</h3>
 <p>Run bundled examples within distribution</p>
 <pre><code class="bash"># examples path
 .data/master/oozie/examples # host
