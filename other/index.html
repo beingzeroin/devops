@@ -114,6 +114,9 @@
     <li class="toctree-l2"><a href="#giter8">Giter8</a></li>
     
 
+    <li class="toctree-l2"><a href="#python">Python</a></li>
+    
+
     <li class="toctree-l2"><a href="#further-reading">Further reading</a></li>
     
 
@@ -283,6 +286,72 @@ cs foundweekends/giter8
 g8 sbt/scala-seed.g8
 # non-interactive
 g8 sbt/scala-seed.g8 --name=my-new-website
+</code></pre>
+
+<p><br></p>
+<h2 id="python">Python</h2>
+<p>Documentation</p>
+<ul>
+<li><a href="https://pip.pypa.io/en/stable/user_guide">pip</a></li>
+<li><a href="https://virtualenv.pypa.io/en/stable/userguide">virtualenv</a></li>
+<li><a href="https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe/41573588#41573588">What is the difference between virtualenv | pyenv | virtualenvwrapper | venv ?</a></li>
+</ul>
+<p>Setup</p>
+<pre><code class="bash"># search
+apt-get update &amp;&amp; apt-cache search python | grep python2
+
+# setup python
+apt-get install -y python2.7
+apt-get install -y python3
+
+# install pip + setuptools
+curl https://bootstrap.pypa.io/get-pip.py | python2.7 -
+curl https://bootstrap.pypa.io/get-pip.py | python3 -
+
+# upgrade pip
+pip install -U pip
+
+# install virtualenv globally 
+pip install virtualenv
+</code></pre>
+
+<p>virtualenv</p>
+<pre><code class="bash"># create virtualenv
+virtualenv venv
+virtualenv -p python3 venv
+virtualenv -p $(which python3) venv
+
+# activate virtualenv
+source venv/bin/activate
+
+# verify virtualenv
+which python
+python --version
+
+# deactivate virtualenv
+deactivate
+</code></pre>
+
+<p>pip</p>
+<pre><code class="bash"># search package
+pip search &lt;package&gt;
+
+# install new package
+pip install &lt;package&gt;
+
+# update requirements with new packages
+pip freeze &gt; requirements.txt
+
+# install all requirements
+pip install -r requirements.txt
+</code></pre>
+
+<p>Other</p>
+<pre><code class="bash"># generate rc file
+pylint --generate-rcfile &gt; .pylintrc
+
+# create module
+touch app/{__init__,main}.py
 </code></pre>
 
 <p><br></p>
