@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/", 
-            "text": "DevOps\n\n\nA collection of Docker, Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.\n\n\n\n\nDocker\n\n\nAnsible\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nHadoop\n\n\nPapers\n\n\nOther", 
+            "text": "DevOps\n\n\nA collection of Docker and Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.\n\n\n\n\nDocker\n\n\nAnsible\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nHadoop\n\n\nPapers\n\n\nOther", 
             "title": "Home"
         }, 
         {
             "location": "/#devops", 
-            "text": "A collection of Docker, Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.   Docker  Ansible  Cassandra  Zookeeper  Kafka  Hadoop  Papers  Other", 
+            "text": "A collection of Docker and Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.   Docker  Ansible  Cassandra  Zookeeper  Kafka  Hadoop  Papers  Other", 
             "title": "DevOps"
         }, 
         {
