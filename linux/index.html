@@ -8,7 +8,7 @@
   
   <meta name="author" content="niqdev">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Unix - DevOps</title>
+  <title>Linux - DevOps</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Unix";
-    var mkdocs_page_input_path = "unix.md";
-    var mkdocs_page_url = "/unix/";
+    var mkdocs_page_name = "Linux";
+    var mkdocs_page_input_path = "linux.md";
+    var mkdocs_page_url = "/linux/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -64,10 +64,10 @@
           
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">Unix</a>
+    <a class="current" href="./">Linux</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#unix">Unix</a></li>
+    <li class="toctree-l2"><a href="#linux">Linux</a></li>
     
         <ul>
         
@@ -79,7 +79,7 @@
         
             <li><a class="toctree-l3" href="#monitoring">Monitoring</a></li>
         
-            <li><a class="toctree-l3" href="#other">Other</a></li>
+            <li><a class="toctree-l3" href="#network">Network</a></li>
         
         </ul>
     
@@ -149,10 +149,10 @@
     
       
     
-    <li>Unix</li>
+    <li>Linux</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/niqdev/devops/edit/master/docs/unix.md"
+        <a href="https://github.com/niqdev/devops/edit/master/docs/linux.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -162,7 +162,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="unix">Unix</h1>
+                <h1 id="linux">Linux</h1>
 <h3 id="useful-commands">Useful commands</h3>
 <pre><code class="bash"># create nested directories
 mkdir -p parent/child1/child2 &amp;&amp; cd $_
@@ -200,9 +200,6 @@ tar zcvf archive.tar.gz /path/to/images/*.jpg
 # unpack compressed archive
 tar zxvf archive.tar.gz
 
-# calculator
-echo 1+2 | bc
-
 # count lines
 wc -l file
 
@@ -212,8 +209,18 @@ uuidgen | tr &quot;[:upper:]&quot; &quot;[:lower:]&quot;
 # number of bytes
 stat --printf=&quot;%s&quot; file
 
+# calculator
+echo 1+2 | bc
+# print number in binary base 2 format
+echo 'obase=2; 240' | bc
+# reverse-polish calculator
+echo '1 2 + p' | dc
+
 # unix timestamp
 date +%s
+
+# calendar
+cal -3
 </code></pre>
 
 <h3 id="diagnostic">Diagnostic</h3>
@@ -311,6 +318,8 @@ vmstat 2
 # list open files and the processes using them
 lsof | less
 lsof /dev
+# open TCP ports
+lsof -i -n -P | grep TCP
 
 # print all the system calls that a process makes
 strace cat /dev/null
@@ -346,11 +355,50 @@ iotop
 pidstat -p PID 1
 </code></pre>
 
-<h3 id="other">Other</h3>
-<pre><code class="bash">TODO
+<h3 id="network">Network</h3>
+<p>Documentation</p>
+<ul>
+<li><a href="https://gist.github.com/niqdev/1ab727c3c01de2993cad070c04ba8b47">Subnetting</a></li>
+</ul>
+<pre><code class="bash"># active network interfaces
+ifconfig
 
-jq
-http
+# show routing table
+# Destination: network prefix e.g. 0.0.0.0/0 matches every address (default route)
+# flag U: up
+# flag G: gateway
+# convention: the router is usually at address 1 of the subnet
+route -n
+
+# ICMP echo request
+# icmp_req: verify order and no gap
+# time: round-trip time
+ping -c 3 8.8.8.8
+
+# show path packets take to a remote host
+traceroute 8.8.8.8
+
+# (DNS) find the IP address behind a domain name
+host www.github.com
+
+# network manager
+nmcli
+nmcli device show
+# returns zero as its exit code if network is up
+nm-online
+# network details e.g. ssid/password
+cat /etc/NetworkManager/system-connections/NETWORK_NAME
+
+# override hostname lookups
+vim /etc/hosts
+
+# traditional configuration file for DNS servers
+cat /etc/resolv.conf
+# DNS settings
+cat /etc/nsswitch.conf
+
+# static IP
+/etc/network/interfaces
 </code></pre>
 
 <p><br></p>
