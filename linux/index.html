@@ -221,6 +221,9 @@ date +%s
 
 # calendar
 cal -3
+
+# configure kernel parameters at runtime
+sysctl
 </code></pre>
 
 <h3 id="diagnostic">Diagnostic</h3>
@@ -318,8 +321,6 @@ vmstat 2
 # list open files and the processes using them
 lsof | less
 lsof /dev
-# open TCP ports
-lsof -i -n -P | grep TCP
 
 # print all the system calls that a process makes
 strace cat /dev/null
@@ -356,12 +357,22 @@ pidstat -p PID 1
 </code></pre>
 
 <h3 id="network">Network</h3>
-<p>Documentation</p>
+<p>Useful links</p>
 <ul>
 <li><a href="https://gist.github.com/niqdev/1ab727c3c01de2993cad070c04ba8b47">Subnetting</a></li>
+<li><a href="https://openwrt.org">OpenWrt</a></li>
+<li><a href="https://www.busybox.net">BusyBox</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Netfilter">Netfilter</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands">Iptables Essentials</a></li>
+<li><a href="https://unixia.wordpress.com/2015/12/16/iptables-vs-nftables">iptables vs nftables</a></li>
+<li><a href="http://www.shorewall.net">Shorewall</a></li>
+<li><a href="https://hackertarget.com/tshark-tutorial-and-filter-examples">tshark</a></li>
 </ul>
 <pre><code class="bash"># active network interfaces
 ifconfig
+# enable/disable network interface
+ifconfig NETWORK_INTERFACE up
+ifconfig NETWORK_INTERFACE down
 
 # show routing table
 # Destination: network prefix e.g. 0.0.0.0/0 matches every address (default route)
@@ -399,6 +410,73 @@ cat /etc/nsswitch.conf
 
 # static IP
 /etc/network/interfaces
+
+# list open TCP connections
+netstat -nt
+# list listening TCP ports
+netstat -ntl
+
+# processes listening on open TCP ports
+lsof -i -n -P | grep TCP
+
+# well-known ports
+cat /etc/services
+
+# release IP with DHCP
+dhclient -r NETWORK_INTERFACE_NAME
+# renew IP
+dhclient -v NETWORK_INTERFACE_NAME
+
+# public IP via external services
+http ident.me
+http ipv4.ident.me
+http ipv6.ident.me
+http icanhazip.com
+http ipv4.icanhazip.com
+http ipv6.icanhazip.com
+
+# Linux kernel does not automatically move packets from one subnet to another
+# enable temporary IP forwarding in the router's kernel
+sysctl -w net.ipv4.ip_forward
+# change permanent configs upon reboot
+vim /etc/sysctl.conf
+
+# example NAT (IP masquerading)
+sysctl -w net.ipv4.ip_forward
+iptables -P FORWARD DROP
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -A FORWARD -i eth0 -o eth1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
+
+# firewalling on individual machines is sometimes called IP filtering
+# firewall rules in series or chain make up a table
+# INPUT chain: protect individual machine
+# FORWARD chain: protect a network of machines
+# show iptable configuration
+iptables -L
+# block IP
+iptables -A INPUT -s BLOCKED_IP -j DROP
+# block IP/port
+iptables -A INPUT -s BLOCKED_IP/CIDR -p tcp --destination-port BLOCKED_PORT -j DROP
+# allow IP (insert at the bottom)
+iptables -A INPUT -s ALLOWED_IP -j ACCEPT
+# allow IP (insert at the top)
+iptables -I INPUT -s ALLOWED_IP -j ACCEPT
+# allow IP (specify order)
+iptables -I INPUT RULE_NUMBER -s ALLOWED_IP -j ACCEPT
+# delete rule #number in chain
+iptables -D INPUT RULE_NUMBER
+
+# show ARP kernel cache
+arp -n
+
+# list wireless network
+iw dev NETWORK_INTERFACE scan
+# show details of connected network
+iw dev NETWORK_INTERFACE link
+
+# manage both authentication and encryption for a wireless network interface
+wpa_supplicant
 </code></pre>
 
 <p><br></p>
