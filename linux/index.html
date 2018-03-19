@@ -81,6 +81,10 @@
         
             <li><a class="toctree-l3" href="#network">Network</a></li>
         
+            <li><a class="toctree-l3" href="#applications">Applications</a></li>
+        
+            <li><a class="toctree-l3" href="#useful-links">Useful links</a></li>
+        
         </ul>
     
 
@@ -357,17 +361,6 @@ pidstat -p PID 1
 </code></pre>
 
 <h3 id="network">Network</h3>
-<p>Useful links</p>
-<ul>
-<li><a href="https://gist.github.com/niqdev/1ab727c3c01de2993cad070c04ba8b47">Subnetting</a></li>
-<li><a href="https://openwrt.org">OpenWrt</a></li>
-<li><a href="https://www.busybox.net">BusyBox</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Netfilter">Netfilter</a></li>
-<li><a href="https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands">Iptables Essentials</a></li>
-<li><a href="https://unixia.wordpress.com/2015/12/16/iptables-vs-nftables">iptables vs nftables</a></li>
-<li><a href="http://www.shorewall.net">Shorewall</a></li>
-<li><a href="https://hackertarget.com/tshark-tutorial-and-filter-examples">tshark</a></li>
-</ul>
 <pre><code class="bash"># active network interfaces
 ifconfig
 # enable/disable network interface
@@ -411,13 +404,25 @@ cat /etc/nsswitch.conf
 # static IP
 /etc/network/interfaces
 
+# -t Prints TCP port information
+# -u Prints UDP port information
+# -l Prints listening ports
+# -a Prints every active port
+# -n Disables name lookups (speeds things up; also useful if DNS isn’t working)
 # list open TCP connections
 netstat -nt
-# list listening TCP ports
+# print listening TCP ports
 netstat -ntl
+# list running services
+netstat -plunt
 
 # processes listening on open TCP ports
 lsof -i -n -P | grep TCP
+lsof -iTCP -sTCP:LISTEN
+# process running on specific port
+lsof -n -i:PORT_NUMBER
+# list unix domain socket
+lsof -U
 
 # well-known ports
 cat /etc/services
@@ -479,6 +484,65 @@ iw dev NETWORK_INTERFACE link
 wpa_supplicant
 </code></pre>
 
+<h3 id="applications">Applications</h3>
+<pre><code class="bash"># old insecure
+telnet www.wikipedia.org 80
+# press enter twice after
+GET / HTTP/1.0
+
+# details about communication
+curl --trace-ascii trace_file https://www.wikipedia.org &gt; /dev/null
+vim trace_file
+
+# sshd server configs
+vim /etc/ssh/sshd_config
+# generate key pair
+ssh-keygen -t rsa -b 4096 -C KEY_NAME -N &quot;PASSPHRASE&quot; -f KEY_PATH
+
+# list network interfaces
+tcpdump -D
+# sniff hex and ascii (-A) by interface/host/port
+tcpdump -XX -n -i INTERFACE_NAME tcp and host IP_ADDRESS and port PORT_NUMBER
+
+# Swiss Army knife
+# banner grabbing
+cat &lt;(echo HEAD / HTTP/1.0) - | netcat IP_ADDRESS PORT_NUMBER
+# install traditional (with -e option)
+apt-get install netcat -y
+# choose /bin/nc.traditional
+update-alternatives --config nc
+# listen on server
+netcat -l -p 6996 -e /bin/bash
+# run client
+cat &lt;(echo ls -la) - | netcat IP_ADDRESS 6996
+
+# scan open ports
+nmap -Pn IP_ADDRESS
+
+# other
+# * ssh/scp/sftp/rsync
+# * curl/wget
+
+# system calls
+man recv
+man send
+</code></pre>
+
+<h3 id="useful-links">Useful links</h3>
+<ul>
+<li><a href="https://gist.github.com/niqdev/1ab727c3c01de2993cad070c04ba8b47">Subnetting</a></li>
+<li><a href="https://openwrt.org">OpenWrt</a></li>
+<li><a href="https://www.busybox.net">BusyBox</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Netfilter">Netfilter</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands">Iptables Essentials</a></li>
+<li><a href="https://unixia.wordpress.com/2015/12/16/iptables-vs-nftables">iptables vs nftables</a></li>
+<li><a href="http://www.shorewall.net">Shorewall</a></li>
+<li><a href="https://nmap.org">Nmap</a></li>
+<li><a href="https://hackertarget.com/tshark-tutorial-and-filter-examples">tshark</a></li>
+<li><a href="http://www.postfix.org">Postfix</a></li>
+<li><a href="https://httpie.org">HTTPie</a></li>
+<li><a href="https://stedolan.github.io/jq">jq</a></li>
+</ul>
 <p><br></p>
               
             </div>
