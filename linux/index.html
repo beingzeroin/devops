@@ -173,6 +173,8 @@ mkdir -p parent/child1/child2 &amp;&amp; cd $_
 
 # scroll file from bottom
 less +G /var/log/auth.log
+# follow also if doesn't exist
+tail -F /var/log/auth.log
 
 # find files
 find /etc -name '*shadow'
@@ -185,10 +187,15 @@ grep -E '^root' /etc/passwd
 # password encryption
 grep password.*unix /etc/pam.d/*
 
+# sed = stream editor
 # example substitution
 echo -e &quot;a='1st' b='2nd' c='3rd'\na='4th' b='5th' c='6th'&quot; &gt; test.txt
 cat test.txt | sed -nE &quot;s/^.*a='([^']*).*c='([^']*).*$/\2\n\1/gp&quot; | sort -r | uniq
+# delete lines three through six
+sed 3,6d /etc/passwd
 
+# pick a single field out of an input stream
+ls -l | awk '{print $9}'
 # extract 2nd string
 echo &quot;aaa bbb ccc&quot; &gt; test.txt
 cat test.txt | awk '{printf(&quot;2nd: %s\n&quot;,$2)}'
@@ -219,6 +226,8 @@ echo 1+2 | bc
 echo 'obase=2; 240' | bc
 # reverse-polish calculator
 echo '1 2 + p' | dc
+# evaluate expressions
+expr 1 + 2
 
 # unix timestamp
 date +%s
@@ -228,6 +237,78 @@ cal -3
 
 # configure kernel parameters at runtime
 sysctl
+
+# test conditions ([)
+test a = a &amp;&amp; echo equal
+
+# create temporary file
+mktemp
+# X is a template
+mktemp /tmp/my-tmp.XXXXXX
+# signal handler to catch the signal that CTRL-C generates and remove the temporary files
+TMPFILE=$(mktemp /tmp/my-tmp.XXXXXX)
+trap &quot;rm -f $TMPFILE; exit 1&quot; INT
+
+# compare files
+diff FILE1 FILE2
+
+# here document
+DATE=$(date)
+cat &lt;&lt;EOF
+Date: $DATE
+line1
+line2
+EOF
+
+# strip full path and extension if specified e.g. mail
+basename /var/log/mail.log .log
+
+# image conversion
+giftopnm
+pnmtopng
+
+# when operating on huge number of files to avoid buffer issues
+# e.g. verify file's type
+# INSECURE find . -name '*.md' -print | xargs file
+# change the find output separator and the xargs argument delimiter from a newline to a NULL character
+# two dashes if there is a chance that any of the target files start with a single dash
+find . -name '*.md' -print0 | xargs -0 file --
+# supply a {} to substitute the filename and a literal ; to indicate the end of the command
+find . -name '*.md' -exec file {} \;
+
+# replaces current shell process with the program you name after exec system call
+# after you press CTRL-D or CTRL-C to terminate the cat program,
+# your window should disappear because its child process no longer exists
+exec cat
+
+# subshell example () e.g. path remains the same outside
+(PATH=/bad/invalid:$PATH; echo $PATH)
+# fast way to copy and preserve permissions
+tar cf - orig | (cd target; tar xvf -)
+</code></pre>
+
+<p>Script templates</p>
+<pre><code class="bash"># shebang
+#!/bin/sh
+#!/bin/bash
+
+# unofficial bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+# run from any directory (no symlink allowed)
+CURRENT_PATH=$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)&quot;; pwd -P)
+cd ${CURRENT_PATH}
+
+# import
+. imported_file.sh
+source imported_file.sh
+
+# read and store in a variable
+read MY_VAR
+echo $MY_VAR
+# read stdin
+read -p &quot;Are you sure? [y/n]&quot; -n 1 -r
 </code></pre>
 
 <h3 id="diagnostic">Diagnostic</h3>
@@ -358,6 +439,12 @@ iotop
 
 # see the resource consumption of a process over time
 pidstat -p PID 1
+
+# reports CPU and IO stats
+iostat -mt 2
+
+# system resource statistics
+dstat
 </code></pre>
 
 <h3 id="network">Network</h3>
@@ -530,6 +617,7 @@ man send
 
 <h3 id="useful-links">Useful links</h3>
 <ul>
+<li><a href="https://github.com/brendangregg/perf-tools">perf-tools</a></li>
 <li><a href="https://gist.github.com/niqdev/1ab727c3c01de2993cad070c04ba8b47">Subnetting</a></li>
 <li><a href="https://openwrt.org">OpenWrt</a></li>
 <li><a href="https://www.busybox.net">BusyBox</a></li>
