@@ -379,6 +379,17 @@ swapon /dev/SWAP_FILE
 echo &quot;/dev/SWAP_FILE    none    swap    sw    0   0&quot; | tee -a /etc/fstab
 # list swap partitions
 swapon --show
+
+# simple static server on port 8000
+python -m SimpleHTTPServer
+
+# copy directory to remote host
+scp -r directory remote_host:~/new-directory
+tar cBvf - directory | ssh remote_host tar xBvpf -
+rsync -az directory remote_host:~/new-
+# equivalent to /*
+# -nv dry run
+rsync -a directory/ remote_host:~/new-directory
 </code></pre>
 
 <h3 id="monitoring">Monitoring</h3>
@@ -617,7 +628,6 @@ man send
 
 <h3 id="useful-links">Useful links</h3>
 <ul>
-<li><a href="https://github.com/brendangregg/perf-tools">perf-tools</a></li>
 <li><a href="https://gist.github.com/niqdev/1ab727c3c01de2993cad070c04ba8b47">Subnetting</a></li>
 <li><a href="https://openwrt.org">OpenWrt</a></li>
 <li><a href="https://www.busybox.net">BusyBox</a></li>
@@ -630,6 +640,8 @@ man send
 <li><a href="http://www.postfix.org">Postfix</a></li>
 <li><a href="https://httpie.org">HTTPie</a></li>
 <li><a href="https://stedolan.github.io/jq">jq</a></li>
+<li><a href="https://github.com/brendangregg/perf-tools">perf-tools</a></li>
+<li><a href="https://www.samba.org">Samba</a></li>
 </ul>
 <p><br></p>
               
