@@ -285,6 +285,19 @@ exec cat
 (PATH=/bad/invalid:$PATH; echo $PATH)
 # fast way to copy and preserve permissions
 tar cf - orig | (cd target; tar xvf -)
+
+# X Window System
+xwininfo
+xlsclients -l
+xev
+xinput --list
+dbus-monitor --system
+dbus-monitor --session
+
+# compile C program
+cc -o hello hello.c
+# list shared library (so)
+ldd /bin/bash
 </code></pre>
 
 <p>Script templates</p>
@@ -642,6 +655,7 @@ man send
 <li><a href="https://stedolan.github.io/jq">jq</a></li>
 <li><a href="https://github.com/brendangregg/perf-tools">perf-tools</a></li>
 <li><a href="https://www.samba.org">Samba</a></li>
+<li><a href="https://www.dwheeler.com/program-library">Program Library HOWTO</a></li>
 </ul>
 <p><br></p>
               
