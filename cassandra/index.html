@@ -158,10 +158,28 @@
 <blockquote>
 <p><strong>Cassandra</strong> is a distributed database for managing large amounts of structured data across many commodity servers, while providing highly available service and no single point of failure</p>
 </blockquote>
-<p>Documentation</p>
+<p>Useful documentation</p>
 <ul>
-<li><a href="https://cassandra.apache.org">Cassandra</a></li>
+<li>
+<p><a href="https://cassandra.apache.org">Cassandra</a></p>
+</li>
+<li>
+<p><a href="https://www.cs.cornell.edu/projects/ladis2009/papers/lakshman-ladis2009.pdf">A Decentralized Structured Storage System</a> (Paper)</p>
+</li>
+<li>
+<p><a href="https://pdfs.semanticscholar.org/22c6/740341ef13d3c5ee52044a4fbaad911f7322.pdf">A Big Data Modeling Methodology for Apache Cassandra</a> (Paper)</p>
+</li>
+<li>
+<p><a href="https://docs.datastax.com/en/articles/cassandra/cassandrathenandnow.html">Facebook’s Cassandra paper</a></p>
+</li>
+<li>
+<p><a href="https://www.ebayinc.com/stories/blogs/tech/cassandra-data-modeling-best-practices-part-1">Cassandra Data Modeling Best Practices</a></p>
+</li>
+<li>
+<p><a href="https://github.com/allegro/cassandra-modeling-kata">Cassandra Modeling Kata</a></p>
+</li>
 </ul>
+<p>Cassandra uses a tick-tock release model, even-numbered releases are feature releases, while odd-numbered releases are focused on bug fixes</p>
 <h2 id="setup">Setup</h2>
 <p>Single Node Cluster</p>
 <pre><code class="bash"># change path
@@ -200,21 +218,50 @@ tree .cassandra/
 (root) /var/log/cassandra
 </code></pre>
 
-<p>Example</p>
-<pre><code class="bash"># execute cql from host
-(docker exec -i devops-cassandra bash \
-  -c &quot;cat &gt; example.cql; cqlsh -f example.cql&quot;) &lt; cql/example.cql
-
-# access container
+<p>Access container</p>
+<pre><code class="bash"># access container
 docker exec -it devops-cassandra bash
 docker exec -it devops-cassandra bash -c cqlsh
 docker exec -it devops-cassandra-seed bash
 docker exec -it devops-cassandra-node-1 bash
 
-DESCRIBE keyspaces;
+# execute cql script from host
+(docker exec -i devops-cassandra bash \
+  -c &quot;cat &gt; example.cql; cqlsh -f example.cql&quot;) &lt; cql/example_create.cql
+</code></pre>
+
+<p><code>cqlsh</code> example <a href="https://github.com/niqdev/devops/tree/master/cassandra/cql">scripts</a></p>
+<pre><code class="bash"># connect
+cqlsh localhost 9042
+cqlsh localhost 9042 -u cassandra -p cassandra
+
+# execute cql script
+cqlsh -f cql/example_create.cql
+
+# info
+SHOW VERSION;
+DESCRIBE CLUSTER;
+DESCRIBE KEYSPACES;
 DESCRIBE KEYSPACE example;
 DESCRIBE TABLE example.messages;
 SELECT * FROM example.messages;
+
+# timestamp - not allowed on pk
+SELECT id, body, WRITETIME(body) FROM example.messages;
+
+# timestamp in microsecond - old timestamp are ignored
+UPDATE example.messages USING TIMESTAMP 1434373756626000
+SET body = 'message3' WHERE id = 'INVALID_UUID';
+
+# time to live TTL - stored on a per-column level no row
+SELECT id, TTL(body) FROM example.messages;
+</code></pre>
+
+<p>Old <code>cassandra-cli</code> deprecated and removed in Cassandra 3.0</p>
+<pre><code>USE keyspace_name;
+LIST table_name;
+GET table_name[&quot;primary_key&quot;];
+SET table_name[&quot;primary_key&quot;][&quot;column_name&quot;];
 </code></pre>
 
 <p><br></p>
