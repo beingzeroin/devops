@@ -204,7 +204,7 @@
 <p>Cassandra represents the data managed by a cluster as a <strong>ring</strong>. Each node in the ring is assigned one or more ranges of data described by a <strong>token</strong>, which determines its position in the ring and is used to identify each partition</p>
 </li>
 </ul>
-<p><img alt="token-ring" src="../img/cassandra-token-ring.png" /></p>
+<p><img alt="cassandra-token-ring" src="../img/cassandra-token-ring.png" /></p>
 <ul>
 <li>
 <p><strong>virtual nodes</strong> allow to broken a token range and assign multiple tokens to a single physical node</p>
@@ -218,7 +218,13 @@
 <li>
 <p>Cassandra provides tuneable <strong>consistency</strong> levels and must be specified on each read or write</p>
 </li>
+<li>
+<p>A client may connect to any node, named <strong>coordinator node</strong>, in the cluster to initiate a read or write query. The coordinator identifies which nodes are replicas for the data and forwards the queries to them</p>
+</li>
 </ul>
+<p><img alt="cassandra-query" src="../img/cassandra-query.png" /></p>
+<!-- TODO ![cassandra-memory](img/cassandra-memory.png) -->
+
 <h2 id="setup">Setup</h2>
 <p>Single Node Cluster</p>
 <pre><code class="bash"># change path
@@ -284,6 +290,9 @@ DESCRIBE CLUSTER;
 DESCRIBE KEYSPACES;
 DESCRIBE KEYSPACE example;
 DESCRIBE TABLE example.messages;
+
+# nice format
+EXPAND ON;
 </code></pre>
 
 <p>Old <code>cassandra-cli</code> deprecated and removed in Cassandra 3.0</p>
