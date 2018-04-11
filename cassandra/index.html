@@ -234,7 +234,7 @@
 <p>When the number of objects stored in the memtable or in the commit log reaches a threshold, the contents of the memtable are flushed (non-blocking operation) to disk in a file called <strong>SSTable</strong> and a new memtable or commit log is then created/recycled</p>
 </li>
 <li>
-<p>No reads or seeks of any kind are required for writing a value to Cassandra because all writes are append operations and then <strong>compaction</strong> is used to amortize the reorganization of data and gain better future read performance</p>
+<p>No reads or seeks of any kind are required for writing a value to Cassandra because all writes are append operations to immutable SSTables. However, periodic <strong>compaction</strong> operations in Cassandra are performed in order to support fast read performance: the keys are merged, columns are combined, tombstones are discarded, and a new index is created</p>
 </li>
 <li>
 <p>The <strong>key cache</strong> stores a map of partition keys to row index entries, facilitating faster read access into SSTables stored on disk. The key cache is stored on the JVM heap</p>
@@ -252,13 +252,19 @@
 <p><img alt="cassandra-memory" src="../img/cassandra-memory.png" /></p>
 <ul>
 <li>
-<p>To provide <em>linearizable consistency</em> e.g. read-before-write Cassandra supports a <strong>lightweight transaction</strong> or LWT. The implementation is based on <em>paxos</em> and is limited to a single partition</p>
+<p>To provide <em>linearizable consistency</em> e.g. read-before-write, Cassandra supports a <strong>lightweight transaction</strong> or LWT. The implementation is based on <em>paxos</em> and is limited to a single partition</p>
 </li>
 <li>
 <p>A <strong>tombstone</strong> is a deletion marker that is required to suppress older data in SSTables until compaction or garbage collection run. Data is not immediately deleted but it's treated as an update operation</p>
 </li>
 <li>
 <p><strong>Bloom filters</strong> are very fast, non-deterministic algorithms for testing whether an element is a member of a set. It is possible to get a false-positive read, but not a false-negative. When a read is performed, the filter is checked first before accessing disk, if it indicates that the element does not exist in the set, it certainly doesn't, but if the filter thinks that the element is in the set, the disk is accessed to make sure</p>
+</li>
+<li>
+<p><em>Replica Synchronization (1)</em> Cassandra reads data from multiple replicas in order to achieve the requested consistency level and detects if any replicas have out of date values. If an insufficient number of nodes have the latest value, a <strong>read repair</strong> is performed immediately to update the out of date replicas</p>
+</li>
+<li>
+<p><em>Replica Synchronization (2)</em> <strong>Anti-entropy repair</strong> is a manually initiated operation performed on nodes as part of a regular maintenance process executed with <em>nodetool</em> causing a <em>major compaction</em> during which a node exchange <em>Merkle trees</em> with neighboring nodes</p>
 </li>
 </ul>
 <h2 id="setup">Setup</h2>
