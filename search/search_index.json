@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/", 
-            "text": "DevOps\n\n\nA collection of Docker and Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.\n\n\n\n\nLinux\n\n\nDocker\n\n\nAnsible\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nHadoop\n\n\nReadings\n\n\nOther", 
+            "text": "DevOps\n\n\nA collection of Docker and Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.\n\n\n\n\nLinux\n\n\nDocker\n\n\nAnsible\n\n\nCassandra\n\n\nZookeeper\n\n\nKafka\n\n\nHadoop\n\n\nVCS\n\n\nReadings\n\n\nOther", 
             "title": "Home"
         }, 
         {
             "location": "/#devops", 
-            "text": "A collection of Docker and Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.   Linux  Docker  Ansible  Cassandra  Zookeeper  Kafka  Hadoop  Readings  Other", 
+            "text": "A collection of Docker and Vagrant images, scripts and documentation mainly related to distributed systems for local development, learning purposes and quick prototyping.   Linux  Docker  Ansible  Cassandra  Zookeeper  Kafka  Hadoop  VCS  Readings  Other", 
             "title": "DevOps"
         }, 
         {
@@ -229,6 +229,26 @@
             "location": "/hadoop/#useful-commands", 
             "text": "Workflow requires  oozie.wf.application.path  property  Coordinator requires  oozie.coord.application.path  property   # verify oozie status\noozie admin \\\n  -oozie http://oozie.local:11000/oozie \\\n  -status\n\n# verify workflow or coordinator status\noozie job \\\n  -oozie http://oozie.local:11000/oozie \\\n  -info JOB_ID \\\n  -verbose\n\n# poll workflow or coordinator status\noozie job \\\n  -oozie http://oozie.local:11000/oozie \\\n  -poll JOB_ID \\\n  -interval 10 \\\n  -timeout 60 \\\n  -verbose", 
             "title": "Useful commands"
+        }, 
+        {
+            "location": "/vcs/", 
+            "text": "Version Control Systems\n\n\nGit\n\n\nDocumentation\n\n\n\n\ngit - the simple guide\n\n\ngit notes (1)\n\n\ngit notes (2)\n\n\n\n\nMercurial\n\n\nDocumentation\n\n\n\n\nA Guide to Branching in Mercurial\n\n\n\n\n# changes since last commit\nhg st\n\n# verify current branch\nhg branch\n\n# lists all branches\nhg branches\n\n# checkout default branch\nhg up default\n\n# pull latest changes\nhg pull -u\n\n# create new branch\nhg branch \nbranch-name\n\n\n# track new file\nhg add .\n\n# track new files and untrack removed files\nhg addremove\n\n# commit all tracked files\nhg commit -m \nmy-comment\n\n\n# commit specific files\nhg commit FILE_1 FILE_2 -m \nmy-comment\n\n\n# commit and track/untrack files (i.e. addremove)\nhg commit -A -m \nmy-comment-with-addremove\n\n\n# rename last unpushed commit message\nhg commit -m \nbad-commit-message\n\nhg commit --amend -m \ngood-commit-message\n\n\n# discard untracked files\nhg purge\n\n# discard uncommitted local changes\nhg up -C\n\n# discard local uncommitted branch\nhg strip \nbranch-name\n\n\n# push commits in all branches\nhg push\n\n# push commits in current branch\nhg push -b .\n\n# create a new branch and push commits in current branch (first time only)\nhg push -b . --new-branch\n\n# lists unpushed commit\nhg outgoing\n\n# change head to specific revision\nhg up -r 12345\n\n# merge default branch on current branch\nhg up default\nhg pull -u\nhg status\nhg up CURRENT-BRANCH\nhg merge default\nhg diff\n\n# remove all resolved conflicts\nrm **/*.orig\n\n# list stashes\nhg shelve --list\n\n# stash\nhg shelve -n \nmy-draft\n\n\n# unstash\nhg unshelve \nmy-draft\n\n\n# revert/undo last unpushed commit\nhg strip -r -1 --keep\nhg strip --keep --rev .\n\n# solve conflicts manually and then mark it as merged\nhg resolve -m FILE-NAME\n\n# lists commits\nhg log\nhg ls\n\n# pretty log\nhg history --graph --limit 10", 
+            "title": "VCS"
+        }, 
+        {
+            "location": "/vcs/#version-control-systems", 
+            "text": "", 
+            "title": "Version Control Systems"
+        }, 
+        {
+            "location": "/vcs/#git", 
+            "text": "Documentation   git - the simple guide  git notes (1)  git notes (2)", 
+            "title": "Git"
+        }, 
+        {
+            "location": "/vcs/#mercurial", 
+            "text": "Documentation   A Guide to Branching in Mercurial   # changes since last commit\nhg st\n\n# verify current branch\nhg branch\n\n# lists all branches\nhg branches\n\n# checkout default branch\nhg up default\n\n# pull latest changes\nhg pull -u\n\n# create new branch\nhg branch  branch-name \n\n# track new file\nhg add .\n\n# track new files and untrack removed files\nhg addremove\n\n# commit all tracked files\nhg commit -m  my-comment \n\n# commit specific files\nhg commit FILE_1 FILE_2 -m  my-comment \n\n# commit and track/untrack files (i.e. addremove)\nhg commit -A -m  my-comment-with-addremove \n\n# rename last unpushed commit message\nhg commit -m  bad-commit-message \nhg commit --amend -m  good-commit-message \n\n# discard untracked files\nhg purge\n\n# discard uncommitted local changes\nhg up -C\n\n# discard local uncommitted branch\nhg strip  branch-name \n\n# push commits in all branches\nhg push\n\n# push commits in current branch\nhg push -b .\n\n# create a new branch and push commits in current branch (first time only)\nhg push -b . --new-branch\n\n# lists unpushed commit\nhg outgoing\n\n# change head to specific revision\nhg up -r 12345\n\n# merge default branch on current branch\nhg up default\nhg pull -u\nhg status\nhg up CURRENT-BRANCH\nhg merge default\nhg diff\n\n# remove all resolved conflicts\nrm **/*.orig\n\n# list stashes\nhg shelve --list\n\n# stash\nhg shelve -n  my-draft \n\n# unstash\nhg unshelve  my-draft \n\n# revert/undo last unpushed commit\nhg strip -r -1 --keep\nhg strip --keep --rev .\n\n# solve conflicts manually and then mark it as merged\nhg resolve -m FILE-NAME\n\n# lists commits\nhg log\nhg ls\n\n# pretty log\nhg history --graph --limit 10", 
+            "title": "Mercurial"
         }, 
         {
             "location": "/readings/", 
