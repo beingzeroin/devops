@@ -187,6 +187,9 @@
 <li>
 <p><a href="https://stackoverflow.com/questions/24949676/difference-between-partition-key-composite-key-and-clustering-key-in-cassandra">Difference between partition key, composite key and clustering key</a></p>
 </li>
+<li>
+<p><a href="https://github.com/riptano/ccm">Cassandra Cluster Manager</a></p>
+</li>
 </ul>
 <!-- * [Cassandra Modeling Kata](https://github.com/allegro/cassandra-modeling-kata) -->
 
@@ -254,7 +257,10 @@
 <p>In a scenario in which a write request is sent to Cassandra, but a replica node where the write properly belongs is not available due to network partition, hardware failure, or some other reason, to ensure general availability Cassandra implements a feature called <strong>hinted handoff</strong>. The coordinator node while store temporarily the data until it detects that the node is available again</p>
 </li>
 </ul>
-<p><img alt="cassandra-memory" src="../img/cassandra-memory.png" /></p>
+<p><em>Write Path</em>
+<img alt="cassandra-write-path" src="../img/cassandra-write-path.png" /></p>
+<p><em>Read Path</em>
+<img alt="cassandra-read-path" src="../img/cassandra-read-path.png" /></p>
 <ul>
 <li>
 <p>To provide <em>linearizable consistency</em> e.g. read-before-write, Cassandra supports a <strong>lightweight transaction</strong> or LWT. The implementation is based on <em>paxos</em> and is limited to a single partition</p>
