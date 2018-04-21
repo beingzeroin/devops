@@ -346,8 +346,28 @@ DESCRIBE TABLE example.messages;
 
 # nice format
 EXPAND ON;
+# trace query
+TRACING ON;
+
+# bulk loading
+COPY example.users TO '/cql/users.csv' WITH HEADER=TRUE;
+COPY example.users FROM '/cql/all_users.csv' WITH DELIMITER = ';';
+COPY example.users (first_name,last_name,addresses,emails,enable) FROM '/cql/column_users.csv' WITH HEADER=TRUE;
+
+# automatic paging
+PAGING;
+PAGING ON;
+PAGING 100;
+# limit
+SELECT * FROM example.users LIMIT 1;
 </code></pre>
 
+<ul>
+<li><a href="https://docs.datastax.com/en/cql/3.3/cql/cql_using/useBatch.html">Batch</a></li>
+<li><a href="https://docs.datastax.com/en/dse/6.0/cql/cql/cql_using/useCreateUDT.html">User-Defined Type</a></li>
+<li><a href="https://docs.datastax.com/en/cql/3.3/cql/cql_using/useCreateUDF.html">User-Defined Function</a></li>
+<li><a href="https://docs.datastax.com/en/cql/3.3/cql/cql_using/useCreateUDA.html">User-Defined Aggregate Function</a></li>
+</ul>
 <p>Old <code>cassandra-cli</code> deprecated and removed in Cassandra 3.0</p>
 <pre><code>USE keyspace_name;
 LIST table_name;
