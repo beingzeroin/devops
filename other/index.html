@@ -99,7 +99,7 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../vcs/">VCS</a>
+    <a class="" href="../kubernetes/">Kubernetes</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -127,7 +127,16 @@
     <li class="toctree-l2"><a href="#giter8">Giter8</a></li>
     
 
+    <li class="toctree-l2"><a href="#snap">Snap</a></li>
+    
+
     <li class="toctree-l2"><a href="#python">Python</a></li>
+    
+
+    <li class="toctree-l2"><a href="#git">Git</a></li>
+    
+
+    <li class="toctree-l2"><a href="#mercurial">Mercurial</a></li>
     
 
     </ul>
@@ -309,6 +318,26 @@ g8 sbt/scala-seed.g8 --name=my-new-website
 </code></pre>
 
 <p><br></p>
+<h2 id="snap">Snap</h2>
+<p>Documentation</p>
+<ul>
+<li><a href="https://docs.snapcraft.io">Snap</a></li>
+</ul>
+<p>Useful commands</p>
+<pre><code class="bash"># search
+snap find gimp
+
+# info
+snap info gimp
+
+# install
+snap install gimp
+
+# list installed app
+snap list
+</code></pre>
+
+<p><br></p>
 <h2 id="python">Python</h2>
 <p>Documentation</p>
 <ul>
@@ -372,6 +401,116 @@ pylint --generate-rcfile &gt; .pylintrc
 
 # create module
 touch app/{__init__,main}.py
+</code></pre>
+
+<p><br></p>
+<h2 id="git">Git</h2>
+<p>Documentation</p>
+<ul>
+<li><a href="https://rogerdudler.github.io/git-guide">git - the simple guide</a></li>
+<li><a href="https://github.com/niqdev/git-notes/blob/master/git-real-1.md">git notes (1)</a></li>
+<li><a href="https://github.com/niqdev/git-notes/blob/master/git-real-2.md">git notes (2)</a></li>
+</ul>
+<p><br></p>
+<h2 id="mercurial">Mercurial</h2>
+<p>Documentation</p>
+<ul>
+<li><a href="http://stevelosh.com/blog/2009/08/a-guide-to-branching-in-mercurial">A Guide to Branching in Mercurial</a></li>
+</ul>
+<pre><code class="bash"># changes since last commit
+hg st
+
+# verify current branch
+hg branch
+
+# lists all branches
+hg branches
+
+# checkout default branch
+hg up default
+
+# pull latest changes
+hg pull -u
+
+# create new branch
+hg branch &quot;branch-name&quot;
+
+# track new file
+hg add .
+
+# track new files and untrack removed files
+hg addremove
+
+# commit all tracked files
+hg commit -m &quot;my-comment&quot;
+
+# commit specific files
+hg commit FILE_1 FILE_2 -m &quot;my-comment&quot;
+
+# commit and track/untrack files (i.e. addremove)
+hg commit -A -m &quot;my-comment-with-addremove&quot;
+
+# rename last unpushed commit message
+hg commit -m &quot;bad-commit-message&quot;
+hg commit --amend -m &quot;good-commit-message&quot;
+
+# discard untracked files
+hg purge
+
+# discard uncommitted local changes
+hg up -C
+
+# discard local uncommitted branch
+hg strip &quot;branch-name&quot;
+
+# push commits in all branches
+hg push
+
+# push commits in current branch
+hg push -b .
+
+# create a new branch and push commits in current branch (first time only)
+hg push -b . --new-branch
+
+# lists unpushed commit
+hg outgoing
+
+# change head to specific revision
+hg up -r 12345
+
+# merge default branch on current branch
+hg up default
+hg pull -u
+hg status
+hg up CURRENT-BRANCH
+hg merge default
+hg diff
+
+# remove all resolved conflicts
+rm **/*.orig
+
+# list stashes
+hg shelve --list
+
+# stash
+hg shelve -n &quot;my-draft&quot;
+
+# unstash
+hg unshelve &quot;my-draft&quot;
+
+# revert/undo last unpushed commit
+hg strip -r -1 --keep
+hg strip --keep --rev .
+
+# solve conflicts manually and then mark it as merged
+hg resolve -m FILE-NAME
+
+# lists commits
+hg log
+hg ls
+
+# pretty log
+hg history --graph --limit 10
 </code></pre>
 
 <p><br></p>

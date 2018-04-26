@@ -8,7 +8,7 @@
   
   <meta name="author" content="niqdev">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>VCS - DevOps</title>
+  <title>Kubernetes - DevOps</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "VCS";
-    var mkdocs_page_input_path = "vcs.md";
-    var mkdocs_page_url = "/vcs/";
+    var mkdocs_page_name = "Kubernetes";
+    var mkdocs_page_input_path = "kubernetes.md";
+    var mkdocs_page_url = "/kubernetes/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -99,16 +99,14 @@
           
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">VCS</a>
+    <a class="current" href="./">Kubernetes</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#version-control-systems">Version Control Systems</a></li>
+    <li class="toctree-l2"><a href="#kubernetes">Kubernetes</a></li>
     
         <ul>
         
-            <li><a class="toctree-l3" href="#git">Git</a></li>
-        
-            <li><a class="toctree-l3" href="#mercurial">Mercurial</a></li>
+            <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
         </ul>
     
@@ -148,10 +146,10 @@
     
       
     
-    <li>VCS</li>
+    <li>Kubernetes</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/niqdev/devops/edit/master/docs/vcs.md"
+        <a href="https://github.com/niqdev/devops/edit/master/docs/kubernetes.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -161,116 +159,129 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="version-control-systems">Version Control Systems</h1>
-<h2 id="git">Git</h2>
+                <h1 id="kubernetes">Kubernetes</h1>
+<blockquote>
+<p><strong>Kubernetes</strong> is a system for automating deployment, scaling, and management of containerized applications</p>
+</blockquote>
 <p>Documentation</p>
 <ul>
-<li><a href="https://rogerdudler.github.io/git-guide">git - the simple guide</a></li>
-<li><a href="https://github.com/niqdev/git-notes/blob/master/git-real-1.md">git notes (1)</a></li>
-<li><a href="https://github.com/niqdev/git-notes/blob/master/git-real-2.md">git notes (2)</a></li>
+<li><a href="https://kubernetes.io/docs/home/?path=browse">Kubernetes</a></li>
 </ul>
-<h2 id="mercurial">Mercurial</h2>
-<p>Documentation</p>
+<h2 id="setup">Setup</h2>
+<p>Requirements</p>
 <ul>
-<li><a href="http://stevelosh.com/blog/2009/08/a-guide-to-branching-in-mercurial">A Guide to Branching in Mercurial</a></li>
+<li><a href="https://github.com/kubernetes/minikube">Minikube</a></li>
 </ul>
-<pre><code class="bash"># changes since last commit
-hg st
+<p>Basic</p>
+<pre><code class="bash"># verify installation
+minikube version
+kubectl version
 
-# verify current branch
-hg branch
+# start local cluster
+minikube start --vm-driver=virtualbox
 
-# lists all branches
-hg branches
+# cluster info
+kubectl cluster-info
 
-# checkout default branch
-hg up default
+# nodes info
+kubectl get nodes
 
-# pull latest changes
-hg pull -u
+# deploy demo app
+kubectl run kubernetes-bootcamp \
+  --image=gcr.io/google-samples/kubernetes-bootcamp:v1 \
+  --port=8080
 
-# create new branch
-hg branch &quot;branch-name&quot;
+# update app
+kubectl set image deployments/kubernetes-bootcamp \
+  kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
 
-# track new file
-hg add .
+# verify update
+kubectl rollout status deployments/kubernetes-bootcamp
 
-# track new files and untrack removed files
-hg addremove
+# undo latest deployment
+kubectl rollout undo deployments/kubernetes-bootcamp
 
-# commit all tracked files
-hg commit -m &quot;my-comment&quot;
+# list deployments
+kubectl get deployments
 
-# commit specific files
-hg commit FILE_1 FILE_2 -m &quot;my-comment&quot;
+# list pods
+kubectl get pods
 
-# commit and track/untrack files (i.e. addremove)
-hg commit -A -m &quot;my-comment-with-addremove&quot;
-
-# rename last unpushed commit message
-hg commit -m &quot;bad-commit-message&quot;
-hg commit --amend -m &quot;good-commit-message&quot;
-
-# discard untracked files
-hg purge
-
-# discard uncommitted local changes
-hg up -C
-
-# discard local uncommitted branch
-hg strip &quot;branch-name&quot;
-
-# push commits in all branches
-hg push
-
-# push commits in current branch
-hg push -b .
-
-# create a new branch and push commits in current branch (first time only)
-hg push -b . --new-branch
-
-# lists unpushed commit
-hg outgoing
-
-# change head to specific revision
-hg up -r 12345
-
-# merge default branch on current branch
-hg up default
-hg pull -u
-hg status
-hg up CURRENT-BRANCH
-hg merge default
-hg diff
-
-# remove all resolved conflicts
-rm **/*.orig
-
-# list stashes
-hg shelve --list
-
-# stash
-hg shelve -n &quot;my-draft&quot;
-
-# unstash
-hg unshelve &quot;my-draft&quot;
-
-# revert/undo last unpushed commit
-hg strip -r -1 --keep
-hg strip --keep --rev .
-
-# solve conflicts manually and then mark it as merged
-hg resolve -m FILE-NAME
-
-# lists commits
-hg log
-hg ls
-
-# pretty log
-hg history --graph --limit 10
+# list containers inside pods
+kubectl describe pods
 </code></pre>
 
-<p><br></p>
+<p>Pod and container</p>
+<pre><code class="bash"># proxy cluster (2nd terminal)
+kubectl proxy
+
+# pod name
+export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{&quot;\n&quot;}}{{end}}')
+echo Name of the Pod: $POD_NAME
+
+# verify proxy
+http :8001/version
+http :8001/api/v1/proxy/namespaces/default/pods/$POD_NAME/
+
+# view logs
+kubectl logs $POD_NAME
+
+# execute command on the container
+kubectl exec $POD_NAME env
+kubectl exec $POD_NAME ls -- -la
+
+# access the container
+kubectl exec -ti $POD_NAME bash
+</code></pre>
+
+<p>Services</p>
+<pre><code class="bash"># list services
+kubectl get services
+
+# create service
+kubectl expose deployment/kubernetes-bootcamp \
+--type=&quot;NodePort&quot; \
+--port 8080
+
+# service info
+kubectl describe services/kubernetes-bootcamp
+
+# expose service
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+echo NODE_PORT=$NODE_PORT
+
+# verify service
+curl $(minikube ip):$NODE_PORT
+
+# deployment info
+kubectl describe deployment
+
+# list by label
+kubectl get pods -l run=kubernetes-bootcamp
+kubectl get services -l run=kubernetes-bootcamp
+
+# apply label
+kubectl label pod $POD_NAME app=v1
+
+# verify label
+kubectl describe pods $POD_NAME
+
+# query by label
+kubectl get pods -l app=v1
+
+# delete service
+kubectl delete service -l run=kubernetes-bootcamp
+</code></pre>
+
+<p>Scaling</p>
+<pre><code class="bash"># add 4 replicas
+kubectl scale deployments/kubernetes-bootcamp --replicas=4
+
+# verify scaling
+kubectl get deployments
+kubectl get pods -o wide
+kubectl describe deployments/kubernetes-bootcamp
+</code></pre>
               
             </div>
           </div>
