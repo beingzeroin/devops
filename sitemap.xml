@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/linux/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +20,7 @@
     
     <url>
      <loc>/docker/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,7 +28,7 @@
     
     <url>
      <loc>/ansible/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +36,7 @@
     
     <url>
      <loc>/cassandra/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -44,7 +44,7 @@
     
     <url>
      <loc>/zookeeper/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -52,7 +52,7 @@
     
     <url>
      <loc>/kafka/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -60,7 +60,7 @@
     
     <url>
      <loc>/hadoop/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -68,7 +68,7 @@
     
     <url>
      <loc>/kubernetes/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -76,7 +76,7 @@
     
     <url>
      <loc>/readings/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -84,7 +84,7 @@
     
     <url>
      <loc>/other/</loc>
-     <lastmod>2018-04-30</lastmod>
+     <lastmod>2018-05-02</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

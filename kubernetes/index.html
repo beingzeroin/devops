@@ -166,30 +166,59 @@
 <p>Documentation</p>
 <ul>
 <li><a href="https://kubernetes.io/docs/home/?path=browse">Kubernetes</a></li>
+<li><a href="http://kubernetesbyexample.com">Kubernetes by Example</a></li>
 </ul>
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
 <ul>
 <li><a href="https://github.com/kubernetes/minikube">Minikube</a></li>
+<li><a href="https://www.virtualbox.org">VirtualBox</a></li>
 </ul>
-<p>Basic</p>
+<p>Local cluster</p>
 <pre><code class="bash"># verify installation
 minikube version
-kubectl version
 
-# start local cluster
+# lifecycle
 minikube start --vm-driver=virtualbox
+minikube stop
+minikube delete
+
+# dashboard
+export NO_PROXY=localhost,127.0.0.1,$(minikube ip)
+minikube dashboard
+
+# access
+minikube ssh
+docker ps -a
+
+# reuse the minikube's built-in docker daemon
+eval $(minikube docker-env)
+</code></pre>
+
+<p>Basic</p>
+<pre><code class="bash"># verify installation
+kubectl version
 
 # cluster info
 kubectl cluster-info
-
-# nodes info
 kubectl get nodes
+kubectl describe nodes
+kubectl config view
 
-# deploy demo app
+# namespace
+kubectl create namespace local
+kubectl get namespaces
+kubectl config set-context $(kubectl config current-context) --namespace=local
+kubectl config view | grep namespace
+kubectl delete namespace local
+</code></pre>
+
+<p>Simple deployment</p>
+<pre><code class="bash"># deploy demo app
 kubectl run kubernetes-bootcamp \
   --image=gcr.io/google-samples/kubernetes-bootcamp:v1 \
-  --port=8080
+  --port=8080 \
+  --labels='app=kubernetes-bootcamp'
 
 # update app
 kubectl set image deployments/kubernetes-bootcamp \
@@ -197,6 +226,7 @@ kubectl set image deployments/kubernetes-bootcamp \
 
 # verify update
 kubectl rollout status deployments/kubernetes-bootcamp
+kubectl rollout history deployments/kubernetes-bootcamp
 
 # undo latest deployment
 kubectl rollout undo deployments/kubernetes-bootcamp
@@ -204,20 +234,26 @@ kubectl rollout undo deployments/kubernetes-bootcamp
 # list deployments
 kubectl get deployments
 
+# list containers inside pods
+kubectl describe pods
+
 # list pods
 kubectl get pods
 
-# list containers inside pods
-kubectl describe pods
+# filter with equality-based labels
+kubectl get pods -l app=kubernetes-bootcamp
+
+# filter with set-based labels
+kubectl get pods -l 'app in (kubernetes-bootcamp)'
 </code></pre>
 
-<p>Pod and container</p>
-<pre><code class="bash"># proxy cluster (2nd terminal)
+<p>Pod and Container</p>
+<pre><code class="bash"># proxy cluster (open in 2nd terminal)
 kubectl proxy
 
 # pod name
-export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{&quot;\n&quot;}}{{end}}')
-echo Name of the Pod: $POD_NAME
+export POD_NAME=$(kubectl get pods -l app=kubernetes-bootcamp -o go-template --template '{{range .items}}{{.metadata.name}}{{&quot;\n&quot;}}{{end}}')
+echo POD_NAME=$POD_NAME
 
 # verify proxy
 http :8001/version
@@ -226,22 +262,25 @@ http :8001/api/v1/proxy/namespaces/default/pods/$POD_NAME/
 # view logs
 kubectl logs $POD_NAME
 
-# execute command on the container
-kubectl exec $POD_NAME env
+# execute command on container
+kubectl exec $POD_NAME printenv
 kubectl exec $POD_NAME ls -- -la
 
-# access the container
-kubectl exec -ti $POD_NAME bash
+# access container
+kubectl exec -it $POD_NAME bash
+
+# verify label
+kubectl describe pods $POD_NAME
 </code></pre>
 
-<p>Services</p>
+<p>Service</p>
 <pre><code class="bash"># list services
 kubectl get services
 
 # create service
 kubectl expose deployment/kubernetes-bootcamp \
---type=&quot;NodePort&quot; \
---port 8080
+  --type=&quot;NodePort&quot; \
+  --port 8080
 
 # service info
 kubectl describe services/kubernetes-bootcamp
@@ -253,35 +292,19 @@ echo NODE_PORT=$NODE_PORT
 # verify service
 curl $(minikube ip):$NODE_PORT
 
-# deployment info
-kubectl describe deployment
-
-# list by label
-kubectl get pods -l run=kubernetes-bootcamp
-kubectl get services -l run=kubernetes-bootcamp
-
-# apply label
-kubectl label pod $POD_NAME app=v1
-
-# verify label
-kubectl describe pods $POD_NAME
-
-# query by label
-kubectl get pods -l app=v1
-
-# delete service
-kubectl delete service -l run=kubernetes-bootcamp
-</code></pre>
-
-<p>Scaling</p>
-<pre><code class="bash"># add 4 replicas
+# add 4 replicas
 kubectl scale deployments/kubernetes-bootcamp --replicas=4
 
-# verify scaling
-kubectl get deployments
+# info
+kubectl get pod,deployment,service
 kubectl get pods -o wide
 kubectl describe deployments/kubernetes-bootcamp
+
+# cleanup
+kubectl delete deployment,service kubernetes-bootcamp
 </code></pre>
+
+<p><br></p>
               
             </div>
           </div>
