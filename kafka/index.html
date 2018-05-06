@@ -96,6 +96,8 @@
     
         <ul>
         
+            <li><a class="toctree-l3" href="#architecture">Architecture</a></li>
+        
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
         </ul>
@@ -165,7 +167,82 @@
 </blockquote>
 <p>Documentation</p>
 <ul>
-<li><a href="https://kafka.apache.org">Kafka</a></li>
+<li>
+<p><a href="https://kafka.apache.org">Kafka</a></p>
+</li>
+<li>
+<p><a href="http://notes.stephenholiday.com/Kafka.pdf">Kafka: a Distributed Messaging System for Log Processing</a> (Paper)</p>
+</li>
+<li>
+<p><a href="https://docs.confluent.io/current/schema-registry/docs/index.html">Schema Registry</a></p>
+</li>
+<li>
+<p><a href="https://doc.akka.io/docs/akka-stream-kafka/current/home.html">Reactive Kafka</a></p>
+</li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<ul>
+<li>
+<p>Kafka is a publish/subscribe messaging system often described as a <em>distributed commit log</em> or <em>distributing streaming platform</em></p>
+</li>
+<li>
+<p>The unit of data is called a <strong>message</strong>, which is simply an array of bytes and it can have a <strong>key</strong> used to assign partitions</p>
+</li>
+<li>
+<p>A <strong>batch</strong> is a collection of messages, all of which are being produced to the same topic and partition</p>
+</li>
+<li>
+<p>Messages are categorized into <strong>topics</strong> which are additionally broken down into a number of <strong>partitions</strong></p>
+</li>
+<li>
+<p>Messages are written in an append-only fashion and are read in order from beginning to end. As a topic typically has multiple partitions, there is no guarantee of message time-ordering across the entire topic, just within a single partition</p>
+</li>
+<li>
+<p>A <strong>stream</strong> is considered to be a single topic of data, regardless of the number of partitions</p>
+</li>
+<li>
+<p><strong>Producers</strong>, publishers or writers, create new messages to a specific topic. By default, the producer does not care what partition a specific message is written to and will balance messages over all partitions of a topic evenly</p>
+</li>
+</ul>
+<p><img alt="kafka-producer" src="../img/kafka-producer.png" /></p>
+<ul>
+<li><strong>Consumers</strong>, subscribers or readers, read messages. The consumer subscribes to one or more topics and reads the messages in the order in which they were produced. The consumer keeps track of which messages it has already consumed by keeping track of the <strong>offset</strong> of messages i.e. an integer value that continually
+increases. Each message in a given partition has a unique offset stored either in Zookeeper or in Kafka itself</li>
+</ul>
+<p><img alt="kafka-consumer" src="../img/kafka-consumer.png" /></p>
+<ul>
+<li>
+<p>Consumers work as part of a <strong>consumer group</strong>, which is one or more consumers that work together to consume a topic. The group assures that each partition is only consumed by one member. The mapping of a consumer to a partition is often called <strong>ownership</strong> of the partition by the consumer</p>
+</li>
+<li>
+<p>When a new consumer is added to a group, or when a consumer shuts down or crashes leaving the group, it cause reassignment of partitions to other consumers. Moving partition ownership from one consumer to another is called a <strong>rebalance</strong> which provide high availability and scalability</p>
+</li>
+<li>
+<p>Consumers maintain membership in a consumer group and ownership of the partitions assigned to them by sending <strong>heartbeats</strong> to a Kafka broker designated as the <strong>group coordinator</strong></p>
+</li>
+<li>
+<p>You can't have multiple consumers that belong to the same group in one thread and you can't have multiple threads safely use the same consumer</p>
+</li>
+</ul>
+<p><img alt="kafka-consumer-group" src="../img/kafka-consumer-group.png" /></p>
+<ul>
+<li>
+<p>A single Kafka server is called a <strong>broker</strong>. The broker receives messages from producers, assigns offsets to them, and commits the messages to storage on disk. It also services consumers, responding to fetch requests for partitions and responding with the messages that have been committed to disk</p>
+</li>
+<li>
+<p>Kafka brokers are designed to operate as part of a <strong>cluster</strong>. Within a cluster of brokers, one broker will also function as the cluster <strong>controller</strong>. The controller is responsible for administrative operations, including assigning partitions to brokers and monitoring for broker failures. A partition is owned by a single broker in the cluster, and that broker is called the <strong>leader</strong> of the partition. A partition may be assigned to multiple brokers, which will result in
+the partition being replicated. All consumers and producers operating on that partition must connect to the leader</p>
+</li>
+</ul>
+<p><img alt="kafka-cluster" src="../img/kafka-cluster.png" /></p>
+<ul>
+<li>
+<p>A key feature is that of <strong>retention</strong>. Brokers are configured with a default retention setting for topics, either retaining messages for some period of time or until the topic reaches a certain size in bytes. Once these limits are
+reached, messages are expired and deleted</p>
+</li>
+<li>
+<p><strong>MirrorMaker</strong> is a tool to coordinates multiple clusters or datacenters and replicate data</p>
+</li>
 </ul>
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
@@ -229,9 +306,17 @@ docker exec -it devops-kafka bash
 <pre><code class="bash">docker exec -it kafka bash
 cd /opt/kafka/bin
 
+# create topic
 ./kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic test
+
+# view topic
 ./kafka-topics.sh --list --zookeeper zookeeper:2181
+./kafka-topics.sh --zookeeper zookeeper:2181 --describe --topic test
+
+# produce
 ./kafka-console-producer.sh --broker-list kafka:9092 --topic test
+
+# consume
 ./kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic test --from-beginning
 </code></pre>
 
