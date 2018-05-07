@@ -179,6 +179,9 @@
 <li>
 <p><a href="https://doc.akka.io/docs/akka-stream-kafka/current/home.html">Reactive Kafka</a></p>
 </li>
+<li>
+<p><a href="https://github.com/edenhill/kafkacat">kafkacat</a></p>
+</li>
 </ul>
 <h2 id="architecture">Architecture</h2>
 <ul>
@@ -186,16 +189,16 @@
 <p>Kafka is a publish/subscribe messaging system often described as a <em>distributed commit log</em> or <em>distributing streaming platform</em></p>
 </li>
 <li>
-<p>The unit of data is called a <strong>message</strong>, which is simply an array of bytes and it can have a <strong>key</strong> used to assign partitions</p>
+<p>The unit of data is called a <strong>message</strong>, which is simply an array of bytes and it can have a <strong>key</strong> used to assign partitions. A <strong>batch</strong> is a collection of messages, all of which are being produced to the same topic and partition</p>
 </li>
 <li>
-<p>A <strong>batch</strong> is a collection of messages, all of which are being produced to the same topic and partition</p>
-</li>
-<li>
-<p>Messages are categorized into <strong>topics</strong> which are additionally broken down into a number of <strong>partitions</strong></p>
+<p>Messages are categorized into <strong>topics</strong> which are additionally broken down into a number of <strong>partitions</strong>. Each partition is splitted into <strong>segments</strong> for storage purposes and each segment is stored in a single data file which contains messages and their offsets</p>
 </li>
 <li>
 <p>Messages are written in an append-only fashion and are read in order from beginning to end. As a topic typically has multiple partitions, there is no guarantee of message time-ordering across the entire topic, just within a single partition</p>
+</li>
+<li>
+<p>In order to help brokers quickly locate the message for a given offset, Kafka maintains an <strong>index</strong> for each partition. The index maps offsets to segment files and positions within the file</p>
 </li>
 <li>
 <p>A <strong>stream</strong> is considered to be a single topic of data, regardless of the number of partitions</p>
@@ -226,19 +229,28 @@ increases. Each message in a given partition has a unique offset stored either i
 </ul>
 <p><img alt="kafka-consumer-group" src="../img/kafka-consumer-group.png" /></p>
 <ul>
+<li>Consumers must keep polling or they will be considered dead and the partitions they are consuming will be handed to another consumer in the group to continue consuming. Consumers <strong>commit</strong> (track) their offset (position) in each partition to a special <code>__consumer_offsets</code> topic. If a consumer crashes or a new consumer joins the consumer group, this will trigger a rebalance. After a rebalance, each consumer may be assigned a new set of partitions than the one it processed before. In order to know where to pick up the work, the consumer will read the latest committed offset of each partition and continue from there</li>
+</ul>
+<p><img alt="kafka-rebalance-duplicate" src="../img/kafka-rebalance-duplicate.png" />
+<img alt="kafka-rebalance-lost" src="../img/kafka-rebalance-lost.png" /></p>
+<ul>
 <li>
 <p>A single Kafka server is called a <strong>broker</strong>. The broker receives messages from producers, assigns offsets to them, and commits the messages to storage on disk. It also services consumers, responding to fetch requests for partitions and responding with the messages that have been committed to disk</p>
 </li>
 <li>
-<p>Kafka brokers are designed to operate as part of a <strong>cluster</strong>. Within a cluster of brokers, one broker will also function as the cluster <strong>controller</strong>. The controller is responsible for administrative operations, including assigning partitions to brokers and monitoring for broker failures. A partition is owned by a single broker in the cluster, and that broker is called the <strong>leader</strong> of the partition. A partition may be assigned to multiple brokers, which will result in
-the partition being replicated. All consumers and producers operating on that partition must connect to the leader</p>
+<p>Kafka brokers are designed to operate as part of a <strong>cluster</strong>. A partition is owned by a single broker in the cluster and that broker is called the <strong>leader</strong> of the partition. A partition may be assigned to multiple brokers, which will result in the partition being replicated. All events are produced to and consumed from the <em>leader</em> replica. Other <em>follower</em> replicas just need to stay <strong>in-sync</strong> with the leader and replicate all the recent events on time</p>
+</li>
+<li>
+<p>Kafka uses <strong>Zookeeper</strong> to maintain the list of brokers that are currently members of a cluster. Every time a broker process starts, it registers itself with a unique identifier by creating an <a href="http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html#Ephemeral+Nodes">ephemeral node</a>. Kafka uses Zookeeper's ephemeral node feature to elect a <strong>controller</strong>. The controller is responsible for electing leaders among the partitions and replicas whenever it notices nodes join and leave the cluster</p>
 </li>
 </ul>
 <p><img alt="kafka-cluster" src="../img/kafka-cluster.png" /></p>
 <ul>
 <li>
-<p>A key feature is that of <strong>retention</strong>. Brokers are configured with a default retention setting for topics, either retaining messages for some period of time or until the topic reaches a certain size in bytes. Once these limits are
-reached, messages are expired and deleted</p>
+<p>Data in Kafka is organized by topics. Each topic is partitioned and each partition can have multiple <strong>replicas</strong>. Those replicas are stored on brokers and each broker stores replicas belonging to different topics and partitions</p>
+</li>
+<li>
+<p>A key feature is that of <strong>retention</strong>. Brokers are configured with a default retention setting for topics, either retaining messages for some period of <em>time</em> or until the topic reaches a certain <em>size</em> in bytes. Once these limits are reached, messages are expired and deleted</p>
 </li>
 <li>
 <p><strong>MirrorMaker</strong> is a tool to coordinates multiple clusters or datacenters and replicate data</p>
@@ -284,8 +296,13 @@ docker exec -it kafka bash
 # paths
 /opt/kafka
 /opt/kafka/logs
-/var/log/kafka
 /var/lib/kafka/data
+
+# supervisor logs
+/var/log/kafka
+/var/log/connect
+tail -F /var/log/kafka/stdout
+less +G /var/log/connect/stdout
 </code></pre>
 
 <p>Alternatively use <code>docker-compose</code></p>
@@ -302,22 +319,74 @@ docker exec -it devops-zookeeper bash
 docker exec -it devops-kafka bash
 </code></pre>
 
-<p>Example</p>
-<pre><code class="bash">docker exec -it kafka bash
-cd /opt/kafka/bin
+<p>Example Kafka</p>
+<pre><code class="bash">docker exec -it devops-kafka bash
 
 # create topic
-./kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic test
+kafka-topics.sh --zookeeper zookeeper:2181 \
+  --create --replication-factor 1 --partitions 1 --topic test
 
 # view topic
-./kafka-topics.sh --list --zookeeper zookeeper:2181
-./kafka-topics.sh --zookeeper zookeeper:2181 --describe --topic test
+kafka-topics.sh --zookeeper zookeeper:2181 \
+  --list 
+kafka-topics.sh --zookeeper zookeeper:2181 \
+  --describe --topic test
 
 # produce
-./kafka-console-producer.sh --broker-list kafka:9092 --topic test
+kafka-console-producer.sh --broker-list kafka:9092 \
+  --topic test
+# util
+kafkacat -P -b 0 -t test
 
 # consume
-./kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic test --from-beginning
+kafka-console-consumer.sh --bootstrap-server kafka:9092 \
+  --topic test --from-beginning
+# util
+kafkacat -C -b 0 -t test
+</code></pre>
+
+<p>Example Connect</p>
+<pre><code class="bash">docker exec -it devops-kafka bash
+
+# verify connect
+http :8083
+http :8083/connector-plugins
+
+# write file to topic
+http POST :8083/connectors \
+  name=load-kafka-config \
+  config:='{&quot;connector.class&quot;:&quot;FileStreamSource&quot;,&quot;file&quot;:&quot;/opt/kafka/config/server.properties&quot;,&quot;topic&quot;:&quot;kafka-config-topic&quot;}'
+
+# verify topic
+kafka-console-consumer.sh --bootstrap-server=kafka:9092 \
+  --topic kafka-config-topic --from-beginning
+
+# write topic to file
+http POST :8083/connectors \
+  name=dump-kafka-config \
+  config:='{&quot;connector.class&quot;:&quot;FileStreamSink&quot;,&quot;file&quot;:&quot;/tmp/copy-of-server-properties&quot;,&quot;topics&quot;:&quot;kafka-config-topic&quot;}'
+
+# verify file
+vim /tmp/copy-of-server-properties
+
+# manage connectors
+http :8083/connectors
+http DELETE :8083/connectors/dump-kafka-config
+</code></pre>
+
+<p>Example ZooKeeper</p>
+<pre><code class="bash">docker exec -it devops-zookeeper bash
+
+# start cli
+zkCli.sh
+
+# view ephemeral nodes
+ls /brokers/ids
+get /brokers/ids/0
+
+# view topics
+ls /brokers/topics
+get /brokers/topics/test
 </code></pre>
 
 <p><br></p>

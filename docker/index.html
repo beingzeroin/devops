@@ -274,6 +274,9 @@ mkdir -p ~/.docker/machine &amp;&amp; touch ~/.docker/machine/no-error-report
 </code></pre>
 
 <h2 id="base-image">Base image</h2>
+<ul>
+<li><a href="http://supervisord.org">Supervisor</a></li>
+</ul>
 <p>Build <code>devops/base</code> image</p>
 <pre><code class="bash"># change path
 cd devops/base
@@ -285,6 +288,14 @@ docker build -t devops/base .
 docker run --rm --name devops-base devops/base
 # access container
 docker exec -it devops-base bash
+
+# configurations
+/etc/supervisor/conf.d
+
+# supervisor actions
+supervisorctl status
+supervisorctl start SERVICE_NAME
+supervisorctl stop SERVICE_NAME
 </code></pre>
 
 <p><br></p>
