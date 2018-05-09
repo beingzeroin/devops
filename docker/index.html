@@ -80,6 +80,8 @@
         
             <li><a class="toctree-l3" href="#base-image">Base image</a></li>
         
+            <li><a class="toctree-l3" href="#docker-hub">Docker Hub</a></li>
+        
         </ul>
     
 
@@ -296,6 +298,36 @@ docker exec -it devops-base bash
 supervisorctl status
 supervisorctl start SERVICE_NAME
 supervisorctl stop SERVICE_NAME
+</code></pre>
+
+<h2 id="docker-hub">Docker Hub</h2>
+<ul>
+<li><a href="https://hub.docker.com/r/niqdev/phusion-base">niqdev/phusion-base</a></li>
+<li><a href="https://hub.docker.com/r/niqdev/zookeeper">niqdev/zookeeper</a></li>
+<li><a href="https://hub.docker.com/r/niqdev/kafka">niqdev/kafka</a></li>
+</ul>
+<pre><code class="bash">docker login
+
+# phusion-base
+docker build -t devops/base:latest ./base
+docker tag devops/base niqdev/phusion-base:1.0.0
+docker tag devops/base niqdev/phusion-base:latest
+docker push niqdev/phusion-base:1.0.0
+docker push niqdev/phusion-base:latest
+
+# zookeeper
+docker build -t devops/zookeeper:latest ./zookeeper
+docker tag devops/zookeeper niqdev/zookeeper:1.0.0
+docker tag devops/zookeeper niqdev/zookeeper
+docker push niqdev/zookeeper:1.0.0
+docker push niqdev/zookeeper:latest
+
+# kafka
+docker build -t devops/kafka:latest ./kafka
+docker tag devops/kafka niqdev/kafka:1.0.0
+docker tag devops/kafka niqdev/kafka
+docker push niqdev/kafka:1.0.0
+docker push niqdev/kafka:latest
 </code></pre>
 
 <p><br></p>
