@@ -100,6 +100,8 @@
         
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
+            <li><a class="toctree-l3" href="#how-to">How-To</a></li>
+        
         </ul>
     
 
@@ -319,7 +321,8 @@ docker exec -it devops-zookeeper bash
 docker exec -it devops-kafka bash
 </code></pre>
 
-<p>Example Kafka</p>
+<h2 id="how-to">How-To</h2>
+<p>Kafka</p>
 <pre><code class="bash">docker exec -it devops-kafka bash
 
 # create topic
@@ -358,7 +361,7 @@ kafka-run-class.sh kafka.tools.DumpLogSegments \
   --files /var/lib/kafka/data/test-0/00000000000000000000.index
 </code></pre>
 
-<p>Example Connect</p>
+<p>Connect</p>
 <pre><code class="bash">docker exec -it devops-kafka bash
 
 # verify connect
@@ -387,7 +390,7 @@ http :8083/connectors
 http DELETE :8083/connectors/dump-kafka-config
 </code></pre>
 
-<p>Example ZooKeeper</p>
+<p>ZooKeeper</p>
 <pre><code class="bash">docker exec -it devops-zookeeper bash
 
 # start cli
