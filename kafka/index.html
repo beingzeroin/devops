@@ -405,6 +405,28 @@ ls /brokers/topics
 get /brokers/topics/test
 </code></pre>
 
+<p>Schema Registry</p>
+<pre><code class="bash"># docker-hub images
+docker-compose -f kafka/docker-compose-hub.yml up
+docker exec -it devops-schema-registry bash
+
+# register new schema
+http -v POST :8081/subjects/ExampleSchema/versions \
+  Accept:application/vnd.schemaregistry.v1+json \
+  schema='{&quot;type&quot;:&quot;string&quot;}'
+
+# list subjects and schema
+http -v :8081/subjects \
+  Accept:application/vnd.schemaregistry.v1+json
+http -v :8081/subjects/ExampleSchema/versions \
+  Accept:application/vnd.schemaregistry.v1+json
+http -v :8081/subjects/ExampleSchema/versions/1 \
+  Accept:application/vnd.schemaregistry.v1+json
+
+# ui [mac|linux]
+[open|xdg-open] http://localhost:8082
+</code></pre>
+
 <p><br></p>
               
             </div>
