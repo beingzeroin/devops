@@ -92,6 +92,8 @@
         
             <li><a class="toctree-l3" href="#cql">CQL</a></li>
         
+            <li><a class="toctree-l3" href="#nodetool">nodetool</a></li>
+        
         </ul>
     
 
@@ -373,6 +375,50 @@ SELECT * FROM example.users LIMIT 1;
 LIST table_name;
 GET table_name[&quot;primary_key&quot;];
 SET table_name[&quot;primary_key&quot;][&quot;column_name&quot;];
+</code></pre>
+
+<h2 id="nodetool">nodetool</h2>
+<pre><code class="bash"># help
+nodetool
+
+# cluster informations
+nodetool describecluster
+nodetool status
+
+# node informations
+nodetool -h xxx.xxx.xxx.xxx info
+nodetool -h xxx.xxx.xxx.xxx statusgossip|statusthrift|statusbinary|statushandoff
+nodetool gossipinfo
+
+# ring informations
+nodetool ring
+nodetool describering KEYSPACE
+
+# monitor network
+nodetool netstats
+
+# threadpool statistics
+nodetool tpstats
+
+# keyspace statistics
+nodetool tablestats KEYSPACE
+
+# dynamic logging via JMX
+nodetool getlogginglevels
+
+# force to write data from memtables to SSTables
+nodetool flush
+
+# gracefully shutdown
+nodetool drain
+
+# discards any data that is no longer owned by the node
+# e.g. after changing replication factor or token range
+nodetool cleanup
+
+# anti-entropy repair or manual repair: reconcile data exchanging Merkle trees among nodes
+# maintenance: incremental parallel repair on the primary token range (run on each node)
+nodetool repair -pr 
 </code></pre>
 
 <p><br></p>
