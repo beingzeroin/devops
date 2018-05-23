@@ -192,6 +192,15 @@
 <li>
 <p><a href="https://github.com/riptano/ccm">Cassandra Cluster Manager</a></p>
 </li>
+<li>
+<p><a href="https://github.com/Netflix/Priam">Netflix Priam</a></p>
+</li>
+<li>
+<p><a href="https://www.datastax.com/dev/blog/cassandra-performance-testing-with-cstar_perf">cstar_perf</a></p>
+</li>
+<li>
+<p><a href="https://tobert.github.io/pages/als-cassandra-21-tuning-guide.html">Amy's Cassandra 2.1 tuning guide</a></p>
+</li>
 </ul>
 <!-- * [Cassandra Modeling Kata](https://github.com/allegro/cassandra-modeling-kata) -->
 
@@ -418,7 +427,22 @@ nodetool cleanup
 
 # anti-entropy repair or manual repair: reconcile data exchanging Merkle trees among nodes
 # maintenance: incremental parallel repair on the primary token range (run on each node)
-nodetool repair -pr 
+nodetool repair -pr
+
+# create snapshot
+nodetool snapshot
+nodetool listsnapshots
+
+# restore snapshot (create schema or truncate table before)
+# 1) same cluster and configuration
+# copy SSTable &quot;.db&quot; files into the data directory and on the running node execute refresh
+nodetool refresh
+# 2) different configuration (e.g. topology, token ranges, or replication)
+sstableloader
+
+# stress tool
+cassandra-stress write n=1000000
+cassandra-stress read n=200000
 </code></pre>
 
 <p><br></p>
