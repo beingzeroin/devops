@@ -107,6 +107,8 @@
         
             <li><a class="toctree-l3" href="#spark">Spark</a></li>
         
+            <li><a class="toctree-l3" href="#zeppelin">Zeppelin</a></li>
+        
             <li><a class="toctree-l3" href="#oozie">Oozie</a></li>
         
         </ul>
@@ -282,9 +284,10 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 <li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2.local:8042/node</a></li>
 <li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3.local:8042/node</a></li>
 <li>Spark: <a href="http://172.16.0.10:4040">http://spark.local:4040</a></li>
-<li>Oozie*: <a href="http://172.16.0.10:11000">http://oozie.local:11000</a></li>
+<li>Zeppelin (*): <a href="http://172.16.0.10:8080">http://zeppelin.local:8080</a></li>
+<li>Oozie (*): <a href="http://172.16.0.10:11000">http://oozie.local:11000</a></li>
 </ul>
-<p><br></p>
+<p><em>(*) Not installed by default</em></p>
 <h2 id="hdfs-and-mapreduce">HDFS and MapReduce</h2>
 <blockquote>
 <p><strong>HDFS</strong> is a distributed file system that provides high-throughput access to application data</p>
@@ -451,6 +454,30 @@ spark-submit \
 </code></pre>
 
 <p><br></p>
+<h2 id="zeppelin">Zeppelin</h2>
+<blockquote>
+<p><strong>Zeppelin</strong> is a web-based notebook that enables data-driven, interactive data analytics and collaborative documents with SQL, Scala and more</p>
+</blockquote>
+<p>Documentation</p>
+<ul>
+<li><a href="https://zeppelin.apache.org">Zeppelin</a></li>
+</ul>
+<h3 id="setup_1">Setup</h3>
+<p>Install and start Zeppelin</p>
+<pre><code class="bash"># access master node
+vagrant ssh master
+
+# login as root
+sudo su -
+
+# install and init
+/vagrant/script/setup_zeppelin.sh
+
+# start manually (first time only)
+su --login hadoop /vagrant/script/bootstrap.sh zeppelin
+</code></pre>
+
+<p><br></p>
 <h2 id="oozie">Oozie</h2>
 <blockquote>
 <p><strong>Oozie</strong> is a workflow scheduler system to manage Hadoop jobs</p>
@@ -459,10 +486,7 @@ spark-submit \
 <ul>
 <li><a href="https://oozie.apache.org">Oozie</a></li>
 </ul>
-<h3 id="setup_1">Setup</h3>
-<blockquote>
-<p><em>Oozie is not installed by default</em></p>
-</blockquote>
+<h3 id="setup_2">Setup</h3>
 <p><strong>Optional PostgreSQL configuration</strong> - By default Oozie is configured to use Embedded Derby</p>
 <pre><code class="bash"># access master node
 vagrant ssh master
