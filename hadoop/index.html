@@ -304,15 +304,30 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 </blockquote>
 <p>Documentation</p>
 <ul>
-<li><a href="http://hadoop.apache.org/docs/r2.7.5">Hadoop v2.7.5</a></li>
+<li><a href="http://hadoop.apache.org/docs/r2.7.6">Hadoop v2.7.6</a></li>
 <li><a href="http://blog.cloudera.com/blog/2015/09/untangling-apache-hadoop-yarn-part-1/">Untangling Apache Hadoop YARN</a> series</li>
 </ul>
-<h3 id="hdfs-admin">HDFS Admin</h3>
-<pre><code class="bash"># filesystem statistics
+<h3 id="admin">Admin</h3>
+<p>HDFS cli</p>
+<pre><code class="bash"># help
+hdfs
+
+# filesystem statistics
 hdfs dfsadmin -report
 
 # filesystem check
 hdfs fsck /
+</code></pre>
+
+<p>YARN cli</p>
+<pre><code class="bash"># help
+yarn
+
+# list yarn applications
+yarn application -list
+
+# kill yarn applications
+yarn application -kill application_XXX
 </code></pre>
 
 <p>Useful paths</p>
@@ -489,18 +504,16 @@ su --login hadoop /vagrant/script/bootstrap.sh zeppelin
 <ul>
 <li><a href="https://hortonworks.com/tutorial/learning-spark-sql-with-zeppelin">Learning Spark SQL with Zeppelin</a></li>
 </ul>
-<pre><code># verify to have enough memory (Error: Cannot allocate memory)
-free -m
-
-# markdown interpreter
+<pre><code># markdown interpreter
 %md
 hello
 
-# shell interptere
+# shell interpreter
 %sh
 hadoop fs -ls -h -R /
 </code></pre>
 
+<p>Cluster issue: verify to have enough memory with <code>free -m</code> e.g. <em>Error: Cannot allocate memory</em></p>
 <p><br></p>
 <h2 id="oozie">Oozie</h2>
 <blockquote>
@@ -651,6 +664,37 @@ oozie job \
   -interval 10 \
   -timeout 60 \
   -verbose
+
+# find running coordinator
+oozie jobs \
+  -oozie http://oozie.local:11000/oozie/ \
+  -filter status=RUNNING \
+  -jobtype coordinator
+
+# suspend|resume|kill coordinator
+oozie job \
+  -oozie http://oozie.local:11000/oozie/ \
+  [-suspend|-resume|-kill] \
+  XXX-C
+
+# re-run coordinator's workflow (action)
+oozie job \
+  -oozie http://oozie.local:11000/oozie/ \
+  -rerun XXX-C \
+  -action 1,2,3,N
+
+# kill workflow
+oozie job \
+  -oozie http://oozie.local:11000/oozie/ \
+  -kill \
+  XXX-W
+
+# re-run all workflow's actions
+oozie job \
+  -oozie http://oozie.local:11000/oozie/ \
+  -rerun \
+  XXX-W \
+  -Doozie.wf.rerun.failnodes=false
 </code></pre>
 
 <p><br></p>
