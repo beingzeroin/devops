@@ -173,6 +173,7 @@
 <ul>
 <li><a href="https://hadoop.apache.org">Hadoop</a></li>
 <li><a href="https://hadoopecosystemtable.github.io">The Hadoop Ecosystem Table</a></li>
+<li><a href="https://ercoppa.github.io/HadoopInternals">Hadoop Internals</a></li>
 </ul>
 <h3 id="setup">Setup</h3>
 <p>Requirements</p>
@@ -292,6 +293,7 @@ ssh hadoop@172.16.0.101 -i .data/hadoop_rsa
 <li>DataNode/NodeManager (2): <a href="http://172.16.0.102:8042/node">http://node-2.local:8042/node</a></li>
 <li>DataNode/NodeManager (3): <a href="http://172.16.0.103:8042/node">http://node-3.local:8042/node</a></li>
 <li>Spark: <a href="http://172.16.0.10:4040">http://spark.local:4040</a></li>
+<li>Spark History Server: <a href="http://172.16.0.10:18080">http://spark-history.local:18080</a></li>
 <li>Zeppelin (*): <a href="http://172.16.0.10:8080">http://zeppelin.local:8080</a></li>
 <li>Oozie (*): <a href="http://172.16.0.10:11000">http://oozie.local:11000</a></li>
 </ul>
@@ -326,8 +328,14 @@ yarn
 # list yarn applications
 yarn application -list
 
-# kill yarn applications
-yarn application -kill application_XXX
+# list nodes
+yarn node -list
+
+# view application logs
+yarn logs -applicationId APPLICATION_ID
+
+# kill yarn application
+yarn application -kill APPLICATION_ID
 </code></pre>
 
 <p>Useful paths</p>
@@ -433,7 +441,11 @@ hadoop fs -cat sorted-data/part-r-00000
 <li><a href="https://spark.apache.org/docs/latest">Spark</a></li>
 <li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1">How-to: Tune Your Apache Spark Jobs</a> series</li>
 <li><a href="http://site.clairvoyantsoft.com/understanding-resource-allocation-configurations-spark-application">Understanding Resource Allocation configurations for a Spark application</a></li>
+<li><a href="https://legacy.gitbook.com/book/jaceklaskowski/mastering-apache-spark">Mastering Apache Spark</a></li>
 </ul>
+<p><img alt="spark-architecture" src="../img/spark-architecture.png" /></p>
+<p>Spark application on YARN</p>
+<p><img alt="spark-job" src="../img/spark-job.png" /></p>
 <pre><code class="bash"># start REPL
 spark-shell
 pyspark
@@ -441,6 +453,11 @@ pyspark
 
 <h3 id="interactive-analysis-example">Interactive Analysis example</h3>
 <pre><code class="bash">spark-shell
+# spark shell with yarn
+spark-shell --master yarn --deploy-mode client
+
+# view all configured parameters
+sc.getConf.getAll.foreach(x =&gt; println(s&quot;${x._1}: ${x._2}&quot;))
 
 val licenceLines = sc.textFile(&quot;file:/usr/local/spark/LICENSE&quot;)
 val lineCount = licenceLines.count
@@ -450,8 +467,15 @@ bsdLines.count
 bsdLines.foreach(println)
 </code></pre>
 
-<h3 id="spark-job-example">Spark Job example</h3>
-<pre><code class="bash"># GitHub event documentation
+<h3 id="spark-job-examples">Spark Job examples</h3>
+<p>Example local</p>
+<pre><code class="bash"># run SparkPi example
+spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master local[*] \
+  $SPARK_HOME/examples/jars/spark-examples_*.jar 10
+
+# GitHub event documentation
 # https://developer.github.com/v3/activity/events/types
 
 # build jar on the host machine
@@ -469,11 +493,26 @@ mkdir -p github-archive &amp;&amp; \
 # sample line
 head -n 1 2018-01-01-0.json | jq '.'
 
-# run job
+# run local job
 spark-submit \
   --class &quot;com.github.niqdev.App&quot; \
   --master local[*] \
   /vagrant/example/spark/target/scala-2.11/spark-github_2.11-0.1.0-SNAPSHOT.jar
+</code></pre>
+
+<p>Example cluster</p>
+<pre><code class="bash"># run job in YARN cluster-deploy mode
+spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master yarn \
+  --deploy-mode cluster \
+  --driver-memory 4g \
+  --executor-memory 2g \
+  --executor-cores 1 \
+  --queue default \
+  --conf &quot;spark.yarn.jars=hdfs://namenode.local:9000/user/spark/share/lib/*.jar&quot; \
+  $SPARK_HOME/examples/jars/spark-examples*.jar \
+  10
 </code></pre>
 
 <p><br></p>
