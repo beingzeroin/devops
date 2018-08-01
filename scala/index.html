@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="niqdev">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Scala - DevOps</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Scala";
+    var mkdocs_page_input_path = "scala.md";
+    var mkdocs_page_url = "/scala/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-68888222-4', 'niqdev.github.io');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> DevOps</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../linux/">Linux</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../docker/">Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../ansible/">Ansible</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../cassandra/">Cassandra</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../zookeeper/">ZooKeeper</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../kafka/">Kafka</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../hadoop/">Hadoop</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../kubernetes/">Kubernetes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jvm/">JVM</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Scala</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#scala">Scala</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#resources">Resources</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../readings/">Readings</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../other/">Other</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">DevOps</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Scala</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/niqdev/devops/edit/master/docs/scala.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="scala">Scala</h1>
+<h2 id="resources">Resources</h2>
+<p><strong>Fundamentals</strong></p>
+<ul>
+<li><a href="https://amzn.to/2OAAgc3">Programming in Scala</a> (2016)(3rd) by Martin Odersky, Lex Spoon, and Bill Venners (Book)</li>
+<li><a href="https://amzn.to/2Oy7QiS">Scala High Performance Programming</a> (2016) by Vincent Theron, Michael Diamant (Book)</li>
+<li>
+<p><a href="https://amzn.to/2vsTesn">Akka in Action</a> (2016) by Raymond Roestenburg, Rob Bakker, and Rob Williams (Book)</p>
+</li>
+<li>
+<p><a href="https://docs.scala-lang.org/tour/tour-of-scala.html">Tour of Scala</a></p>
+</li>
+<li><a href="https://twitter.github.io/scala_school">Twitter Scala School</a></li>
+<li><a href="http://scalapuzzlers.com">Scala Puzzlers</a></li>
+<li><a href="http://aperiodic.net/phil/scala/s-99">S-99: Ninety-Nine Scala Problems</a></li>
+<li><a href="https://www.scala-exercises.org">Scala Exercises</a></li>
+<li><a href="https://docs.scala-lang.org/overviews/collections/introduction.html">Scala Collections</a></li>
+</ul>
+<p><strong>Functional Programming</strong></p>
+<ul>
+<li><a href="https://amzn.to/2OCFpQG">Functional Programming in Scala</a> (2014) by Paul Chiusano and Runar Bjarnason (Book)</li>
+<li>
+<p><a href="https://amzn.to/2OCFROS">Functional Programming, Simplified</a> (2017) by Alvin Alexander (Book)</p>
+</li>
+<li>
+<p><a href="https://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf">Why Functional Programming Matters</a> (Paper)</p>
+</li>
+<li><a href="https://www.cs.ox.ac.uk/jeremy.gibbons/publications/iterator.pdf">The Essence of the Iterator Pattern</a> (Paper)</li>
+<li><a href="http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf">Applicative programming with effects</a> (Paper)</li>
+<li><a href="http://functorial.com/stack-safety-for-free/index.pdf">Stack Safety for Free</a> (Paper)</li>
+<li><a href="http://blog.higher-order.com/assets/trampolines.pdf">Stackless Scala With Free Monads</a> (Paper)</li>
+</ul>
+<p><strong>FP intro</strong></p>
+<ul>
+<li><a href="https://pragprog.com/magazines/2013-01/functional-programming-basics">Functional Programming Basics</a></li>
+<li><a href="http://www.defmacro.org/2006/06/19/fp.html">Functional Programming For The Rest of Us</a></li>
+<li><a href="https://www.fpcomplete.com/blog/2012/04/the-downfall-of-imperative-programming">The Downfall of Imperative Programming</a></li>
+<li>
+<p><a href="http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html">Parallelism and concurrency need different tools</a></p>
+</li>
+<li>
+<p><a href="https://ktoso.github.io/scala-types-of-types">Scala's Types of Types</a></p>
+</li>
+<li><a href="https://alvinalexander.com/scala/fp-book/algebraic-data-types-adts-in-scala">Algebraic Data Types in Scala</a></li>
+<li><a href="https://merrigrove.blogspot.com/2011/12/another-introduction-to-algebraic-data.html">What the Heck are Algebraic Data Types?</a></li>
+<li><a href="https://underscore.io/blog/posts/2015/06/04/more-on-sealed.html">More on Sealed Traits in Scala</a></li>
+<li><a href="http://blog.bruchez.name/2015/11/generalized-type-constraints-in-scala.html">Generalized type constraints in Scala (without a PhD)</a></li>
+<li><a href="https://gigiigig.github.io/posts/2015/09/13/aux-pattern.html">The Aux Pattern</a></li>
+</ul>
+<p><strong>FP libraries</strong></p>
+<ul>
+<li><a href="https://typelevel.org">Typelevel projects</a></li>
+<li><a href="https://underscore.io/books/scala-with-cats">Scala with Cats</a> (Book)</li>
+<li><a href="https://underscore.io/books/shapeless-guide">The Type Astronaut's Guide to Shapeless</a> (Book)</li>
+<li><a href="https://blog.scalac.io/2016/06/02/overview-of-free-monad-in-cats.html">Overview of free monad in cats</a></li>
+<li><a href="https://www.signifytechnology.com/blog/2018/07/scalafp-firsthand-with-scala-cats-monads-number-1-by-harmeet-singh">ScalaFP: Firsthand With Scala-Cats</a></li>
+<li><a href="https://typelevel.org/blog/2017/05/02/io-monad-for-cats.html">An IO monad for cats</a></li>
+<li><a href="https://github.com/ikhoon/shapeless-for-mortals">Shapeless for Mortals</a></li>
+</ul>
+<p><strong>FP languages</strong></p>
+<ul>
+<li><a href="http://learnyouahaskell.com/chapters">Learn You a Haskell for Great Good!</a></li>
+<li><a href="http://prajitr.github.io/quick-haskell-syntax">A Quick Tour of Haskell Syntax</a></li>
+<li><a href="https://ocaml.org/learn/taste.html">OCaml taste</a></li>
+</ul>
+<p><strong>Typeclass</strong></p>
+<ul>
+<li><a href="http://ropas.snu.ac.kr/~bruno/papers/TypeClasses.pdf">Type Classes as Objects and Implicits</a> (paper)</li>
+<li><a href="http://tpolecat.github.io/2015/04/29/f-bounds.html">Returning the "Current" Type in Scala</a></li>
+<li><a href="https://julien-truffaut.github.io/Typeclass">Typeclass 101: ad hoc polymorphism in scala</a></li>
+<li><a href="http://workday.github.io/assets/scala-exchange-type-classes">All you don't need to know about Typeclasses</a></li>
+</ul>
+<!--
+
+## Q&A
+
+A Type Class is a programming pattern that allow to extend existing libraries with new functionality, without using traditional inheritance and without altering the original library source code
+
+TODO
+* Semigroup: associativity
+* Monoid: associativity + identity
+* Functor: map
+* Monad: any of 3 monadic laws (e.g. unit + flatMap) + associativity and identity (extends Functor)
+* Applicative functor
+* Traversable functor
+
+What is a Monoid? Is an algebraic type with 2 laws, a binary operation over that type, satisfying associativity and an identity element
+
+* associative e.g `a + (b + c) == (a + b) + c`
+* identity e.g. sum is 1
+
+
+wzxhzdk:0
+
+
+Monoids have an intimate connection with lists with arguments of the same type, it doesn't matter if we choose `foldLeft` or `foldRight` when folding with a monoid because the laws of associativity and identity hold, hence this allows parallel computation. The real power of monoids comes from the fact that they compose, this means, for example, that if types A and B are monoids, then the tuple type (A, B) is also a monoid (called their product)
+
+
+wzxhzdk:1
+
+
+* A function having the same argument and return type is sometimes called an endofunction
+
+TODO Functor and Monad
+
+* associative e.g. `x.flatMap(f).flatMap(g) == x.flatMap(a => f(a).flatMap(g))`
+* monadic functions of types like `A => F[B]` are called Kleisli arrows
+
+A Monad is an implementation of one of the minimal sets of monadic combinators, satisfying the laws of associativity and identity
+
+* unit and flatMap
+* unit and compose
+* unit, map and join
+
+
+wzxhzdk:2
+
+
+A Monad provide a context for introducing and binding variables, and performing variable substitution
+
+
+wzxhzdk:3
+
+
+* TODO Applicative
+
+- all applicatives are functors
+- all monads are applicative functors, viceversa is not true
+
+
+wzxhzdk:4
+
+
+Laws
+* Left and right identity
+* Associativity
+* Naturality of product
+
+> TODO
+
+http://learnyouahaskell.com/types-and-typeclasses#typeclasses-101
+https://markhneedham.com/blog/2012/05/22/scalahaskell-a-simple-example-of-type-classes/
+http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/
+
+### Semigroup, Functor, Applicative and Monad
+
+> TODO
+
+https://medium.com/@sinisalouc/demystifying-the-monad-in-scala-cc716bb6f534
+https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/
+http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
+http://www.marcoyuen.com/articles/2016/09/08/stackless-scala-1-the-problem.html
+
+TODO
+
+wzxhzdk:5
+
+
+## Best practices and tips
+
+> TODO
+
+---
+
+
+wzxhzdk:6
+
+
+---
+
+![scala-hierarchy](img/scala-hierarchy.png)
+
+An expression `e` is **referentially transparent** if, for all programs `p`,
+all occurrences of `e` in `p` can be replaced by the result of evaluating `e` without affecting the meaning of `p`.
+A function `f` is **pure** if the expression `f(x)` is referentially transparent for all referentially transparent `x`.
+Hence a pure function is **modular** and **composable**
+
+A **higher-order function** is a function that takes other functions as arguments or returns a function as result
+
+A **recursive function** is a function which calls itself. With **head recursion**, the recursive call is not the last instruction in the function.
+A **tail recursive function** is a special case of recursion in which the last instruction executed in the method is the recursive call.
+As long as the recursive call is in tail position, Scala detects compiles it to the same sort of bytecode as would be emitted for a while loop
+
+wzxhzdk:7
+
+
+**Function literal** is a synonyms for **anonymous function**.
+Because functions are just ordinary Scala objects, we say that they are **first-class values**.
+A function literal is syntactic sugar for an object with a method called apply
+
+wzxhzdk:8
+
+
+A **variadic** function accepts zero or more arguments. It provides a little syntactic sugar for creating and passing a Seq of elements explicitly. The special `_*` type annotation allows us to pass a Seq to a variadic method
+
+wzxhzdk:9
+
+
+*What's an Algebraic Data Type?*
+
+In type theory, regular data structures can be described in terms of sums, products and recursive types. This leads to an algebra for describing data structures (and so-called algebraic data types). Such data types are common in statically typed functional languages
+
+An **algebraic data type** (ADT) is just a data type defined by one or more data constructors, each of which may contain zero or more arguments.
+We say that the data type is the sum or union of its data constructors, and each data constructor is the product of its arguments, hence the name algebraic data type
+
+wzxhzdk:10
+
+
+These types represent a SUM type because Shape is a Circle OR a Rectangle; Circle is a PRODUCT type because it has a radius; and Rectangle is also PRODUCT type because it has a width AND a height.
+
+wzxhzdk:11
+
+
+---
+
+The [AnyVal](https://docs.scala-lang.org/overviews/core/value-classes.html) class can be used to define a **value class**, which is optimized at compile time to avoid the allocation of an instance
+
+wzxhzdk:12
+
+
+**Specialization** with `@specialized` annotation, refers to the compile-time process of generating duplicate versions of a generic trait or class that refer directly to a primitive type instead of the associated object wrapper. At runtime, the compiler-generated version of the generic class (or, as it is commonly referred to, the specialized version of the class) is instantiated. This process eliminates the runtime cost of boxing primitives, which means that you can define generic abstractions while retaining the performance of a handwritten, specialized implementation although it has some [quirks](http://aleksandar-prokopec.com/2013/11/03/specialization-quirks.html)
+
+The JVM defines primitive types (`boolean`, `byte`, `char`, `float`, `int`, `long`, `short` and `double`) that are *stack-allocated rather than heap-allocated*. When a generic type is introduced, for example, `scala.collection.immutable.List`, the JVM references an object equivalent, instead of a primitive type. For example, an instantiated list of integers would be heap-allocated objects rather than integer primitives. The process of converting a primitive to its object equivalent is called boxing, and the reverse process is called unboxing. Boxing is a relevant concern for performance-sensitive programming because boxing involves heap allocation. In performance-sensitive code that performs numerical computations, the cost of [boxing and unboxing](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html) can can create significant performance slowdowns
+
+In scenarios involving simple pattern match statements that directly match a value, using `@switch` annotation provides a warning at compile time if the switch can't be compiled to a tableswitch or lookupswitch which procides better performance, because it results in a branch table rather than a decision tree
+
+---
+
+TODO
+
+
+wzxhzdk:13
+
+
+In Scala, all methods whose names end in : are right-associative. That is, the expression x :: xs is actually
+the method call xs.::(x) , which in turn calls the data constructor ::(x,xs)
+
+* curry function used to assist type inference when passing anonymous functions
+
+* companion object
+* a **variadic function** accepts zero or more arguments
+* algebraic data type (ADT)
+
+an API should form an algebra — that is, a collection of data types, functions over these data types, and importantly, laws or properties that express relationships between these functions
+
+* volatile
+* compare and swap
+* javap
+* diamond inheritance problem
+* variance / covariance of type A
+
+
+wzxhzdk:14
+
+
+-->
+
+<p><br></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../readings/" class="btn btn-neutral float-right" title="Readings">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../jvm/" class="btn btn-neutral" title="JVM"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/niqdev/devops/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../jvm/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../readings/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>
