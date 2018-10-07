@@ -115,6 +115,8 @@
         
             <li><a class="toctree-l3" href="#perfomance">Perfomance</a></li>
         
+            <li><a class="toctree-l3" href="#scala">Scala</a></li>
+        
         </ul>
     
 
@@ -185,6 +187,7 @@
 <li><a href="https://www.cubrid.org/blog/understanding-jvm-internals">Understanding JVM Internals</a></li>
 <li><a href="https://www.cubrid.org/blog/understanding-java-garbage-collection">Understanding Java Garbage Collection</a></li>
 <li><a href="http://jd.benow.ca">Java Decompiler</a></li>
+<li><a href="http://jcip.net">Java Concurrency in Practice</a> (Book)</li>
 </ul>
 <p><img alt="jvm-architecture" src="../img/jvm-architecture.png" /></p>
 <h3 id="stack">Stack</h3>
@@ -352,6 +355,23 @@ to coordinate global JVM activities, including stop-the-world garbage collection
 At run time, the JVM loads the class files, determines the semantics of each individual bytecode, and performs the appropriate computation.
 The additional processor and memory usage during interpretation means that a Java application performs more slowly than a native application.
 The JIT compiler helps improve the performance of Java programs by compiling bytecode into native machine code at run time</p>
+<h2 id="scala">Scala</h2>
+<pre><code># compiles
+scalac miscellaneous/scala-example.scala -d miscellaneous/
+
+# lists compiler phases
+scalac -Xshow-phases
+
+# prints for-comprehensions desugared
+scalac -Xprint:parse miscellaneous/scala-example.scala -d miscellaneous/
+
+# prints all phases
+scalac -Xprint:all miscellaneous/scala-example.scala -d miscellaneous/
+
+# shows bytecode
+javap -v miscellaneous/Example$.class
+</code></pre>
+
 <p><br></p>
               
             </div>
