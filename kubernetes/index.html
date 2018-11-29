@@ -107,6 +107,8 @@
     
         <ul>
         
+            <li><a class="toctree-l3" href="#architecture">Architecture</a></li>
+        
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
         </ul>
@@ -180,6 +182,9 @@
 <p><a href="https://kubernetes.io/docs/home">Documentation</a></p>
 </li>
 <li>
+<p><a href="https://kubernetes.io/blog">Offical Blog</a></p>
+</li>
+<li>
 <p><a href="https://amzn.to/2yXEGWx">Kubernetes in Action</a> (2017) by Marko Lukša (Book)</p>
 </li>
 <li>
@@ -197,7 +202,63 @@
 <li>
 <p><a href="https://opencredo.com/kubernetes-aws-terraform-ansible-1">Kubernetes from scratch to AWS with Terraform and Ansible</a></p>
 </li>
+<li>
+<p>YouTube channels: <a href="https://www.youtube.com/channel/UCZ2bu0qutTOM0tHYa_jkIwg">Kubernetes</a> and <a href="https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA">Cloud Native Computing Foundation</a></p>
+</li>
 </ul>
+<h2 id="architecture">Architecture</h2>
+<p>At the hardware level, a Kubernetes cluster node can be</p>
+<ul>
+<li>a <em>master</em> node, which hosts the <strong>Kubernetes Control Plane</strong> that manages the state of the cluster<ul>
+<li>The <strong>Kubernetes API Server</strong> to communicate with the cluster</li>
+<li>The <strong>Scheduler</strong>, which schedules apps (assigns a worker node to each deployable component)</li>
+<li>The <strong>Controller Manager</strong>, which performs cluster-level functions, such as replicating components, keeping track of worker nodes handling node failures, and so on</li>
+<li><strong>etcd</strong>, a reliable distributed data store that persistently stores the cluster configuration</li>
+</ul>
+</li>
+<li>a <em>worker</em> nodes that run containerized applications<ul>
+<li>Docker, rkt, or another <strong>container runtime</strong>, which runs containers</li>
+<li>The <strong>Kubelet</strong>, which talks to the API server and manages containers on its node</li>
+<li>The <strong>Kubernetes Service Proxy (kube-proxy)</strong>, which load-balances network traffic between application components</li>
+</ul>
+</li>
+</ul>
+<p><img alt="kubernetes-architecture" src="../img/kubernetes-architecture.png" /></p>
+<ul>
+<li>To run an application in Kubernetes, it needs to be packaged into one or more container images, those images need to be pushed to an image registry, and then a description of the app posted to the Kubernetes API Server</li>
+<li>When the API server processes the app's description, the Scheduler schedules (pods are run immediately) the specified groups of containers onto the available worker nodes based on computational resources required by each group and the unallocated resources on each node at that moment</li>
+<li>The Kubelet on those nodes then instructs the Container Runtime (Docker, for example) to pull the required container images and run the containers</li>
+<li>Once the application is running, Kubernetes continuously makes sure that the deployed state of the application always matches the description you provided</li>
+<li>To allow clients to easily find containers that provide a specific service, it's possible to tell Kubernetes which containers provide the same service and Kubernetes will expose all of them at a single static IP address and expose that address to all applications running in the cluster</li>
+<li>User interacts with the cluster through the <code>kubectl</code> command line client, which issues REST requests to the Kubernetes API server running on the master node</li>
+</ul>
+<p><img alt="kubernetes-run" src="../img/kubernetes-run.png" /></p>
+<ul>
+<li>One of the most fundamental Kubernetes principles is that instead of telling Kubernetes exactly what actions it should perform, you're only <em>declaratively changing the desired state</em> of the system and letting Kubernetes examine the current actual state and <em>reconcile</em> it with the desired state</li>
+<li>A <strong>label</strong> is an arbitrary key-value pair you attach to a resource, which is then utilized when selecting resources using <em>label selectors</em> and a resource can have more than one label</li>
+<li><strong>Annotations</strong> are key-value pairs like labels, but they aren't meant to hold identifying information and can hold up to 256 KB</li>
+<li>Using multiple <strong>namespaces</strong> allows to split complex systems with numerous components into smaller distinct groups and resource names only need to be unique within a namespace</li>
+<li>A <strong>pod</strong> is a group of one or more tightly related containers that will always run together on the same worker node and in the same Linux namespace(s). Each pod is like a separate logical machine with its own IP, hostname, processes, and so on, running a single application</li>
+<li><strong>Services</strong> represent a static location for a group of one or more pods that all provide the same service. Requests coming to the IP and port of the service will be forwarded to the IP and port of one of the pods belonging to the service at that moment</li>
+<li><em>Resource</em> definition example</li>
+</ul>
+<pre><code>apiVersion: v1
+# type of resource
+kind: Pod
+# includes the name, namespace, labels, and other information about the pod
+metadata:
+  ...
+# contains the actual description of the pod's contents,
+# such as the pod's containers, volumes, and other data
+spec:
+  ...
+# contains the current information about the running pod,
+# such as what condition the pod is in, the description and status of each container,
+# and the pod's internal IP and other basic info
+status:
+  ...
+</code></pre>
+
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
 <ul>
@@ -236,11 +297,23 @@ kubectl describe nodes
 kubectl config view
 
 # namespace
-kubectl create namespace local
+kubectl create namespace &lt;NAMESPACE_NAME&gt;
 kubectl get namespaces
-kubectl config set-context $(kubectl config current-context) --namespace=local
 kubectl config view | grep namespace
-kubectl delete namespace local
+kubectl delete namespace &lt;NAMESPACE_NAME&gt;
+
+# current namespace
+kubectl config current-context
+
+# switch namespace
+kubectl config set-context $(kubectl config current-context) --namespace=&lt;NAMESPACE_NAME&gt;
+
+# create resources from file
+kubectl create -f &lt;FILE_NAME&gt;.yaml
+
+# explain fields
+kubectl explain pod
+kubectl explain service.spec
 </code></pre>
 
 <p>Simple deployment</p>
@@ -263,18 +336,6 @@ kubectl rollout undo deployments/kubernetes-bootcamp
 
 # list deployments
 kubectl get deployments
-
-# list containers inside pods
-kubectl describe pods
-
-# list pods
-kubectl get pods
-
-# filter with equality-based labels
-kubectl get pods -l app=kubernetes-bootcamp
-
-# filter with set-based labels
-kubectl get pods -l 'app in (kubernetes-bootcamp)'
 </code></pre>
 
 <p>Pod and Container</p>
@@ -291,6 +352,7 @@ http :8001/api/v1/proxy/namespaces/default/pods/$POD_NAME/
 
 # view logs
 kubectl logs $POD_NAME
+kubectl logs &lt;POD_NAME&gt; -c &lt;CONTAINER_NAME&gt;
 
 # execute command on container
 kubectl exec $POD_NAME printenv
@@ -301,6 +363,56 @@ kubectl exec -it $POD_NAME bash
 
 # verify label
 kubectl describe pods $POD_NAME
+
+# list containers inside pods
+kubectl describe pods
+
+# list pods
+kubectl get pods
+
+# list pods and nodes
+kubectl get pods -o wide
+
+# list pods with labels
+kubectl get po --show-labels
+kubectl get pods -L &lt;LABEL_KEY&gt;
+
+# filter with equality-based labels
+kubectl get pods -l app=kubernetes-bootcamp
+kubectl get pods -l app
+kubectl get pods -l '!app'
+
+# filter with set-based labels
+kubectl get pods -l 'app in (kubernetes-bootcamp)'
+
+# add/update labels manually
+kubectl label po &lt;POD_NAME&gt; &lt;LABEL_KEY&gt;=&lt;LABEL_VALUE&gt;
+kubectl label po &lt;POD_NAME&gt; &lt;LABEL_KEY&gt;=&lt;LABEL_VALUE&gt; --overwrite
+
+# annotate
+kubectl annotate pod &lt;POD_NAME&gt; &lt;LABEL_KEY&gt;=&lt;LABEL_VALUE&gt;
+
+# print definition
+kubectl get pod &lt;POD_NAME&gt; -o json
+kubectl get pod &lt;POD_NAME&gt; -o yaml
+# output json
+kubectl get pod &lt;POD_NAME&gt; -o json | jq '.metadata'
+# output json
+kubectl get pod &lt;POD_NAME&gt; -o yaml | yq '.metadata.annotations'
+# output yaml
+kubectl get pod &lt;POD_NAME&gt; -o yaml | yq -y '.metadata.annotations'
+
+# specify namespace
+kubectl get ns
+kubectl get pod --namespace kube-system
+
+# (debug) forward a local network port to a port in the pod (without service)
+kubectl port-forward &lt;POD_NAME&gt; &lt;LOCAL_PORT&gt;:&lt;POD_PORT&gt;
+
+# delete (sends SIGTERM to containers and waits 30 seconds, otherwise sends SIGKILL)
+kubectl delete po &lt;POD_NAME&gt;
+kubectl delete pod -l &lt;LABEL_KEY&gt;=&lt;LABEL_VALUE&gt;
+kubectl delete po --all
 </code></pre>
 
 <p>Service</p>
@@ -332,6 +444,9 @@ kubectl describe deployments/kubernetes-bootcamp
 
 # cleanup
 kubectl delete deployment,service kubernetes-bootcamp
+# all (means all resource types)
+# --all (means all resource instances)
+kubectl delete all --all
 </code></pre>
 
 <p><br></p>
