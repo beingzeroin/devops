@@ -234,13 +234,12 @@
 </ul>
 <p><img alt="kubernetes-run" src="../img/kubernetes-run.png" /></p>
 <ul>
-<li>One of the most fundamental Kubernetes principles is that instead of telling Kubernetes exactly what actions it should perform, you're only <em>declaratively changing the desired state</em> of the system and letting Kubernetes examine the current actual state and <em>reconcile</em> it with the desired state</li>
-<li>A <strong>label</strong> is an arbitrary key-value pair you attach to a resource, which is then utilized when selecting resources using <em>label selectors</em> and a resource can have more than one label</li>
-<li><strong>Annotations</strong> are key-value pairs like labels, but they aren't meant to hold identifying information and can hold up to 256 KB</li>
-<li>Using multiple <strong>namespaces</strong> allows to split complex systems with numerous components into smaller distinct groups and resource names only need to be unique within a namespace</li>
-<li>A <strong>pod</strong> is a group of one or more tightly related containers that will always run together on the same worker node and in the same Linux namespace(s). Each pod is like a separate logical machine with its own IP, hostname, processes, and so on, running a single application</li>
-<li><strong>Services</strong> represent a static location for a group of one or more pods that all provide the same service. Requests coming to the IP and port of the service will be forwarded to the IP and port of one of the pods belonging to the service at that moment</li>
-<li><em>Resource</em> definition example</li>
+<li>
+<p>One of the most fundamental Kubernetes principles is that instead of telling Kubernetes exactly what actions it should perform, you're only <em>declaratively changing the desired state</em> of the system and letting Kubernetes examine the current actual state and <em>reconcile</em> it with the desired state</p>
+</li>
+<li>
+<p><em>Resource</em> definition example</p>
+</li>
 </ul>
 <pre><code>apiVersion: v1
 # type of resource
@@ -259,6 +258,32 @@ status:
   ...
 </code></pre>
 
+<ul>
+<li>A <strong>label</strong> is an arbitrary key-value pair you attach to a resource, which is then utilized when selecting resources using <em>label selectors</em> and a resource can have more than one label</li>
+<li><strong>Annotations</strong> are key-value pairs like labels, but they aren't meant to hold identifying information and can hold up to 256 KB</li>
+<li>Using multiple <strong>namespaces</strong> allows to split complex systems with numerous components into smaller distinct groups and resource names only need to be unique within a namespace</li>
+<li>A <strong>pod</strong> is a group of one or more tightly related containers that will always run together on the same worker node and in the same Linux namespace(s). Each pod is like a separate logical machine with its own IP, hostname, processes, and so on, running a single application</li>
+<li>A <strong>ReplicationController</strong> is a resource that ensures its pods are always kept running and an exact number of pods always matches its label selector, even if a node disappears. It's made by<ul>
+<li>a <em>label selector</em>, which determines what pods are in the ReplicationController's scope</li>
+<li>a <em>replica count</em>, which specifies the desired number of pods that should be running</li>
+<li>a <em>pod template</em>, which is used when creating new pod replicas</li>
+</ul>
+</li>
+<li>A <strong>ReplicaSet</strong> behaves exactly like a ReplicationController (old), but it has more expressive pod selectors</li>
+<li>A <strong>DaemonSet</strong> is mostly for specific case like infrastructure-related pods that perform system-level operations in which a pod must run on each and every node in the cluster and each node needs to run exactly one instance of the pod, for example log collector and resource monitor</li>
+<li>A <strong>Job</strong> resource allows to run a pod whose container isn't restarted when the process running inside finishes successfully. A cron job in Kubernetes is configured by creating a <strong>CronJob</strong> resource</li>
+<li>A <strong>Service</strong> represents a static location for a group of one or more pods that all provide the same service. Requests coming to the IP and port of the service will be forwarded/load-balanced to the IP and port of one of the pods belonging to the service at that moment<ul>
+<li><em>ExternalName</em> type, a service that serves as an alias for an external service</li>
+<li><em>NodePort</em> type, each cluster node opens a port on the node itself and redirects traffic received on that port to the underlying service</li>
+<li><em>LoadBalancer</em> type (extension of NodePort), makes the service accessible through a dedicated load balancer which usually is  supported and automatically provisioned by the cloud infrastructure</li>
+</ul>
+</li>
+<li>A <em>headless service</em> still provides load balancing across pods, but through the DNS round-robin mechanism instead of through the service proxy, because DNS returns the pods' IPs, clients connect directly to the pods, instead of through the service proxy. Setting the <em>clusterIP</em> field in a service spec to <em>None</em> makes the service headless</li>
+<li>An <strong>Endpoints</strong> resource is a list of IP addresses and ports exposing a service. The Endpoints object needs to have the same name as the service and contain the list of target IP addresses and ports for the service</li>
+<li>An <strong>Ingress</strong> operates at the application layer of the network stack (HTTP) and can provide features such as cookie-based session affinity. LoadBalancer service requires its own load balancer with its own public IP address, whereas an Ingress only requires one</li>
+<li>The Kubelet on the node hosting the pod can check if a container is still alive through <strong>liveness probes</strong> using <em>httpGet</em>, <em>tcpSocket</em> or <em>exec</em>. Exit code is a sum of <code>128 + N</code> e.g. <code>137 = 128 + 9</code> (SIGKILL) or <code>143 = 128 + 15</code> (SIGTERM). Always remember to set an initial delay <em>initialDelaySeconds</em></li>
+<li>The <strong>readiness probes</strong> is invoked periodically and determines whether the specific pod should receive client requests or not. Liveness probes keep pods healthy by killing off unhealthy containers and replacing them with new, healthy ones, whereas readiness probes make sure that only pods that are ready to serve requests receive them and this is mostly necessary during container start up</li>
+</ul>
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
 <ul>
@@ -284,6 +309,15 @@ docker ps -a
 
 # reuse the minikube's built-in docker daemon
 eval $(minikube docker-env)
+
+# access NodePort services
+minikube service &lt;SERVICE_NAME&gt; [-n &lt;NAMESPACE&gt;]
+
+# list addons
+minikube addons list
+
+# enable addon
+minikube addons enable &lt;ADDON_NAME&gt;
 </code></pre>
 
 <p>Basic</p>
@@ -308,12 +342,16 @@ kubectl config current-context
 # switch namespace
 kubectl config set-context $(kubectl config current-context) --namespace=&lt;NAMESPACE_NAME&gt;
 
-# create resources from file
+# create/update resources from file
 kubectl create -f &lt;FILE_NAME&gt;.yaml
+kubectl apply -f &lt;FILE_NAME&gt;.yaml
 
 # explain fields
 kubectl explain pod
 kubectl explain service.spec
+
+# edit resource (vim)
+kubectl edit pod &lt;POD_NAME&gt;
 </code></pre>
 
 <p>Simple deployment</p>
@@ -353,6 +391,7 @@ http :8001/api/v1/proxy/namespaces/default/pods/$POD_NAME/
 # view logs
 kubectl logs $POD_NAME
 kubectl logs &lt;POD_NAME&gt; -c &lt;CONTAINER_NAME&gt;
+kubectl logs &lt;POD_NAME&gt; --previous
 
 # execute command on container
 kubectl exec $POD_NAME printenv
@@ -402,9 +441,10 @@ kubectl get pod &lt;POD_NAME&gt; -o yaml | yq '.metadata.annotations'
 # output yaml
 kubectl get pod &lt;POD_NAME&gt; -o yaml | yq -y '.metadata.annotations'
 
-# specify namespace
+# by namespace
 kubectl get ns
 kubectl get pod --namespace kube-system
+kubectl get po --all-namespaces
 
 # (debug) forward a local network port to a port in the pod (without service)
 kubectl port-forward &lt;POD_NAME&gt; &lt;LOCAL_PORT&gt;:&lt;POD_PORT&gt;
@@ -417,6 +457,7 @@ kubectl delete po --all
 
 <p>Service</p>
 <pre><code class="bash"># list services
+kubectl get svc
 kubectl get services
 
 # create service
@@ -447,6 +488,25 @@ kubectl delete deployment,service kubernetes-bootcamp
 # all (means all resource types)
 # --all (means all resource instances)
 kubectl delete all --all
+</code></pre>
+
+<p>Other</p>
+<pre><code class="bash"># replication controller
+kubectl get rc
+kubectl get replicationcontroller
+
+# replica set
+kubectl get rs
+kubectl get replicaset
+
+# jobs
+kubectl get jobs
+
+# ingress
+kubectl get ingress
+
+# jsonpath example
+kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type==&quot;ExternalIP&quot;)].address}'
 </code></pre>
 
 <p><br></p>
