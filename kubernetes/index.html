@@ -283,7 +283,19 @@ status:
 <li>An <strong>Ingress</strong> operates at the application layer of the network stack (HTTP) and can provide features such as cookie-based session affinity. LoadBalancer service requires its own load balancer with its own public IP address, whereas an Ingress only requires one</li>
 <li>The Kubelet on the node hosting the pod can check if a container is still alive through <strong>liveness probes</strong> using <em>httpGet</em>, <em>tcpSocket</em> or <em>exec</em>. Exit code is a sum of <code>128 + N</code> e.g. <code>137 = 128 + 9</code> (SIGKILL) or <code>143 = 128 + 15</code> (SIGTERM). Always remember to set an initial delay <em>initialDelaySeconds</em></li>
 <li>The <strong>readiness probes</strong> is invoked periodically and determines whether the specific pod should receive client requests or not. Liveness probes keep pods healthy by killing off unhealthy containers and replacing them with new, healthy ones, whereas readiness probes make sure that only pods that are ready to serve requests receive them and this is mostly necessary during container start up</li>
+<li>A <strong>volume</strong> is a component of a pod and not a standalone object, it cannot be created or deleted on its own. A volume is available to all containers in the pod, but it must be mounted in each container that needs to access it<ul>
+<li><em>emptyDir</em>, a simple empty directory used for storing transient data</li>
+<li><em>hostPath</em>, used for mounting directories from the worker node's filesystem into the pod</li>
+<li><em>gitRepo</em>, a volume initialized by checking out the contents of a Git repository</li>
+<li><em>nfs</em>, an NFS share mounted into the pod</li>
+<li><em>gcePersistentDisk</em> (Google Compute Engine Persistent Disk), <em>awsElasticBlockStore</em> (Amazon Web Services Elastic Block Store Volume), <em>azureDisk</em> (Microsoft Azure Disk Volume), used for mounting cloud provider-specific storage</li>
+<li><em>cinder, cephfs, iscsi, flocker, glusterfs, quobyte, rbd, flexVolume, vsphereVolume, photonPersistentDisk, scaleIO</em>, used for mounting other types of network storage</li>
+<li><em>configMap, secret, downwardAPI</em>, a special types of volumes used to expose certain Kubernetes resources and cluster information to the pod</li>
+<li><em>persistentVolumeClaim</em>, a way to use a pre- or dynamically provisioned persistent storage</li>
 </ul>
+</li>
+</ul>
+<p><img alt="kubernetes-volume" src="../img/kubernetes-volume.png" /></p>
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
 <ul>
@@ -504,6 +516,11 @@ kubectl get jobs
 
 # ingress
 kubectl get ingress
+
+# persistent volume, claim and storage class
+kubectl get pv
+kubectl get pvc
+kubectl get sc
 
 # jsonpath example
 kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type==&quot;ExternalIP&quot;)].address}'
