@@ -210,10 +210,10 @@
 <p>At the hardware level, a Kubernetes cluster node can be</p>
 <ul>
 <li>a <em>master</em> node, which hosts the <strong>Kubernetes Control Plane</strong> that manages the state of the cluster<ul>
-<li>The <strong>Kubernetes API Server</strong> to communicate with the cluster</li>
+<li>The <strong>Kubernetes API Server</strong> to communicate with the cluster and the only component that talks to etcd directly</li>
 <li>The <strong>Scheduler</strong>, which schedules apps (assigns a worker node to each deployable component)</li>
 <li>The <strong>Controller Manager</strong>, which performs cluster-level functions, such as replicating components, keeping track of worker nodes handling node failures, and so on</li>
-<li><strong>etcd</strong>, a reliable distributed data store that persistently stores the cluster configuration</li>
+<li><strong>etcd</strong>, a fast, distributed, and consistent key-value store which is the only place where cluster state and metadata are stored</li>
 </ul>
 </li>
 <li>a <em>worker</em> nodes that run containerized applications<ul>
@@ -222,8 +222,17 @@
 <li>The <strong>Kubernetes Service Proxy (kube-proxy)</strong>, which load-balances network traffic between application components</li>
 </ul>
 </li>
+<li>some of the add-on components are<ul>
+<li>Kubernetes DNS server</li>
+<li>Dashboard</li>
+<li>Ingress controller</li>
+<li>Heapster</li>
+<li>Container Network Interface network plugin</li>
+</ul>
+</li>
 </ul>
 <p><img alt="kubernetes-architecture" src="../img/kubernetes-architecture.png" /></p>
+<p><img alt="kubernetes-cluster" src="../img/kubernetes-cluster.png" /></p>
 <ul>
 <li>To run an application in Kubernetes, it needs to be packaged into one or more container images, those images need to be pushed to an image registry, and then a description of the app posted to the Kubernetes API Server</li>
 <li>When the API server processes the app's description, the Scheduler schedules (pods are run immediately) the specified groups of containers onto the available worker nodes based on computational resources required by each group and the unallocated resources on each node at that moment</li>
@@ -296,6 +305,46 @@ status:
 </li>
 </ul>
 <p><img alt="kubernetes-volume" src="../img/kubernetes-volume.png" /></p>
+<ul>
+<li>An app can be configured by<ul>
+<li>passing command-line arguments to containers with <code>command</code> and <code>args</code></li>
+<li>setting custom environment variables for each container of a pod</li>
+<li>mounting configuration files into containers through a special type of volume</li>
+</ul>
+</li>
+<li>The contents of a <strong>ConfigMap</strong> are passed to containers as either environment variables or as files in a volume while on the nodes</li>
+<li><strong>Secrets</strong> are always stored in memory and never written to physical storage (maximum size of a Secret is limited to 1MB)</li>
+<li>The <strong>Downward API</strong> enables you to expose the pod's own metadata to the processes running inside that pod (it isn't a REST endpoint)</li>
+</ul>
+<p><img alt="kubernetes-container-api" src="../img/kubernetes-container-api.png" /></p>
+<ul>
+<li>Rolling update means replace pods step by step slowly scaling down the previous version and scaling up the new one</li>
+<li>A <strong>Deployment</strong> is a higher-level resource meant for deploying applications and updating them declaratively, instead of doing it through a ReplicationController or a ReplicaSet, which are both considered lower-level concepts. A Deployment doesn't manage pods directly, instead it creates a new ReplicaSet which is scaled up slowly, while the previous ReplicaSet is scaled down to zero. See also <code>minReadySeconds</code>, <code>maxSurge</code> and <code>maxUnavailable</code> properties</li>
+<li>A <strong>StatefulSet</strong> makes sure pods are rescheduled in such a way that they retain their identity and state. StatefulSets were initially called PetSets, that name comes from the <a href="https://news.ycombinator.com/item?id=7311704">pets vs. cattle analogy</a>. Each pod created by a StatefulSet is assigned an ordinal index (zero-based), which is then used to derive the pod's name and hostname, and to attach stable storage to the pod.</li>
+<li>A StatefulSet requires to create a corresponding governing headless Service (<code>clusterIP=None</code>) that's used to provide the actual network identity to each pod, in this wat each pod gets its own DNS entry. The new pod isn't necessarily scheduled to the same node. Scaling the StatefulSet creates a new pod instance with the next unused ordinal index. Scaling down a StatefulSet always removes the instances with the highest ordinal index first. StatefulSets don't delete PersistentVolumeClaims when scaling down and they reattach them when scaling back up</li>
+<li>Clients watch for changes by opening an HTTP connection to the API server. Through this connection, the client will then receive a stream of modifications to the watched objects</li>
+</ul>
+<p><img alt="kubernetes-client" src="../img/kubernetes-client.png" /></p>
+<ul>
+<li>The <strong>Scheduler</strong> waits for newly created pods through the API server's watch mechanism and assign a node to each new pod that doesn't already have the node set. The Scheduler doesn't instruct the selected node (or the Kubelet running on that node) to run the pod. All the Scheduler does is update the pod definition through the API server. The API server then notifies the Kubelet that the pod has been scheduled. As soon as the Kubelet on the target node sees the pod has been scheduled to its node, it creates and runs the pod's containers</li>
+<li>The single <strong>Controller Manager</strong> process currently combines a multitude of controllers performing various reconciliation tasks<ul>
+<li>Replication Manager (a controller for ReplicationController resources)</li>
+<li>ReplicaSet, DaemonSet, and Job controllers</li>
+<li>Deployment controller</li>
+<li>StatefulSet controller</li>
+<li>Node controller</li>
+<li>Service controller</li>
+<li>Endpoints controller</li>
+<li>Namespace controller</li>
+<li>PersistentVolume controller</li>
+<li>Others</li>
+</ul>
+</li>
+<li>Controllers do many different things, but they all watch the API server for changes to resources and perform operations for each change. In general, controllers run a reconciliation loop, which reconciles the actual state with the desired state (specified in the resource's <code>spec</code> section) and writes the new actual state to the resource's <code>status</code> section</li>
+<li>The <strong>Kubelet</strong> is the component responsible for everything running on a worker node. Its initial job is to register the node it's running on by creating a Node resource in the API server. Then it needs to continuously monitor the API server for Pods that have been scheduled to the node, and start the pod's containers. It does this by telling the configured container runtime (i.e. Docker) to run a container from a specific container image. The Kubelet then constantly monitors running containers and reports their status, events, and resource consumption to the API server. The Kubelet is also the component that runs the container liveness probes, restarting containers when the probes fail. Lastly, it terminates containers when their Pod is deleted from the API server and notifies the server that the pod has terminated</li>
+<li>Every worker node also runs the <strong>kube-proxy</strong> (Service Proxy), whose purpose is to make sure clients can connect to the services you define through the Kubernetes API and performs load balancing across those pods. The current, implementation only uses <em>iptables</em> rules to redirect packets to a randomly selected backend pod without passing them through an actual proxy server</li>
+</ul>
+<p><img alt="kubernetes-deployment" src="../img/kubernetes-deployment.png" /></p>
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
 <ul>
@@ -330,6 +379,11 @@ minikube addons list
 
 # enable addon
 minikube addons enable &lt;ADDON_NAME&gt;
+
+# (?) swagger
+minikube start --extra-config=apiserver.Features.EnableSwaggerUI=true
+kubectl proxy
+open http://localhost:8080/swagger-ui
 </code></pre>
 
 <p>Basic</p>
@@ -341,6 +395,9 @@ kubectl cluster-info
 kubectl get nodes
 kubectl describe nodes
 kubectl config view
+
+# health status of each control plane component
+kubectl get componentstatuses
 
 # namespace
 kubectl create namespace &lt;NAMESPACE_NAME&gt;
@@ -364,6 +421,34 @@ kubectl explain service.spec
 
 # edit resource (vim)
 kubectl edit pod &lt;POD_NAME&gt;
+
+# verbosity
+kubectl get pods --v 6
+
+# access etcd on minikube
+minikube ssh
+docker run \
+  --rm \
+  -p 12379:2379 \
+  -p 12380:2380 \
+  --mount type=bind,source=/tmp/etcd-data.tmp,destination=/etcd-data \
+  --name etcd-gcr-v3.3.10 \
+  gcr.io/etcd-development/etcd:v3.3.10 \
+  /usr/local/bin/etcd \
+  --name s1 \
+  --data-dir /etcd-data \
+  --listen-client-urls http://0.0.0.0:12379 \
+  --advertise-client-urls http://0.0.0.0:12379 \
+  --listen-peer-urls http://0.0.0.0:12380 \
+  --initial-advertise-peer-urls http://0.0.0.0:12380 \
+  --initial-cluster s1=http://0.0.0.0:12380 \
+  --initial-cluster-token tkn \
+  --initial-cluster-state new
+docker exec etcd-gcr-v3.3.10 /bin/sh -c &quot;ETCDCTL_API=3 /usr/local/bin/etcdctl version&quot;
+docker exec etcd-gcr-v3.3.10 /bin/sh -c &quot;ETCDCTL_API=3 /usr/local/bin/etcdctl get /registry --endpoints=127.0.0.1:12379&quot;
+
+# watch cluster events
+kubectl get events --watch
 </code></pre>
 
 <p>Simple deployment</p>
@@ -384,8 +469,22 @@ kubectl rollout history deployments/kubernetes-bootcamp
 # undo latest deployment
 kubectl rollout undo deployments/kubernetes-bootcamp
 
+# undo deployment to revision N
+kubectl rollout undo deployment &lt;DEPLOYMENT_NAME&gt; --to-revision=N
+
+# pause/resume deployment
+kubectl rollout pause deployment &lt;DEPLOYMENT_NAME&gt;
+kubectl rollout resume deployment &lt;DEPLOYMENT_NAME&gt;
+
 # list deployments
 kubectl get deployments
+kubectl describe deployment
+
+# create deployment from file (records the command in the revision history)
+kubectl create -f &lt;FILE_NAME&gt;.yaml --record
+
+# manually slowdown a rolling update
+kubectl patch deployment &lt;DEPLOYMENT_NAME&gt; -p '{&quot;spec&quot;: {&quot;minReadySeconds&quot;: 10}}'
 </code></pre>
 
 <p>Pod and Container</p>
@@ -458,6 +557,10 @@ kubectl get ns
 kubectl get pod --namespace kube-system
 kubectl get po --all-namespaces
 
+# watch for changes
+kubectl get pods --watch
+kubectl get pods -o yaml --watch
+
 # (debug) forward a local network port to a port in the pod (without service)
 kubectl port-forward &lt;POD_NAME&gt; &lt;LOCAL_PORT&gt;:&lt;POD_PORT&gt;
 
@@ -524,6 +627,92 @@ kubectl get sc
 
 # jsonpath example
 kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type==&quot;ExternalIP&quot;)].address}'
+
+# create config map
+kubectl create configmap my-config \
+  --from-literal=my-key-1=my-value-1 \
+  --from-literal=my-key-2=my-value-2
+
+# print config-map
+kubectl get configmap my-config -o yaml
+
+# secrets
+kubectl get secrets
+kubectl describe secrets
+kubectl exec &lt;POD_NAME&gt; ls /var/run/secrets/kubernetes.io/serviceaccount/
+
+# create secrets (generic|tls|docker-registry)
+echo bar &gt; foo.secure
+kubectl create secret generic my-secret --from-file=foo.secure
+
+# contents are shown as Base64-encoded strings
+kubectl get secret my-secret -o yaml
+# prints &quot;bar&quot;
+echo YmFyCg== | base64 -D
+
+# access api server from local machine
+kubectl proxy
+http :8001
+http :8001/api/v1/pods
+
+# access api server from a container
+# (create)
+kubectl run hello-curl \
+  --image=tutum/curl \
+  --command -- &quot;sleep&quot; &quot;9999999&quot;
+# (exec)
+kubectl exec -it hello-curl-XXX bash
+# (verify envs)
+printenv
+# (missing certificate)
+curl -k  https://kubernetes
+# (list secrets)
+ls -laht /var/run/secrets/kubernetes.io/serviceaccount/
+# (specify certificate)
+curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://kubernetes
+# (specify token, namespace and default certificate) or &quot;https://kubernetes.default/api/v1&quot;
+export KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+export KUBE_NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+export CURL_CA_BUNDLE=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+curl -v \
+  -H &quot;Authorization: Bearer $KUBE_TOKEN&quot; \
+  https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_PORT_443_TCP_PORT/api/v1/namespaces/$KUBE_NS/pods
+# @see also ambassador container pattern based on kubectl-proxy
+
+# api server proxy to invoke endpoint on resource
+kubectl proxy
+curl localhost:8001/api/v1/namespaces/&lt;NAMESPACE_NAME&gt;/&lt;pods|services|...&gt;/&lt;RESOURCE_NAME&gt;/proxy/&lt;PATH&gt;
+
+# temporary command
+kubectl run \
+  -it srvlookup \
+  --image=tutum/dnsutils \
+  --rm \
+  --restart=Never \
+  -- dig &lt;SERVICE_NAME&gt; kubia.default.svc.cluster.local
+
+# temporary container
+kubectl run \
+  -it phusion \
+  --image=phusion/baseimage:latest \
+  --rm \
+  --restart=Never \
+  bash
+</code></pre>
+
+<p>Alternative ways of modify resources</p>
+<pre><code class="bash"># opens the object's manifest in default editor
+kubectl edit
+# modifies individual properties of an object
+kubectl patch
+# creates or modifies the object by applying property values from a full YAML or JSON file
+kubectl apply
+# same as apply but only if not exists
+kubectl create
+# same as apply but only if exists
+kubectl replace
+# changes the container image
+kubectl set image
 </code></pre>
 
 <p><br></p>
