@@ -111,6 +111,10 @@
         
             <li><a class="toctree-l3" href="#setup">Setup</a></li>
         
+            <li><a class="toctree-l3" href="#helm">Helm</a></li>
+        
+            <li><a class="toctree-l3" href="#others">Others</a></li>
+        
         </ul>
     
 
@@ -715,6 +719,72 @@ kubectl replace
 kubectl set image
 </code></pre>
 
+<p><br></p>
+<h2 id="helm">Helm</h2>
+<blockquote>
+<p><strong>Helm</strong> installs <em>charts</em> into Kubernetes, creating a new <em>release</em> for each installation. And to find new charts, you can search Helm chart <em>repositories</em></p>
+</blockquote>
+<ul>
+<li>A <strong>Chart</strong> is a Helm package. It contains all of the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster. Think of it like the Kubernetes equivalent of a Homebrew formula, an Apt dpkg, or a Yum RPM file</li>
+<li>A <strong>Repository</strong> is the place where charts can be collected and shared</li>
+<li>A <strong>Release</strong> is an instance of a chart running in a Kubernetes cluster</li>
+</ul>
+<p>Resources</p>
+<ul>
+<li><a href="https://docs.helm.sh">Documentation</a></li>
+<li><a href="https://medium.com/@gajus/the-missing-ci-cd-kubernetes-component-helm-package-manager-1fe002aac680">The missing CI/CD Kubernetes component: Helm package manager</a></li>
+</ul>
+<p>Commands</p>
+<pre><code class="bash"># linux
+sudo snap install helm --classic
+# mac
+brew install kubernetes-helm
+
+# setup client only
+helm init --client-only
+
+# search
+helm search &lt;CHART&gt;
+helm search postgresql
+
+# info
+helm inspect &lt;CHART&gt;
+helm inspect stable/postgresql
+helm inspect values stable/postgresql
+helm get values &lt;KEY&gt;
+helm status &lt;CHART&gt;
+helm list
+helm list --all
+
+# install public chart [install|upgrade|rollback|delete]
+helm install &lt;CHART&gt;
+helm install -f &lt;CONFIG_OVERRIDE&gt;.yaml &lt;CHART&gt;
+helm delete &lt;CHART&gt;
+
+# repository
+helm repo list
+helm repo add &lt;NAME&gt; https://&lt;DOMAIN&gt;/&lt;PATH&gt;
+helm repo update
+
+# custom chart
+helm create my-chart
+helm lint my-chart
+helm package my-chart
+helm install ./my-chart
+helm install --dry-run --debug ./my-chart
+
+# plugin
+$(helm home)/plugins
+helm plugin install &lt;PATH|URL&gt;
+</code></pre>
+
+<p><br></p>
+<h2 id="others">Others</h2>
+<ul>
+<li><a href="https://argoproj.github.io">Argo</a> - Open source Kubernetes native workflows, events, CI and CD</li>
+<li><a href="https://eksctl.io">eksctl</a> - A CLI for Amazon EKS</li>
+<li><a href="https://ahmet.im/blog/kubectx">kubectx</a> - A tool to switch between Kubernetes contexts</li>
+</ul>
 <p><br></p>
               
             </div>
