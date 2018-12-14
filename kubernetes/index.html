@@ -192,6 +192,9 @@
 <p><a href="https://amzn.to/2yXEGWx">Kubernetes in Action</a> (2017) by Marko Lukša (Book)</p>
 </li>
 <li>
+<p>YouTube channels: <a href="https://www.youtube.com/channel/UCZ2bu0qutTOM0tHYa_jkIwg">Kubernetes</a> and <a href="https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA">Cloud Native Computing Foundation</a></p>
+</li>
+<li>
 <p><a href="http://kubernetesbyexample.com">Kubernetes by Example</a></p>
 </li>
 <li>
@@ -207,7 +210,7 @@
 <p><a href="https://opencredo.com/kubernetes-aws-terraform-ansible-1">Kubernetes from scratch to AWS with Terraform and Ansible</a></p>
 </li>
 <li>
-<p>YouTube channels: <a href="https://www.youtube.com/channel/UCZ2bu0qutTOM0tHYa_jkIwg">Kubernetes</a> and <a href="https://www.youtube.com/channel/UCvqbFHwN-nwalWPjPUKpvTA">Cloud Native Computing Foundation</a></p>
+<p><a href="https://www.weave.works/blog/prometheus-kubernetes-perfect-match">Prometheus and Kubernetes: A Perfect Match</a></p>
 </li>
 </ul>
 <h2 id="architecture">Architecture</h2>
@@ -349,6 +352,7 @@ status:
 <li>Every worker node also runs the <strong>kube-proxy</strong> (Service Proxy), whose purpose is to make sure clients can connect to the services you define through the Kubernetes API and performs load balancing across those pods. The current, implementation only uses <em>iptables</em> rules to redirect packets to a randomly selected backend pod without passing them through an actual proxy server</li>
 </ul>
 <p><img alt="kubernetes-deployment" src="../img/kubernetes-deployment.png" /></p>
+<p>TODO service account</p>
 <h2 id="setup">Setup</h2>
 <p>Requirements</p>
 <ul>
