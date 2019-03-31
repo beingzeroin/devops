@@ -1,68 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/linux/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/docker/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/ansible/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/cassandra/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/zookeeper/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/kafka/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/hadoop/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/kubernetes/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/jvm/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/scala/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/readings/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-03-14</lastmod>
+     <loc>/other/</loc>
+     <lastmod>2019-03-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
 </urlset>
